@@ -1,0 +1,7 @@
+{
+  "semi": false, //格式化时不加分号
+  "singleQuote": true, //用单引号替换双引号
+  "prettier.spaceBeforeFunctionParen": true, //让函数(名)和后面的括号之间加个空格
+  "trailingComma": "none" //对象后面默认添加逗号
+}
+
