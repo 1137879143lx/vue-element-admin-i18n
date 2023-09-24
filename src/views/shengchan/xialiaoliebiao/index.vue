@@ -176,7 +176,7 @@
         </el-form-item>
 
         <el-form-item label="数量">
-          <el-input v-model="formInline.user" placeholder="15" />
+          <el-input v-model="formInline.user" placeholder="140" />
         </el-form-item>
 
         <el-form-item label="单个重量(kg)">
