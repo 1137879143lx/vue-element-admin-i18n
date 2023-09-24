@@ -6,6 +6,7 @@
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
         <el-button style="margin-left: 5px" size="mini" icon="el-icon-refresh" circle />
         <span style="float: right; padding: 3px 20px">
+          <el-button type="text">下料统计</el-button>
           <el-button type="text">导出数据</el-button>
           <el-button type="text">已删除数据</el-button>
         </span>
@@ -65,11 +66,11 @@
           </el-table-column>
           <el-table-column min-width="80px" align="center" label="材质">
             <template slot-scope="{ row }">
-              <i class="el-icon-receiving" />
+              <!-- <i class="el-icon-receiving" /> -->
               <span>{{ row.material }}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="150px" align="center" label="下料尺寸">
+          <el-table-column min-width="120px" align="center" label="下料尺寸">
             <template slot-scope="{ row }">{{ row.Cutting_size }}</template>
           </el-table-column>
           <el-table-column min-width="100px" align="center" label="客户交期">
@@ -103,8 +104,15 @@
           <!-- <el-table-column width="50px" align="center" label="工时" prop="man_hour" /> -->
           <el-table-column width="120" align="center" label="编辑">
             <template slot-scope="{ row }">
-              <el-button v-if="row.process[0].status == 0" type="primary">下料</el-button>
-              <el-button v-else disabled type="info ">已下料</el-button>
+              <el-tooltip placement="top" open-delay="500">
+                <div slot="content">
+                  {{ row.process[0].Submission_time }}
+                  <br />
+                  {{ row.process[0].submitter }}
+                </div>
+                <el-button v-if="row.process[0].status == 0" type="primary" @click="centerDialogVisible = true">下料</el-button>
+                <el-button v-else disabled type="info ">已下料</el-button>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -157,6 +165,37 @@
         </el-form-item>
       </el-form>
     </el-drawer>
+    <!-- 下料确认 -->
+    <el-dialog title="下料确认" :visible.sync="centerDialogVisible" width="30%" center>
+      <el-form :model="formInline" class="demo-form-inline">
+        <el-form-item label="机器">
+          <el-select v-model="formInline.region" placeholder="一号机">
+            <el-option label="一号机" value="shanghai" />
+            <el-option label="二号机" value="beijing" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="数量">
+          <el-input v-model="formInline.user" placeholder="15" />
+        </el-form-item>
+
+        <el-form-item label="单个重量(kg)">
+          <el-input v-model="formInline.user" placeholder="重量" />
+        </el-form-item>
+
+        <el-form-item label="单个长度(毫米)">
+          <el-input v-model="formInline.user" placeholder="长度" />
+        </el-form-item>
+        <span>重量与长度二选一填写即可</span>
+        <br />
+        <br />
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onSubmit2">确 定</el-button>
+
+        <el-button @click="centerDialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -167,6 +206,7 @@ export default {
     return {
       activeName: '1',
       drawer: false,
+      centerDialogVisible: false,
       form: {
         name: '',
         region: '',
@@ -176,6 +216,10 @@ export default {
         type: [],
         resource: '',
         desc: ''
+      },
+      formInline: {
+        user: '',
+        region: ''
       },
       list: [
         {
@@ -197,8 +241,8 @@ export default {
               process: '下料',
               status: 0,
               man_hour: 0.2,
-              Submission_time: '2023-09-23-16:35',
-              submitter: '刘旭'
+              Submission_time: '',
+              submitter: ''
             },
             {
               id: 2,
@@ -247,7 +291,7 @@ export default {
           type: '打样',
           Delivery_time: '2023-09-29',
           status: '加工中',
-          Cutting_size: '100*100*25',
+          Cutting_size: 'D25*102',
           client: '南天门研发所',
           process: [
             {
@@ -533,6 +577,14 @@ export default {
     onSubmit() {
       console.log('submit!')
       this.drawer = false
+    },
+    onSubmit2() {
+      console.log('submit2!')
+      this.centerDialogVisible = false
+      this.$message({
+        message: '提交成功',
+        type: 'success'
+      })
     },
     xiangqing() {
       this.$router.push('/shengchan/renwuxiangqing')
