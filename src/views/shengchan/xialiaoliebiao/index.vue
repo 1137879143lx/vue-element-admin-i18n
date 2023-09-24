@@ -16,7 +16,7 @@
         <!-- Note that row-key is necessary to get a correct row order. -->
         <el-table ref="dragTable" v-loading="listLoading" size="mini" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
           <el-table-column type="selection" width="40" />
-          <el-table-column align="center" label="批次号" min-width="90">
+          <el-table-column align="center" label="订单号" min-width="90">
             <template slot-scope="{ row }">
               <i class="el-icon-warning-outline" />
               <el-button size="mini" type="text" @click="xiangqing">{{ row.Batch_number }}</el-button>
@@ -176,7 +176,7 @@
         </el-form-item>
 
         <el-form-item label="数量">
-          <el-input v-model="formInline.user" placeholder="140" />
+          <el-input v-model="formInline.user" placeholder="14" />
         </el-form-item>
 
         <el-form-item label="单个重量(kg)">

@@ -225,6 +225,14 @@ export const constantRoutes = [
           title: '任务详情', icon: 'documentation', affix: true
         },
         hidden: true
+      }, {
+        path: 'biaoqiandaying',
+        component: () => import('@/views/shengchan/biaoqiandaying/index'),
+        name: 'biaoqiandaying',
+        meta: {
+          title: '标签打印', icon: 'documentation', affix: true
+        },
+        hidden: false
       }
     ]
   },
