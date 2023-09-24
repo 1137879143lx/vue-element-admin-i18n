@@ -194,9 +194,9 @@ export const constantRoutes = [
         meta: { title: '生产报工', icon: 'documentation', affix: true }
       },
       {
-        path: 'index4',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'xialiaoliebiao',
+        component: () => import('@/views/shengchan/xialiaoliebiao/index'),
+        name: 'xialiaoliebiao',
         meta: { title: '下料列表', icon: 'documentation', affix: true }
       },
       {
