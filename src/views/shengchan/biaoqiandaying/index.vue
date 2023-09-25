@@ -65,7 +65,7 @@ export default {
   name: 'QrCode',
   data() {
     return {
-      Batch_number: 202309241838
+      Batch_number: '202309241838'
     }
   },
   // eslint-disable-next-line space-before-function-paren
@@ -82,9 +82,9 @@ export default {
         text: this.Batch_number,
         width: 70,
         height: 70,
-        colorDark: '#333333', // 二维码颜色
+        colorDark: '#000000', // 二维码颜色
         colorLight: '#ffffff', // 二维码背景色
-        correctLevel: QRCode.CorrectLevel.M // 容错率，L/M/H
+        correctLevel: QRCode.CorrectLevel.L // 容错率，L/M/H
       })
     },
     print() {
