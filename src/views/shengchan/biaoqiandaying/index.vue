@@ -98,16 +98,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-caption {
-  padding: 0px;
-  caption-side: bottom;
 }
 
 table {
