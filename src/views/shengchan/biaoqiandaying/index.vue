@@ -7,13 +7,6 @@
     <div class="center">
       <div id="print-content">
         <table>
-          <!-- <caption>202309241749</caption> -->
-          <thead>
-            <tr>
-              <!-- <th>Items</th> -->
-              <!-- <th scope="col">Expenditure</th> -->
-            </tr>
-          </thead>
           <tbody>
             <tr>
               <!-- <th scope="row">编号</th> -->
