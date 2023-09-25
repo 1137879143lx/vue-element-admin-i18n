@@ -4,9 +4,9 @@
       <span>标签打印</span>
       <el-button style="float: right; padding: 3px 0" type="text" @click="print">标签打印</el-button>
     </div>
-    <div id="printable-content">
+    <div>
       <div class="center">
-        <table>
+        <table id="print-content">
           <!-- <caption>202309241749</caption> -->
           <thead>
             <tr>
@@ -60,6 +60,7 @@
 
 <script>
 import QRCode from 'qrcodejs2'
+import printJS from 'print-js'
 export default {
   name: 'QrCode',
   data() {
@@ -87,21 +88,16 @@ export default {
       })
     },
     print() {
-      // 获取待打印的内容
-      const printableContent = document.getElementById('printable-content').innerHTML
-
-      // 创建一个新的窗口并加载打印内容
-      const printWindow = window.open('', '_blank')
-      printWindow.document.write(printableContent)
-
-      // 执行打印操作
-      printWindow.document.close()
-
-      // 如果内容中有图片或其他需要一定时间加载的，请使用注释中的延时打印
-      setTimeout(() => {
-        printWindow.print()
-      }, 200)
-      printWindow.print()
+      printJS({
+        printable: 'print-content', // 需要打印的元素的ID
+        type: 'html',
+        documentTitle: '打印内容',
+        // 继承样式
+        targetStyle: '*',
+        targetStyles: '*',
+        scanStyles: true,
+        css: '/path/to/style.css'
+      })
     }
   }
 }
@@ -121,17 +117,18 @@ caption {
 
 table {
   border-collapse: collapse;
-  border: 2px solid rgb(200, 200, 200);
+  border: 2px solid rgb(0, 0, 0);
   letter-spacing: 1px;
   font-family: sans-serif;
-  font-size: 0.5rem;
+  font-size: 0.3rem;
   width: 300px;
   height: 150px;
+  color: black;
 }
 
 td,
 th {
-  border: 1px solid rgb(190, 190, 190);
+  border: 1px solid rgb(0, 0, 0);
   /* padding: 5px 10px; */
 }
 
