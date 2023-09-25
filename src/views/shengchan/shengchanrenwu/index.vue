@@ -90,7 +90,7 @@
           <el-table-column min-width="350px" align="center" label="工序">
             <template slot-scope="{ row }">
               <span v-for="(item, id) in row.process" :key="id" style="margin-left: 3px">
-                <el-tooltip placement="top" open-delay="300">
+                <el-tooltip placement="top">
                   <div slot="content">
                     {{ item.submitter }}
                     <br />
@@ -125,7 +125,7 @@
       </div>
     </el-card>
 
-    <el-drawer size="mini" title="物料搜索" :visible.sync="drawer" :direction="direction" :before-close="handleClose">
+    <el-drawer size="mini" title="物料搜索" :visible.sync="drawer" :direction="direction">
       <el-form ref="form" :model="form" label-width="80px" size="mini">
         <el-form-item label="关键字">
           <el-input v-model="form.name" />
@@ -178,8 +178,8 @@
 export default {
   data() {
     return {
-      activeName: '1',
       drawer: false,
+      listLoading: '',
       form: {
         name: '',
         region: '',
