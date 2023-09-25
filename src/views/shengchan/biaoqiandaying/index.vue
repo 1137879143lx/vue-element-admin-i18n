@@ -4,9 +4,9 @@
       <span>标签打印</span>
       <el-button style="float: right; padding: 3px 0" type="text" @click="print">标签打印</el-button>
     </div>
-    <div>
-      <div class="center">
-        <table id="print-content">
+    <div class="center">
+      <div id="print-content">
+        <table>
           <!-- <caption>202309241749</caption> -->
           <thead>
             <tr>
@@ -96,7 +96,9 @@ export default {
         targetStyle: '*',
         targetStyles: '*',
         scanStyles: true,
-        css: '/path/to/style.css'
+        maxWidth: 1000,
+        font_size: 0.5,
+        honorMarginPadding: false
       })
     }
   }
@@ -111,7 +113,7 @@ export default {
 }
 
 caption {
-  padding: 2px;
+  padding: 0px;
   caption-side: bottom;
 }
 
@@ -120,7 +122,7 @@ table {
   border: 2px solid rgb(0, 0, 0);
   letter-spacing: 1px;
   font-family: sans-serif;
-  font-size: 0.3rem;
+  font-size: 0.5rem;
   width: 300px;
   height: 150px;
   color: black;
@@ -130,13 +132,12 @@ td,
 th {
   border: 1px solid rgb(0, 0, 0);
   /* padding: 5px 10px; */
+  font-size: 0.3rem;
 }
 
 td {
   text-align: center;
   align-items: center;
-}
-.el-card {
-  height: 95%;
+  font-size: 0.3rem;
 }
 </style>
