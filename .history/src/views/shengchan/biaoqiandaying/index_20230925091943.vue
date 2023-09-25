@@ -33,7 +33,7 @@
             <tr>
               <!-- <th scope="row">名称</th> -->
               <td>天穹篮球</td>
-              <td>15PCS</td>
+              <td>打样</td>
             </tr>
 
             <tr>

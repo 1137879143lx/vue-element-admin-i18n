@@ -23,7 +23,7 @@
             <tr>
               <!-- <th scope="row">项目</th> -->
               <td>天穹</td>
-              <td>打样</td>
+              <td />
             </tr>
             <tr>
               <!-- <th scope="row">编码</th> -->
@@ -33,7 +33,7 @@
             <tr>
               <!-- <th scope="row">名称</th> -->
               <td>天穹篮球</td>
-              <td>15PCS</td>
+              <td />
             </tr>
 
             <tr>
