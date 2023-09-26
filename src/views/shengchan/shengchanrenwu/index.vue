@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="card1">
+    <el-card class="full-screen-card">
       <div slot="header" class="clearfix">
         <span>生产任务</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
@@ -93,7 +93,7 @@
                 <el-tooltip placement="top">
                   <div slot="content">
                     {{ item.submitter }}
-                    <br />
+                    <br>
                     <span style="color: rgb(177, 172, 165)">{{ item.Submission_time }}</span>
                   </div>
                   <!-- 0是未加工 1是正在加工 2是加工完成 -->
@@ -123,6 +123,15 @@
         </el-table>
         <!-- $t is vue-i18n global function to translate lang (lang in @/lang)  -->
       </div>
+      <el-pagination
+        :current-page="currentPage4"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </el-card>
 
     <el-drawer size="mini" title="物料搜索" :visible.sync="drawer" :direction="direction">
@@ -180,6 +189,7 @@ export default {
     return {
       drawer: false,
       listLoading: '',
+      currentPage4: 4,
       form: {
         name: '',
         region: '',
@@ -545,6 +555,12 @@ export default {
     },
     xiangqing() {
       this.$router.push('/shengchan/renwuxiangqing')
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
     }
   }
 }
@@ -554,5 +570,15 @@ export default {
 .el-card__header {
   padding: 8px;
   padding-left: 20px;
+}
+.full-screen-card {
+  height: 91vh;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  flex: 1; /* 使 el-card 组件占据剩下的空间 */
+}
+.el-card__body {
+  padding: 5px;
 }
 </style>
