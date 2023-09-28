@@ -206,9 +206,9 @@ export const constantRoutes = [
         meta: { title: '工装管理', icon: 'documentation', affix: true }
       },
       {
-        path: 'index6',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'shenchanbuliao',
+        component: () => import('@/views/shengchan/shenchanbuliao/index'),
+        name: 'shenchanbuliao',
         meta: { title: '生产补料', icon: 'documentation', affix: true }
       },
       {
@@ -216,21 +216,26 @@ export const constantRoutes = [
         component: () => import('@/views/documentation/index'),
         name: 'caigou',
         meta: { title: '统计报表', icon: 'documentation', affix: true }
-
-      }, {
+      },
+      {
         path: 'renwuxiangqing',
         component: () => import('@/views/shengchan/shengchanxiangqing/index'),
         name: 'renwuxiangqing',
         meta: {
-          title: '任务详情', icon: 'documentation', affix: true
+          title: '任务详情',
+          icon: 'documentation',
+          affix: true
         },
         hidden: true
-      }, {
+      },
+      {
         path: 'biaoqiandaying',
         component: () => import('@/views/shengchan/biaoqiandaying/index'),
         name: 'biaoqiandaying',
         meta: {
-          title: '标签打印', icon: 'documentation', affix: true
+          title: '标签打印',
+          icon: 'documentation',
+          affix: true
         },
         hidden: false
       }

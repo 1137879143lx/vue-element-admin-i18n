@@ -19,7 +19,7 @@
       <!-- 表格 -->
       <div>
         <!-- Note that row-key is necessary to get a correct row order. -->
-        <el-table ref="dragTable" v-loading="listLoading" size="mini" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
+        <el-table ref="dragTable" v-loading="listLoading" highlight-current-row size="mini" :data="list" row-key="id" border fit style="width: 100%">
           <el-table-column type="selection" width="40" />
           <el-table-column align="center" label="订单号" min-width="90">
             <template slot-scope="{ row }">

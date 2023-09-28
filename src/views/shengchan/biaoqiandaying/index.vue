@@ -11,7 +11,7 @@
             <tr>
               <!-- <th scope="row">编号</th> -->
               <td>202309241749</td>
-              <td>南天门研发所</td>
+              <td>南天门研发</td>
             </tr>
             <tr>
               <!-- <th scope="row">项目</th> -->
@@ -91,7 +91,7 @@ export default {
         scanStyles: true,
         maxWidth: 1000,
         font_size: 0.5,
-        honorMarginPadding: false
+        honorMarginPadding: true
       })
     }
   }
@@ -103,6 +103,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  margin: 0;
 }
 
 table {
@@ -110,22 +112,28 @@ table {
   border: 2px solid rgb(0, 0, 0);
   letter-spacing: 1px;
   font-family: sans-serif;
-  font-size: 0.5rem;
-  width: 300px;
-  height: 150px;
+  font-size: 0.2rem;
+  width: 70mm;
+  height: 40mm;
   color: black;
+  padding: 0;
+  margin: 0;
 }
 
 td,
 th {
   border: 1px solid rgb(0, 0, 0);
   /* padding: 5px 10px; */
-  font-size: 0.3rem;
+  font-size: 0.2rem;
+  padding: 0;
+  margin: 0;
 }
 
 td {
   text-align: center;
   align-items: center;
-  font-size: 0.3rem;
+  font-size: 0.2rem;
+  padding: 0;
+  margin: 0;
 }
 </style>
