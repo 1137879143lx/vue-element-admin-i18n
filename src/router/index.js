@@ -108,15 +108,15 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
+        path: 'caigoushenqing',
+        component: () => import('@/views/caigou/caigoushenqing/index'),
         name: 'caigoushenqing',
         meta: { title: '采购申请', icon: 'documentation', affix: true }
       },
       {
-        path: 'index2',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'caigoudingdan',
+        component: () => import('@/views/caigou/caigoushenqing/index'),
+        name: 'caigoudingdan',
         meta: { title: '采购订单', icon: 'documentation', affix: true }
       },
       {

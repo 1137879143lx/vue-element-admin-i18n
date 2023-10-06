@@ -19,7 +19,7 @@
       <!-- 表格 -->
       <div>
         <!-- Note that row-key is necessary to get a correct row order. -->
-        <el-table ref="dragTable" v-loading="listLoading" highlight-current-row size="mini" :data="list" row-key="id" border fit style="width: 100%">
+        <el-table ref="dragTable" v-loading="listLoading" highlight-current-row size="mini" :data="list" row-key="id" fit style="width: 100%">
           <el-table-column type="selection" width="40" />
           <el-table-column align="center" label="订单号" min-width="90">
             <template slot-scope="{ row }">
@@ -93,7 +93,7 @@
                 <el-tooltip placement="top">
                   <div slot="content">
                     {{ item.submitter }}
-                    <br>
+                    <br />
                     <span style="color: rgb(177, 172, 165)">{{ item.Submission_time }}</span>
                   </div>
                   <!-- 0是未加工 1是正在加工 2是加工完成 -->
@@ -130,8 +130,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
         @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+        @current-change="handleCurrentChange" />
     </el-card>
 
     <el-drawer size="mini" title="物料搜索" :visible.sync="drawer" :direction="direction">
@@ -566,7 +565,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .el-card__header {
   padding: 8px;
   padding-left: 20px;
