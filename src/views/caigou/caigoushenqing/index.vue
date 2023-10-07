@@ -17,6 +17,7 @@
         <el-table-column type="selection" />
         <el-table-column property="id" label="申请订单" />
         <el-table-column property="proposer" label="申请人" />
+        <el-table-column property="section" label="部门" />
         <el-table-column property="Application_date" label="申请日期" />
 
         <el-table-column property="items" label="物料列表">
@@ -54,6 +55,8 @@ export default {
         {
           id: 20230001,
           proposer: '刘旭',
+          section: '编程组',
+
           status: '待审批',
           Application_date: '2023-10-6',
           items: '物料列表',
@@ -65,6 +68,7 @@ export default {
         {
           id: 20230002,
           proposer: '刘旭',
+          section: '编程组',
           status: '待审批',
           items: '物料列表',
           Application_date: '2023-10-6',
