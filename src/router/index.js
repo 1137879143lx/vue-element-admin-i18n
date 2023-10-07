@@ -114,6 +114,13 @@ export const constantRoutes = [
         meta: { title: '采购申请', icon: 'documentation', affix: true }
       },
       {
+        path: 'caigoushenqing_xinzeng',
+        component: () => import('@/views/caigou/caigoushenqing_xinzeng/index'),
+        name: 'caigoushenqing_xinzeng',
+        meta: { title: '采购申请 新增', icon: 'documentation', affix: true },
+        hidden: true
+      },
+      {
         path: 'caigoudingdan',
         component: () => import('@/views/caigou/caigoushenqing/index'),
         name: 'caigoudingdan',

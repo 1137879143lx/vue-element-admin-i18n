@@ -6,7 +6,7 @@
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
         <el-button style="margin-left: 5px" size="mini" icon="el-icon-refresh" circle />
         <span style="float: right; padding: 3px 20px">
-          <el-button type="text">新增</el-button>
+          <el-button type="text" @click="$router.push('../caigou/caigoushenqing_xinzeng')">新增</el-button>
           <el-button type="text">删除</el-button>
           <el-button type="text">导出数据</el-button>
           <el-button type="text">已删除数据</el-button>
@@ -56,7 +56,6 @@ export default {
           id: 20230001,
           proposer: '刘旭',
           section: '编程组',
-
           status: '待审批',
           Application_date: '2023-10-6',
           items: '物料列表',
