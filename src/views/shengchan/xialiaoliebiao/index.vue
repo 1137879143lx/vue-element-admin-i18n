@@ -15,27 +15,13 @@
       <div>
         <!-- Note that row-key is necessary to get a correct row order. -->
         <el-table ref="dragTable" v-loading="listLoading" size="mini" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
-          <el-table-column type="selection" width="40" />
+          <el-table-column type="index" width="40" />
+          <el-table-column type="selection" width="45" />
           <el-table-column align="center" label="订单号" min-width="90">
             <template slot-scope="{ row }">
               <i class="el-icon-warning-outline" />
               <el-button size="mini" type="text" @click="xiangqing">{{ row.Batch_number }}</el-button>
               <!-- <span>{{ row.Batch_number }}</span> -->
-            </template>
-          </el-table-column>
-          <el-table-column min-width="100px" align="center" label="客户">
-            <template slot-scope="{ row }">
-              <i class="el-icon-s-custom" />
-
-              <span>{{ row.client }}</span>
-              <!-- <span>{{ row.porject | parseTime('{y}-{m}-{d} {h}:{i}') }}</span> -->
-            </template>
-          </el-table-column>
-          <el-table-column min-width="70px" align="center" label="项目">
-            <template slot-scope="{ row }">
-              <i class="el-icon-s-data" />
-              <span>{{ row.porject }}</span>
-              <!-- <span>{{ row.porject | parseTime('{y}-{m}-{d} {h}:{i}') }}</span> -->
             </template>
           </el-table-column>
 
@@ -59,59 +45,57 @@
               <span>{{ row.versions }}</span>
             </template>
           </el-table-column>
-          <el-table-column width="50px" align="center" label="数量">
+
+          <!-- <el-table-column align="center" label="零件数量">
             <template slot-scope="{ row }">
               <span>{{ row.count }}</span>
             </template>
-          </el-table-column>
-          <el-table-column min-width="80px" align="center" label="材质">
+          </el-table-column> -->
+          <el-table-column align="center" label="下料名称">
             <template slot-scope="{ row }">
               <!-- <i class="el-icon-receiving" /> -->
-              <span>{{ row.material }}</span>
+              {{ row.material }}
+            </template>
+          </el-table-column>
+          <el-table-column width="70px" align="center" label="下料数量">
+            <template slot-scope="{ row }">
+              {{ row.count }}
             </template>
           </el-table-column>
           <el-table-column min-width="120px" align="center" label="下料尺寸">
-            <template slot-scope="{ row }">{{ row.Cutting_size }}</template>
+            <template slot-scope="{ row }">
+              <!-- <el-tag v-if="row.Cutting_size" type="success" effect="plain "></el-tag> -->
+              {{ row.Cutting_size }}
+            </template>
+          </el-table-column>
+          <el-table-column width="75px" align="center" label="理论用量">
+            <template slot-scope="{ row }">
+              {{ row.Theoretical_dosage }}
+            </template>
+          </el-table-column>
+          <el-table-column width="75px" align="center" label="实际用量">
+            <template slot-scope="{ row }">
+              {{ row.Actual_dosage }}
+            </template>
           </el-table-column>
           <el-table-column min-width="100px" align="center" label="客户交期">
             <template slot-scope="{ row }">
-              <i class="el-icon-time" />
               <el-tag type="warning" size="mini" effect="plain ">{{ row.Delivery_time }}</el-tag>
             </template>
           </el-table-column>
 
-          <!-- g工序 -->
-          <el-table-column min-width="350px" align="center" label="工序">
-            <template slot-scope="{ row }">
-              <span v-for="(item, id) in row.process" :key="id" style="margin-left: 3px">
-                <el-tooltip placement="top" open-delay="300">
-                  <div slot="content">
-                    {{ item.submitter }}
-                    <br />
-                    <span style="color: rgb(177, 172, 165)">{{ item.Submission_time }}</span>
-                  </div>
-                  <!-- 0是未加工 1是正在加工 2是加工完成 -->
-                  <el-tag v-if="item.status == 2" type="success" size="mini" effect="dark ">{{ item.process }}|{{ item.man_hour }}H</el-tag>
-                  <el-tag v-else-if="item.status == 1" type="warning" size="mini" effect="light  ">{{ item.process }}|{{ item.man_hour }}H</el-tag>
-                  <el-tag v-else type="info" size="mini" effect="plain">{{ item.process }}|{{ item.man_hour }}H</el-tag>
-                </el-tooltip>
-              </span>
-
-              <!-- <el-tag v-for="(item, i) in row.process" :key="i" type="info" size="mini" effect="plain">{{ item.process }}</el-tag> -->
-            </template>
-          </el-table-column>
-
           <!-- <el-table-column width="50px" align="center" label="工时" prop="man_hour" /> -->
+
           <el-table-column width="120" align="center" label="编辑">
             <template slot-scope="{ row }">
               <el-tooltip placement="top" open-delay="500">
                 <div slot="content">
                   {{ row.process[0].Submission_time }}
-                  <br />
+                  <br>
                   {{ row.process[0].submitter }}
                 </div>
-                <el-button v-if="row.process[0].status == 0" type="primary" @click="centerDialogVisible = true">下料</el-button>
-                <el-button v-else disabled type="info ">已下料</el-button>
+                <el-button v-if="row.process[0].status == 0" type="primary" size="mini" @click="centerDialogVisible = true">下料</el-button>
+                <el-button v-else disabled type="info " size="mini">已下料</el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -187,8 +171,8 @@
           <el-input v-model="formInline.user" placeholder="长度" />
         </el-form-item>
         <span>重量与长度二选一填写即可</span>
-        <br />
-        <br />
+        <br>
+        <br>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="onSubmit2">确 定</el-button>
@@ -235,6 +219,8 @@ export default {
           Cutting_size: '100*100*25',
           client: '南天门研发所',
           material: 'AL6061',
+          Theoretical_dosage: 0.25,
+          Actual_dosage: 0.23,
           process: [
             {
               id: 1,
