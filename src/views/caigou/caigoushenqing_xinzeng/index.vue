@@ -2,34 +2,34 @@
   <div>
     <el-card shadow="never">
       <template slot="header">
-        <span>采购申请 详情</span>
-        <el-button style="float: right; margin-left: 5px" size="mini" type="primary ">保存并提交</el-button>
-        <el-button style="float: right; margin-left: 5px" size="mini" type="primary ">保存</el-button>
+        <span>采购申请 新增</span>
+        <el-button style="float: right; margin-left: 5px" size="mini" type="link ">保存并提交</el-button>
+        <el-button style="float: right; margin-left: 5px" size="mini" type="link ">保存</el-button>
       </template>
       <el-row gutter="5">
-        <el-col :span="6">
+        <el-col :span="3">
           <el-input>
             <template slot="prepend">*提交人</template>
           </el-input>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="3">
           <el-input>
             <template slot="prepend">部门</template>
           </el-input>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="3">
           <el-select v-model="select" placeholder="紧急程度" clearable>
             <el-option value="一般" />
             <el-option value="紧急" />
           </el-select>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="3">
           <el-date-picker v-model="value2" align="right" type="date" placeholder="*计划交期" :picker-options="pickerOptions" />
         </el-col>
       </el-row>
     </el-card>
     <!-- <el-divider /> -->
-    <br />
+    <br>
 
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
@@ -51,7 +51,8 @@
           pageSize: pageSize,
           page: page
         }"
-        @change="changePage">
+        @change="changePage"
+      >
         <el-table-column type="index" width="60" align="center" />
         <el-table-column type="selection" width="60" align="center" />
         <el-table-column label="物料编码">
@@ -106,7 +107,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <br />
+    <br>
     <el-card>
       <template slot="header">备注</template>
       <el-input v-model="Remarks" rows="2" type="textarea" placeholder="请输入备注" />
@@ -119,7 +120,7 @@
           将文件拖到此处，或
           <em>点击上传</em>
         </div>
-        <div slot="tip" class="el-upload__tip">只能上传ZIP压缩文件或文件夹形式</div>
+        <div slot="tip" class="el-upload__tip">只能上传ZIP压缩文件或单个文件夹形式</div>
       </el-upload>
     </el-card>
   </div>
