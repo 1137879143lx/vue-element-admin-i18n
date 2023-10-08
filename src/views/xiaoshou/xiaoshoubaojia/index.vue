@@ -16,30 +16,37 @@
       <el-table stripe :data="List" size="mini">
         <el-table-column type="index" />
         <el-table-column type="selection" />
-        <el-table-column property="id" label="申请订单" />
-        <el-table-column property="proposer" label="客户" />
-        <el-table-column property="Application_date" label="报价日期" />
-
-        <el-table-column property="items" label="物料列表">
+        <el-table-column property="id" label="订单编号">
           <template slot-scope="{ row }">
-            <span>{{ row.author }}</span>
-            <el-button type="text">详情</el-button>
+            <el-button size="mini" type="text">{{ row.id }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column property="deliveryDate" label="期望交货日期" />
-        <el-table-column property="remarks" label="申请备注" />
+        <el-table-column property="proposer" label="客户" />
+        <el-table-column property="Application_date" label="订单日期" />
+
+        <el-table-column property="items" label="物料信息">
+          <template slot-scope="{}">
+            <el-button size="mini" type="text">详情</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column property="deliveryDate" label="交货日期" />
+        <el-table-column property="remarks" label="备注" />
         <el-table-column label="状态">
           <template slot-scope="{ row }">
-            <el-tag type="info" size="mini" effect="plain  ">{{ row.status }}</el-tag>
+            <el-tag v-if="row.status == '待报价'" type="info" size="mini" effect="plain">{{ row.status }}</el-tag>
+            <el-tag v-else-if="row.status == '已报价,待客户确认'" type="warning" size="mini" effect="dark">{{ row.status }}</el-tag>
+            <el-tag v-else-if="row.status == '客户驳回,请重新报价'" type="danger" size="mini" effect="dark">{{ row.status }}</el-tag>
+            <el-tag v-else type="success" size="mini" effect="dark">{{ row.status }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="approval" label="审核" />
+        <!-- <el-table-column property="approval" label="审核" /> -->
 
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
             <span>{{ row.author }}</span>
-            <el-button type="text">编辑</el-button>
-            <el-button type="text">报价</el-button>
+            <el-button v-if="row.status == '客户已确认'" size="mini" type="text">查看合同</el-button>
+            <el-button v-else-if="row.status == '已报价,待客户确认'" size="mini" disabled type="text">报价</el-button>
+            <el-button v-else size="mini" type="text">报价</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -54,7 +61,7 @@ export default {
       List: [
         {
           id: 20230001,
-          proposer: '刘旭',
+          proposer: '南天门研发所',
           section: '编程组',
           status: '待报价',
           Application_date: '2023-10-6',
@@ -62,20 +69,46 @@ export default {
           totalEstimatedPrice: 100,
           approval: '刘旭',
           deliveryDate: '2023-10-06',
-          remarks: '用于焊接PCB板子'
+          remarks: '紧急物料,请及时安排加工'
         },
         {
           id: 20230002,
-          proposer: '刘旭',
+          proposer: '南天门研发所',
           section: '编程组',
-          status: '待报价',
+          status: '已报价,待客户确认',
           items: '物料列表',
           Application_date: '2023-10-6',
 
           totalEstimatedPrice: 100,
           approval: '刘旭',
           deliveryDate: '2023-10-06',
-          remarks: '用于焊接PCB板子'
+          remarks: '遇到问题,及时联系'
+        },
+        {
+          id: 20230002,
+          proposer: '天安事务所',
+          section: '编程组',
+          status: '客户已确认',
+          items: '物料列表',
+          Application_date: '2023-10-6',
+
+          totalEstimatedPrice: 100,
+          approval: '刘旭',
+          deliveryDate: '2023-10-06',
+          remarks: '分批发货'
+        },
+        {
+          id: 20230002,
+          proposer: '南天门研发所',
+          section: '编程组',
+          status: '客户驳回,请重新报价',
+          items: '物料列表',
+          Application_date: '2023-10-6',
+
+          totalEstimatedPrice: 100,
+          approval: '刘旭',
+          deliveryDate: '2023-10-06',
+          remarks: '紧急物料,请及时安排加工'
         }
       ]
     }

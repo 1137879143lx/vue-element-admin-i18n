@@ -13,35 +13,34 @@
         </span>
       </div>
 
-      <el-table stripe :data="List" size="mini">
+      <el-table border :data="List" size="mini">
         <el-table-column type="index" />
         <el-table-column type="selection" />
-        <el-table-column property="id" label="申请订单" />
-
-        <el-table-column property="proposer" label="申请人" />
-        <el-table-column property="section" label="部门" />
-        <el-table-column property="Application_date" label="申请日期" />
-
-        <el-table-column property="items" label="物料列表">
+        <el-table-column label="客户编号">
           <template slot-scope="{ row }">
-            <span>{{ row.author }}</span>
-            <el-button type="text">详情</el-button>
+            <i class="el-icon-office-building" />
+            <el-button type="text" size="mini">{{ row.Customer_number }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column property="totalEstimatedPrice" label="预估价格" />
-        <el-table-column property="deliveryDate" label="期望交货日期" />
-        <el-table-column property="remarks" label="申请备注" />
-        <el-table-column label="申请状态">
+
+        <el-table-column property="Short_name" label="简称" />
+        <el-table-column property="Full_name" label="全称" />
+        <el-table-column property="Tax_rate" label="税率%" align="right">
+          <template slot-scope="{ row }">{{ row.Tax_rate }}%</template>
+        </el-table-column>
+        <el-table-column property="Currency" label="货币" />
+        <el-table-column property="Contact_Person" label="联系人">
           <template slot-scope="{ row }">
-            <el-tag type="info" size="mini" effect="plain  ">{{ row.status }}</el-tag>
+            {{ row.Contact_Person }}
+            <el-link :underline="false">{{ row.Telephone }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column property="approval" label="批准" />
-
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
             <span>{{ row.author }}</span>
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" size="mini">编辑</el-button>
+            |
+            <el-button type="text" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,28 +55,33 @@ export default {
       List: [
         {
           id: 20230001,
-          proposer: '刘旭',
-          section: '编程组',
-          status: '待审批',
-          Application_date: '2023-10-6',
-          items: '物料列表',
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '用于焊接PCB板子'
+          Customer_number: '天庭南天门',
+          Short_name: 'NTM',
+          Full_name: '天庭市南天门科技有限公司',
+          Tax_rate: '13',
+          Currency: 'RMB',
+          Contact_Person: '刘旭',
+          Telephone: 18502351874
         },
         {
           id: 20230002,
-          proposer: '刘旭',
-          section: '编程组',
-          status: '待审批',
-          items: '物料列表',
-          Application_date: '2023-10-6',
-
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '用于焊接PCB板子'
+          Customer_number: '天庭南天门',
+          Short_name: 'NTM',
+          Full_name: '天庭市南天门科技有限公司',
+          Tax_rate: '13',
+          Currency: 'RMB',
+          Contact_Person: '刘旭',
+          Telephone: 18502351874
+        },
+        {
+          id: 20230002,
+          Customer_number: '天安事务所',
+          Short_name: 'NTM',
+          Full_name: '天庭市南天门科技有限公司',
+          Tax_rate: '13',
+          Currency: 'RMB',
+          Contact_Person: '刘旭',
+          Telephone: 18502351874
         }
       ]
     }
