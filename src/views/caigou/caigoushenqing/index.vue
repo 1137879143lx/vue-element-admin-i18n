@@ -14,6 +14,7 @@
       </div>
 
       <el-table stripe :data="List" size="mini">
+        <el-table-column type="index" />
         <el-table-column type="selection" />
         <el-table-column property="id" label="申请订单" />
         <el-table-column property="proposer" label="申请人" />
