@@ -96,6 +96,38 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/xiaoshou',
+    component: Layout,
+    redirect: '/permission/page',
+    alwaysShow: true, // will always show the root menu
+    name: 'xiaoshou',
+    meta: {
+      title: '销售',
+      icon: 'el-icon-s-flag',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'xiaoshoubaojia',
+        component: () => import('@/views/xiaoshou/xiaoshoubaojia/index'),
+        name: 'xiaoshoubaojia',
+        meta: { title: '销售报价', icon: 'documentation', affix: true }
+      },
+      {
+        path: 'xiaoshoudingdan',
+        component: () => import('@/views/xiaoshou/xiaoshoudingdan/index'),
+        name: 'xiaoshoudingdan',
+        meta: { title: '销售订单', icon: 'documentation', affix: true }
+      },
+      {
+        path: 'kehu',
+        component: () => import('@/views/xiaoshou/kehu/index'),
+        name: 'kehu',
+        meta: { title: '客户', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
     path: '/caigou',
     component: Layout,
     redirect: '/permission/page',
