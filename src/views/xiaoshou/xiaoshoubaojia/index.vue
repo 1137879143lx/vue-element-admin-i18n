@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-card header="采购申请">
+    <el-card>
       <div slot="header" class="clearfix">
-        <span>采购申请</span>
+        <span>销售报价</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
         <el-button style="margin-left: 5px" size="mini" icon="el-icon-refresh" circle />
         <span style="float: right; padding: 3px 20px">
@@ -17,9 +17,8 @@
         <el-table-column type="index" />
         <el-table-column type="selection" />
         <el-table-column property="id" label="申请订单" />
-        <el-table-column property="proposer" label="申请人" />
-        <el-table-column property="section" label="部门" />
-        <el-table-column property="Application_date" label="申请日期" />
+        <el-table-column property="proposer" label="客户" />
+        <el-table-column property="Application_date" label="报价日期" />
 
         <el-table-column property="items" label="物料列表">
           <template slot-scope="{ row }">
@@ -27,20 +26,20 @@
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
-        <el-table-column property="totalEstimatedPrice" label="预估价格" />
         <el-table-column property="deliveryDate" label="期望交货日期" />
         <el-table-column property="remarks" label="申请备注" />
-        <el-table-column label="申请状态">
+        <el-table-column label="状态">
           <template slot-scope="{ row }">
             <el-tag type="info" size="mini" effect="plain  ">{{ row.status }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="approval" label="批准" />
+        <el-table-column property="approval" label="审核" />
 
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
             <span>{{ row.author }}</span>
             <el-button type="text">编辑</el-button>
+            <el-button type="text">报价</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -57,7 +56,7 @@ export default {
           id: 20230001,
           proposer: '刘旭',
           section: '编程组',
-          status: '待审批',
+          status: '待报价',
           Application_date: '2023-10-6',
           items: '物料列表',
           totalEstimatedPrice: 100,
@@ -69,7 +68,7 @@ export default {
           id: 20230002,
           proposer: '刘旭',
           section: '编程组',
-          status: '待审批',
+          status: '待报价',
           items: '物料列表',
           Application_date: '2023-10-6',
 

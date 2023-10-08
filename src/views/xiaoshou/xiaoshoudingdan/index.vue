@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-card header="采购申请">
+    <el-card>
       <div slot="header" class="clearfix">
-        <span>采购申请</span>
+        <span>销售订单</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
         <el-button style="margin-left: 5px" size="mini" icon="el-icon-refresh" circle />
         <span style="float: right; padding: 3px 20px">
