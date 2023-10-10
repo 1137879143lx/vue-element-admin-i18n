@@ -1,27 +1,15 @@
 <template>
   <div>
     <el-card shadow="never">
-      <el-row gutter="5">
-        <el-col :span="4">
-          <el-input value="202310101709">
-            <template slot="prepend">订单号</template>
-          </el-input>
-        </el-col>
-        <el-col :span="3">
-          <el-input disabled value="天庭">
-            <template slot="prepend">客户</template>
-          </el-input>
-        </el-col>
-        <el-col :span="3">
-          <el-date-picker v-model="value2" align="right" type="date" placeholder="*预计交期" :picker-options="pickerOptions" />
-        </el-col>
-        <el-col push="5" :span="3">
-          <el-button style="margin-left: 5px" size="mini" type="link ">保存并提交</el-button>
-          <el-button style="margin-left: 5px" size="mini" type="link ">保存</el-button>
-        </el-col>
-      </el-row>
+      <el-button style="float: right; margin-left: 5px" size="mini" type="link ">保存并提交</el-button>
+      <el-button style="float: right; margin-left: 5px" size="mini" type="link ">保存</el-button>
+      <el-descriptions title="报价详情">
+        <el-descriptions-item label="订单号">202310101755</el-descriptions-item>
+        <el-descriptions-item label="客户">天庭</el-descriptions-item>
+        <el-descriptions-item label="交货日期">2023-10-15</el-descriptions-item>
+        <el-descriptions-item label="收货">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+      </el-descriptions>
     </el-card>
-    <!-- <el-divider /> -->
 
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
