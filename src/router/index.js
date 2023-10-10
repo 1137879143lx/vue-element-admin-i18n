@@ -124,6 +124,13 @@ export const constantRoutes = [
         component: () => import('@/views/xiaoshou/kehu/index'),
         name: 'kehu',
         meta: { title: '客户', icon: 'documentation', affix: true }
+      },
+      {
+        path: 'baojiaxiangqing',
+        component: () => import('@/views/xiaoshou/baojiaxiangqing/index'),
+        name: 'baojiaxiangqing',
+        meta: { title: '报价详情', icon: 'documentation', affix: true },
+        hidden: true
       }
     ]
   },

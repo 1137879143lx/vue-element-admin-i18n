@@ -18,7 +18,7 @@
         <el-table-column type="selection" />
         <el-table-column property="id" label="订单编号">
           <template slot-scope="{ row }">
-            <el-button size="mini" type="text">{{ row.id }}</el-button>
+            <el-button size="mini" type="text" @click="$router.push('../xiaoshou/baojiaxiangqing')">{{ row.id }}</el-button>
           </template>
         </el-table-column>
         <el-table-column property="proposer" label="客户" />
@@ -29,7 +29,7 @@
             <el-button size="mini" type="text">详情</el-button>
           </template>
         </el-table-column>
-        <el-table-column property="deliveryDate" label="交货日期" />
+        <el-table-column property="deliveryDate" label="期望交期" />
         <el-table-column property="remarks" label="备注" />
         <el-table-column label="状态">
           <template slot-scope="{ row }">
@@ -40,6 +40,7 @@
           </template>
         </el-table-column>
         <!-- <el-table-column property="approval" label="审核" /> -->
+        <el-table-column property="deliveryDate" label="确认交期" />
 
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
