@@ -89,4 +89,4 @@ if __name__ == "__main__":
     # 输出JSON格式的结果
     print(json.dumps(results, indent=4))
     # 如果你希望视窗保持打开状态，可以使用下面的方法
-    start_display()
+    # start_display()

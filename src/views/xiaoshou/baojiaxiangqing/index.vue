@@ -69,17 +69,29 @@
             <el-input v-model="scope.row.Description" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column width="260" label="加工工序(单件)">
+        <el-table-column width="260" label="加工工序">
           <template slot-scope="">
             <el-button size="mini" type="text">下料0.1+CNC1.2+后处理0.05+黑色阳极</el-button>
           </template>
         </el-table-column>
-        <el-table-column width="120" label="编程工艺费">
+        <el-table-column width="120" label="编程工艺费(￥)">
           <template slot-scope="scope">
             <el-input v-model="scope.row.Description" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column min-width="120" label="材料费">
+        <el-table-column width="120" label="紧急程度">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.Degree_of_urgency" size="mini" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column width="120" label="额外刀具费(￥)">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120" label="材料费(￥)">
           <template slot-scope="scope">
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
@@ -104,28 +116,48 @@
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column min-width="150" label="表面处理费">
+        <el-table-column min-width="150" label="表面处理费(￥)">
           <template slot-scope="scope">
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="120" label="加工工时">
+        <el-table-column width="120" label="加工工时h">
           <template slot-scope="scope">
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="预估单价">
+        <el-table-column width="120" label="包装检验费5%(￥)">
           <template slot-scope="scope">
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="预估总价">
+        <el-table-column width="120" label="快递费(￥)">
           <template slot-scope="scope">
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column width="300" label="回复交期">
+        <el-table-column width="120" label="管理费5%(￥)">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column width="120" label="利润10%(￥)">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column width="120" label="单价含税13%(￥)">
+          <template slot-scope="scope">
+            <el-tag size="mini" effect="dark" type="success">{{ scope.row.Estimated_unit_price }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column width="120" label="总价含税13%(￥)">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column width="250" label="回复交期">
           <template slot-scope="scope">
             <el-date-picker
               v-model="scope.row.Return_delivery_time"
@@ -136,6 +168,12 @@
               :picker-options="pickerOptions"
             />
           </template>
+        </el-table-column>
+        <el-table-column width="100" label="图片3D">
+          <img width="40" src="../../../../public/shape_image.png" alt="未上传">
+        </el-table-column>
+        <el-table-column width="100" label="图片2D">
+          <img width="40" src="../../../../public/shape_image.png" alt="未上传">
         </el-table-column>
         <el-table-column label="操作" width="120" fixed="right">
           <template slot-scope="scope">
@@ -152,7 +190,23 @@ export default {
   data() {
     return {
       Return_delivery_time: '',
-
+      options: [
+        {
+          value: '1',
+          label: '一般',
+          multiplication: 1
+        },
+        {
+          value: '1.25',
+          label: '紧急1.25',
+          multiplication: 1.25
+        },
+        {
+          value: '1.5',
+          label: '特急1.5',
+          multiplication: 1.5
+        }
+      ],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now()
@@ -195,7 +249,7 @@ export default {
       data: [
         {
           id: 0,
-          ParentComponentNo: '02-62-55-66-00',
+          ParentComponentNo: '02-62-0097-66-00',
           PartName: '生锈的手术刀',
           Version: '02',
           Description: '--',
@@ -204,7 +258,8 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+          Degree_of_urgency: '一般'
         },
         {
           id: 1,
@@ -217,7 +272,8 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+          Degree_of_urgency: '一般'
         },
         {
           id: 2,
@@ -230,7 +286,9 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+
+          Degree_of_urgency: '一般'
         },
         {
           id: 3,
@@ -243,7 +301,9 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+
+          Degree_of_urgency: '一般'
         },
         {
           id: 4,
@@ -256,7 +316,9 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+
+          Degree_of_urgency: '一般'
         },
         {
           id: 5,
@@ -269,7 +331,9 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+
+          Degree_of_urgency: '一般'
         },
         {
           id: 6,
@@ -282,7 +346,9 @@ export default {
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
-          Return_delivery_time: ''
+          Return_delivery_time: '2023-10-15',
+
+          Degree_of_urgency: '一般'
         }
       ]
     }
