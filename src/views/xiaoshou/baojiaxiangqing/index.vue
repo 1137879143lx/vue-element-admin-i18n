@@ -20,16 +20,19 @@
         <span>物料信息</span>
         <el-button style="float: right" size="mini" type="link">删除</el-button>
         <el-button style="float: right" size="mini" type="link">导入</el-button>
+        <el-button style="float: right" size="mini" type="link">导出下料表</el-button>
+        <el-button style="float: right" size="mini" type="link">导出报价表</el-button>
       </div>
+
       <el-table size="mini" :data="data" :scroll="{ x: 1200 }" :loading="loading" bordered height="500" row-key="id">
-        <el-table-column type="index" width="60" align="center" />
-        <el-table-column type="selection" width="60" align="center" />
-        <el-table-column label="物料编码">
+        <el-table-column fixed type="index" width="60" align="center" />
+        <el-table-column fixed type="selection" width="60" align="center" />
+        <el-table-column fixed min-width="120" label="物料编码">
           <template slot-scope="scope">
             <span>{{ scope.row.ParentComponentNo }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="物料名称">
+        <el-table-column fixed min-width="120" label="物料名称">
           <template slot-scope="scope">
             <span>{{ scope.row.PartName }}</span>
           </template>
@@ -39,29 +42,64 @@
             <span>{{ scope.row.Version }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="描述">
-          <template slot-scope="scope">
-            <span>{{ scope.row.Description }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="单位">
-          <template slot-scope="scope">
-            <span>{{ scope.row.unit }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
             <span>{{ scope.row.quantity }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="备注">
+        <el-table-column min-width="180" label="材料">
           <template slot-scope="scope">
-            <span>{{ scope.row.Remarks }}</span>
+            <el-input v-model="scope.row.Description" size="mini" clearable />
           </template>
         </el-table-column>
-        <el-table-column label="推荐供应商">
+        <el-table-column min-width="180" label="表面处理">
           <template slot-scope="scope">
-            <span>{{ scope.row.Recommended_suppliers }}</span>
+            <el-input v-model="scope.row.Description" size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="180" label="下料尺寸">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120" label="材料费">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120" label="表面积">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="100" label="毛坯重量(g)">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="100" label="净重量(g)">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column min-width="100" label="表面处理费">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column width="260" label="加工工序(单件)">
+          <template slot-scope="">
+            <el-button size="mini" type="text">下料0.1+CNC1.2+后处理0.05+黑色阳极</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="编程工艺费">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" size="mini" clearable />
+          </template>
+        </el-table-column>
+        <el-table-column label="加工工时">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
           </template>
         </el-table-column>
         <el-table-column label="预估单价">
@@ -69,8 +107,25 @@
             <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" fixed="right">
+        <el-table-column label="预估总价">
           <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column width="300" label="回复交期">
+          <template slot-scope="scope">
+            <el-date-picker
+              v-model="Return_delivery_time"
+              size="mini"
+              align="left"
+              type="date"
+              placeholder="选择日期"
+              :picker-options="pickerOptions" />
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120" fixed="right">
+          <template slot-scope="scope">
+            <el-button icon="el-icon-upload2" size="mini" @click="toDo(scope.row)" />
             <el-button icon="el-icon-delete" size="mini" @click="toDo(scope.row)" />
           </template>
         </el-table-column>
@@ -82,6 +137,8 @@
 export default {
   data() {
     return {
+      Return_delivery_time: '',
+
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now()
@@ -208,6 +265,9 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    // ProductService.getProductsMini().then((data) => (this.products = data))
   },
   methods: {
     changePage() {}
