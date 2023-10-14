@@ -5,6 +5,7 @@ from OCC.Core.BRepGProp import brepgprop_SurfaceProperties, brepgprop_VolumeProp
 from OCC.Core.GProp import GProp_GProps
 import json
 
+
 def read_shape_from_stp(stp_filename):
     """Read shape from STP file."""
     step_reader = STEPControl_Reader()
@@ -13,17 +14,20 @@ def read_shape_from_stp(stp_filename):
     shape = step_reader.Shape(1)
     return shape
 
+
 def compute_surface_area(shape):
     """Compute surface area of the shape."""
     props = GProp_GProps()
     brepgprop_SurfaceProperties(shape, props)
     return props.Mass()
 
+
 def compute_volume(shape):
     """Compute volume of the shape."""
     props = GProp_GProps()
     brepgprop_VolumeProperties(shape, props)
     return props.Mass()
+
 
 def compute_dimensions(shape):
     """Compute dimensions of the shape (length, width, height)."""
@@ -32,10 +36,11 @@ def compute_dimensions(shape):
     xmin, ymin, zmin, xmax, ymax, zmax = bbox.Get()
     return xmax - xmin, ymax - ymin, zmax - zmin
 
+
 if __name__ == "__main__":
     filename = r"C:\Users\Administrator\Desktop\_model106.stp"
     my_shape = read_shape_from_stp(filename)
-    
+
     area = round(compute_surface_area(my_shape), 2)
     volume = round(compute_volume(my_shape), 2)
     length, width, height = compute_dimensions(my_shape)
@@ -58,13 +63,13 @@ if __name__ == "__main__":
             "width": width,
             "height": height
         },
-         "block_dimensions": {
+        "block_dimensions": {
             "length": length+10,
             "width": width+10,
             "height": height+10
         },
-        "weight(KG)": round(weight,2),
-        "block_weight(KG)":round(block_weight,2)  # 新增基于长*宽*高的“方块”重量
+        "weight(KG)": round(weight, 2),
+        "block_weight(KG)": round(block_weight, 2)  # 新增基于长*宽*高的“方块”重量
     }
 
     # 输出JSON格式的结果

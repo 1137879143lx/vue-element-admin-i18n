@@ -115,12 +115,13 @@
         <el-table-column width="300" label="回复交期">
           <template slot-scope="scope">
             <el-date-picker
-              v-model="Return_delivery_time"
+              v-model="scope.row.Return_delivery_time"
               size="mini"
               align="left"
               type="date"
               placeholder="选择日期"
-              :picker-options="pickerOptions" />
+              :picker-options="pickerOptions"
+            />
           </template>
         </el-table-column>
         <el-table-column label="操作" width="120" fixed="right">
@@ -189,7 +190,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 1,
@@ -201,7 +203,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 2,
@@ -213,7 +216,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 3,
@@ -225,7 +229,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 4,
@@ -237,7 +242,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 5,
@@ -249,7 +255,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         },
         {
           id: 6,
@@ -261,7 +268,8 @@ export default {
           Remarks: '单独包装',
           unit: 'PCS',
           Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858
+          Estimated_unit_price: 8858,
+          Return_delivery_time: ''
         }
       ]
     }
