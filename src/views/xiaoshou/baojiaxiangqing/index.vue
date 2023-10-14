@@ -34,7 +34,9 @@
         </el-table-column>
         <el-table-column fixed min-width="120" label="物料名称">
           <template slot-scope="scope">
-            <span>{{ scope.row.PartName }}</span>
+            <span>
+              {{ scope.row.PartName }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="版本">
@@ -47,7 +49,7 @@
             <span>{{ scope.row.quantity }}</span>
           </template>
         </el-table-column>
-        <el-table-column min-width="180" label="材料">
+        <el-table-column min-width="220" label="材料">
           <template slot-scope="scope">
             <el-input v-model="scope.row.Description" size="mini" clearable />
           </template>
@@ -62,29 +64,9 @@
             <el-input v-model="scope.row.Description" size="mini" clearable />
           </template>
         </el-table-column>
-        <el-table-column min-width="120" label="材料费">
+        <el-table-column min-width="100" label="下料数量">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
-          </template>
-        </el-table-column>
-        <el-table-column min-width="120" label="表面积">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
-          </template>
-        </el-table-column>
-        <el-table-column min-width="100" label="毛坯重量(g)">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
-          </template>
-        </el-table-column>
-        <el-table-column min-width="100" label="净重量(g)">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
-          </template>
-        </el-table-column>
-        <el-table-column min-width="100" label="表面处理费">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+            <el-input v-model="scope.row.Description" size="mini" />
           </template>
         </el-table-column>
         <el-table-column width="260" label="加工工序(单件)">
@@ -92,14 +74,45 @@
             <el-button size="mini" type="text">下料0.1+CNC1.2+后处理0.05+黑色阳极</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="编程工艺费">
+        <el-table-column width="120" label="编程工艺费">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" clearable />
+            <el-input v-model="scope.row.Description" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column label="加工工时">
+        <el-table-column min-width="120" label="材料费">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" disabled size="mini" clearable />
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="150" label="表面积mm²">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="150" label="体积mm³">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120" label="毛坯重量(Kg)">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120" label="净重量(Kg)">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="150" label="表面处理费">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column width="120" label="加工工时">
+          <template slot-scope="scope">
+            <span>{{ scope.row.Estimated_unit_price }}</span>
           </template>
         </el-table-column>
         <el-table-column label="预估单价">

@@ -4,6 +4,7 @@ from OCC.Core.Bnd import Bnd_Box
 from OCC.Core.BRepGProp import brepgprop_SurfaceProperties, brepgprop_VolumeProperties
 from OCC.Core.GProp import GProp_GProps
 import json
+from OCC.Display.SimpleGui import init_display
 
 
 def read_shape_from_stp(stp_filename):
@@ -38,13 +39,26 @@ def compute_dimensions(shape):
 
 
 if __name__ == "__main__":
+
+    display, start_display, add_menu, add_function_to_menu = init_display()  # 初始化显示
+
+    # 读取STP文件中的形状
     filename = r"C:\Users\Administrator\Desktop\_model106.stp"
     my_shape = read_shape_from_stp(filename)
+
+    display.DisplayShape(my_shape)  # 显示形状
+    # 适应视图，确保形状全部显示在屏幕上
+    display.FitAll()
+
+    # 保存为图像
+    image_filename = r"C:\Users\Administrator\Desktop\shape_image.png"
+    display.View.Dump(image_filename)
 
     area = round(compute_surface_area(my_shape), 2)
     volume = round(compute_volume(my_shape), 2)
     length, width, height = compute_dimensions(my_shape)
-    length, width, height = round(length, 2), round(width, 2), round(height, 2)
+    length, width, height = round(length, 2), round(
+        width, 2), round(height, 2)
 
     # Assuming a specific material density (e.g., steel with density 7.85 g/cm^3)
     density = 7.85  # g/cm^3
@@ -74,3 +88,5 @@ if __name__ == "__main__":
 
     # 输出JSON格式的结果
     print(json.dumps(results, indent=4))
+    # 如果你希望视窗保持打开状态，可以使用下面的方法
+    start_display()
