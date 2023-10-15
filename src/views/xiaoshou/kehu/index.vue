@@ -25,11 +25,12 @@
 
         <el-table-column property="Short_name" label="简称" />
         <el-table-column property="Full_name" label="全称" />
+        <el-table-column property="Address" label="收货地址" />
         <el-table-column property="Tax_rate" label="税率%" align="right">
           <template slot-scope="{ row }">{{ row.Tax_rate }}%</template>
         </el-table-column>
         <el-table-column property="Currency" label="货币" />
-        <el-table-column property="Contact_Person" label="联系人">
+        <el-table-column property="Contact_Person" label="客户代表">
           <template slot-scope="{ row }">
             {{ row.Contact_Person }}
             <el-link :underline="false">{{ row.Telephone }}</el-link>
@@ -61,7 +62,8 @@ export default {
           Tax_rate: '13',
           Currency: 'RMB',
           Contact_Person: '刘旭',
-          Telephone: 18502351874
+          Telephone: 18502351874,
+          Address: '天安门1号广场113号'
         },
         {
           id: 20230002,
@@ -71,7 +73,8 @@ export default {
           Tax_rate: '13',
           Currency: 'RMB',
           Contact_Person: '刘旭',
-          Telephone: 18502351874
+          Telephone: 18502351874,
+          Address: '天安门1号广场113号'
         },
         {
           id: 20230002,
@@ -81,7 +84,8 @@ export default {
           Tax_rate: '13',
           Currency: 'RMB',
           Contact_Person: '刘旭',
-          Telephone: 18502351874
+          Telephone: 18502351874,
+          Address: '天安门1号广场113号'
         }
       ]
     }

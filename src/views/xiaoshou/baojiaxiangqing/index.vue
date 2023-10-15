@@ -20,8 +20,9 @@
         <span>物料信息</span>
         <el-button style="float: right" size="mini" type="link">删除</el-button>
         <el-button style="float: right" size="mini" type="link">导入</el-button>
-        <el-button style="float: right" size="mini" type="link">导出下料表</el-button>
-        <el-button style="float: right" size="mini" type="link">导出报价表</el-button>
+        <el-button style="float: right" size="mini" type="link">导出下料清单</el-button>
+        <el-button style="float: right" size="mini" type="link">导出报价清单</el-button>
+        <el-button style="float: right" size="mini" type="link">导出报价模板</el-button>
       </div>
 
       <el-table size="mini" :data="data" :scroll="{ x: 1200 }" :loading="loading" bordered height="500" row-key="id">
@@ -177,7 +178,7 @@
         </el-table-column>
         <el-table-column label="操作" width="120" fixed="right">
           <template slot-scope="scope">
-            <el-button icon="el-icon-upload2" size="mini" @click="toDo(scope.row)" />
+            <el-button :loading="scope.row.isloding" icon="el-icon-upload2" size="mini" @click="toDo(scope.row)" />
             <el-button icon="el-icon-delete" size="mini" @click="toDo(scope.row)" />
           </template>
         </el-table-column>
@@ -259,7 +260,8 @@ export default {
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         },
         {
           id: 1,
@@ -273,7 +275,8 @@ export default {
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         },
         {
           id: 2,
@@ -287,6 +290,7 @@ export default {
           Recommended_suppliers: '北京武器专业供应',
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
+          isloding: false,
 
           Degree_of_urgency: '一般'
         },
@@ -303,7 +307,8 @@ export default {
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
 
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         },
         {
           id: 4,
@@ -318,7 +323,8 @@ export default {
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
 
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         },
         {
           id: 5,
@@ -333,7 +339,8 @@ export default {
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
 
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         },
         {
           id: 6,
@@ -348,7 +355,8 @@ export default {
           Estimated_unit_price: 8858,
           Return_delivery_time: '2023-10-15',
 
-          Degree_of_urgency: '一般'
+          Degree_of_urgency: '一般',
+          isloding: false
         }
       ]
     }

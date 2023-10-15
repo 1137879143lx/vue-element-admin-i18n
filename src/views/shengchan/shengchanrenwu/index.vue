@@ -21,14 +21,14 @@
         <!-- Note that row-key is necessary to get a correct row order. -->
         <el-table ref="dragTable" v-loading="listLoading" highlight-current-row size="mini" :data="list" row-key="id" fit style="width: 100%">
           <el-table-column type="selection" width="40" />
-          <el-table-column align="center" label="订单号" min-width="90">
+          <el-table-column align="center" label="生产任务号" min-width="120">
             <template slot-scope="{ row }">
               <i class="el-icon-warning-outline" />
               <el-button size="mini" type="text" @click="xiangqing">{{ row.Batch_number }}</el-button>
               <!-- <span>{{ row.Batch_number }}</span> -->
             </template>
           </el-table-column>
-          <el-table-column min-width="100px" align="center" label="客户">
+          <el-table-column min-width="120" align="center" label="客户">
             <template slot-scope="{ row }">
               <i class="el-icon-s-custom" />
 
@@ -43,7 +43,9 @@
               <!-- <span>{{ row.porject | parseTime('{y}-{m}-{d} {h}:{i}') }}</span> -->
             </template>
           </el-table-column>
-
+          <el-table-column width="100" label="图片3D">
+            <img width="40" src="../../../../public/shape_image.png" alt="未上传">
+          </el-table-column>
           <el-table-column align="center" min-width="130px" label="物料编码">
             <template slot-scope="{ row }">
               <!-- <i class="el-icon-menu" /> -->
@@ -75,7 +77,7 @@
               <span>{{ row.type }}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="100px" align="center" label="客户交期">
+          <el-table-column min-width="120" align="center" label="客户交期">
             <template slot-scope="{ row }">
               <i class="el-icon-time" />
               <el-tag type="warning" size="mini" effect="plain ">{{ row.Delivery_time }}</el-tag>
@@ -87,13 +89,13 @@
             </template>
           </el-table-column>
           <!-- g工序 -->
-          <el-table-column min-width="350px" align="center" label="工序">
+          <el-table-column min-width="400" align="center" label="工序">
             <template slot-scope="{ row }">
               <span v-for="(item, id) in row.process" :key="id" style="margin-left: 3px">
                 <el-tooltip placement="top">
                   <div slot="content">
                     {{ item.submitter }}
-                    <br />
+                    <br>
                     <span style="color: rgb(177, 172, 165)">{{ item.Submission_time }}</span>
                   </div>
                   <!-- 0是未加工 1是正在加工 2是加工完成 -->
@@ -106,7 +108,12 @@
               <!-- <el-tag v-for="(item, i) in row.process" :key="i" type="info" size="mini" effect="plain">{{ item.process }}</el-tag> -->
             </template>
           </el-table-column>
-
+          <el-table-column min-width="90px" align="center" label="紧急程度">
+            <template slot-scope="{ row }">
+              <svg-icon v-for="n in row.Difficulty" :key="n" icon-class="star" />
+              <!-- <div :key="id" :v-for="(item, index) in row.process">{{ item.process }}</div> -->
+            </template>
+          </el-table-column>
           <el-table-column min-width="90px" align="center" label="难度等级">
             <template slot-scope="{ row }">
               <svg-icon v-for="n in row.Difficulty" :key="n" icon-class="star" />
@@ -114,7 +121,7 @@
             </template>
           </el-table-column>
           <el-table-column width="50px" align="center" label="工时" prop="man_hour" />
-          <el-table-column width="60" align="center" label="编辑">
+          <el-table-column fixed="right" width="60" align="center" label="编辑">
             <template slot-scope="{ row }">
               <span>{{ row.author }}</span>
               <el-button type="text">编辑</el-button>
@@ -130,7 +137,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
         @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+        @current-change="handleCurrentChange"
+      />
     </el-card>
 
     <el-drawer size="mini" title="物料搜索" :visible.sync="drawer" :direction="direction">

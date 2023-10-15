@@ -5,6 +5,7 @@ from OCC.Core.BRepGProp import brepgprop_SurfaceProperties, brepgprop_VolumeProp
 from OCC.Core.GProp import GProp_GProps
 import json
 from OCC.Display.SimpleGui import init_display
+from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 
 
 def read_shape_from_stp(stp_filename):
@@ -49,7 +50,10 @@ if __name__ == "__main__":
     display.DisplayShape(my_shape)  # 显示形状
     # 适应视图，确保形状全部显示在屏幕上
     display.FitAll()
-
+    # # 定义颜色（例如红色）
+    # red_color = Quantity_Color(1, 0, 0, Quantity_TOC_RGB)
+    # # 显示形状并设置颜色
+    # display.DisplayShape(my_shape, color=red_color)
     # 保存为图像
     image_filename = r"C:\Users\Administrator\Desktop\shape_image.png"
     display.View.Dump(image_filename)
@@ -89,4 +93,4 @@ if __name__ == "__main__":
     # 输出JSON格式的结果
     print(json.dumps(results, indent=4))
     # 如果你希望视窗保持打开状态，可以使用下面的方法
-    # start_display()
+    start_display()

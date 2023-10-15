@@ -17,7 +17,7 @@
         <el-table ref="dragTable" v-loading="listLoading" size="mini" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
           <el-table-column type="index" width="40" />
           <el-table-column type="selection" width="45" />
-          <el-table-column align="center" label="订单号" min-width="90">
+          <el-table-column align="center" label="生产任务号" min-width="90">
             <template slot-scope="{ row }">
               <i class="el-icon-warning-outline" />
               <el-button size="mini" type="text" @click="xiangqing">{{ row.Batch_number }}</el-button>
