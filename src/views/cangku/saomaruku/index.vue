@@ -16,9 +16,9 @@
       </el-descriptions>
       <br>
       <br>
-      <el-descriptions column="2" title="物料信息">
+      <el-descriptions border column="2" title="物料信息">
         <el-descriptions-item label="客户">南天门研发所</el-descriptions-item>
-        <el-descriptions-item label="工单号">M202310182222</el-descriptions-item>
+        <el-descriptions-item label="工单号">{{ Batch_number }}</el-descriptions-item>
 
         <el-descriptions-item label="物料编码">02-62-00-0369-00</el-descriptions-item>
         <el-descriptions-item label="物料名称">天天快乐水</el-descriptions-item>
@@ -29,10 +29,59 @@
 
         <el-descriptions-item label="数量">15</el-descriptions-item>
         <el-descriptions-item label="此单号已入库数量">0</el-descriptions-item>
+        <el-descriptions-item label="入库日期">2023-10-19</el-descriptions-item>
+        <el-descriptions-item label="二维码"><div id="qrCode" ref="qrCodeDiv" /></el-descriptions-item>
       </el-descriptions>
     </el-card>
   </div>
 </template>
+
+<script>
+import QRCode from 'qrcodejs2'
+import printJS from 'print-js'
+export default {
+  name: 'QrCode',
+  data() {
+    return {
+      Batch_number: 'M202310182222'
+    }
+  },
+  // eslint-disable-next-line space-before-function-paren
+  mounted: function () {
+    // eslint-disable-next-line space-before-function-paren
+    this.$nextTick(function () {
+      this.bindQRCode()
+    })
+  },
+  methods: {
+    // eslint-disable-next-line space-before-function-paren
+    bindQRCode: function () {
+      new QRCode(this.$refs.qrCodeDiv, {
+        text: this.Batch_number,
+        width: 70,
+        height: 70,
+        colorDark: '#000000', // 二维码颜色
+        colorLight: '#ffffff', // 二维码背景色
+        correctLevel: QRCode.CorrectLevel.M // 容错率，L/M/H
+      })
+    },
+    print() {
+      printJS({
+        printable: 'print-content', // 需要打印的元素的ID
+        type: 'html',
+        documentTitle: '打印内容',
+        // 继承样式
+        targetStyle: '*',
+        targetStyles: '*',
+        scanStyles: true,
+        maxWidth: 1000,
+        font_size: 0.5,
+        honorMarginPadding: true
+      })
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .el-card {
