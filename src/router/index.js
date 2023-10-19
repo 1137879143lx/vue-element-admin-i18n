@@ -383,6 +383,26 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/cangku',
+    component: Layout,
+    redirect: '/permission/page',
+    alwaysShow: true, // will always show the root menu
+    name: 'cangku',
+    meta: {
+      title: '仓库',
+      icon: 'el-icon-s-help',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'saomaruku',
+        component: () => import('@/views/cangku/saomaruku/index'),
+        name: 'saomaruku',
+        meta: { title: '扫码入库', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
