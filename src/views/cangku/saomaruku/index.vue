@@ -8,10 +8,10 @@
       </div>
       <el-descriptions border column="2">
         <el-descriptions-item label="工单号">
-          <el-input v-model="input" placeholder="请输入工单号" />
+          <el-input placeholder="请输入工单号" />
         </el-descriptions-item>
         <el-descriptions-item label="实际入库数量">
-          <el-input v-model="value" placeholder="请输入当前入库数量" />
+          <el-input placeholder="请输入当前入库数量" />
         </el-descriptions-item>
       </el-descriptions>
       <br>
