@@ -77,7 +77,7 @@ export default {
         height: 70,
         colorDark: '#000000', // 二维码颜色
         colorLight: '#ffffff', // 二维码背景色
-        correctLevel: QRCode.CorrectLevel.L // 容错率，L/M/H
+        correctLevel: QRCode.CorrectLevel.M // 容错率，L/M/H
       })
     },
     print() {
