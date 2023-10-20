@@ -28,20 +28,20 @@
     <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
       <el-descriptions direction="horizontal" border column="2">
         <el-descriptions-item span="1" label="*物料编码">
-          <el-input v-model="Material_code" placeholder="物料编码">
+          <el-input v-model="Material_code" clearable placeholder="物料编码">
             <el-button slot="append" icon="el-icon-eleme" @click="New_additions()" />
           </el-input>
         </el-descriptions-item>
         <el-descriptions-item label="*物料名称">
-          <el-input v-model="Material_name" placeholder="物料名称" />
+          <el-input v-model="Material_name" clearable placeholder="物料名称" />
         </el-descriptions-item>
         <el-descriptions-item label="物料描述">
-          <el-input v-model="Material_description" placeholder="物料描述" />
+          <el-input v-model="Material_description" clearable placeholder="物料描述" />
         </el-descriptions-item>
         <el-descriptions-item label="标签" />
 
         <el-descriptions-item label="*单位">
-          <el-select v-model="unit" placeholder="请选择">
+          <el-select v-model="unit" placeholder="请选择" clearable>
             <el-option label="KG" value="KG" />
             <el-option label="PCS" value="PCS" />
             <el-option label="套" value="套" />
@@ -51,24 +51,24 @@
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="密度Kg/m3">
-          <el-input v-model="density" placeholder="如果是原材料，则必填" />
+          <el-input v-model="density" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="最大库存">
-          <el-input v-model="Maximum_inventory" placeholder="最大库存数量" />
+          <el-input v-model="Maximum_inventory" placeholder="最大库存数量" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="安全库存">
-          <el-input v-model="Safety_stock" placeholder="安全库存数量" />
+          <el-input v-model="Safety_stock" placeholder="安全库存数量" clearable />
         </el-descriptions-item>
 
         <el-descriptions-item label="单价(元)">
-          <el-input v-model="Unit_price" placeholder="如果是原材料，则必填" />
+          <el-input v-model="Unit_price" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="*物料类别">
-          <el-select v-model="Class_of_material" placeholder="请选择">
+          <el-select v-model="Class_of_material" placeholder="请选择" clearable>
             <el-option label="原材料" value="原材料" />
             <el-option label="产品" value="产品" />
             <el-option label="零件" value="零件" />
-            <el-option label="电极" value="零件" />
+            <el-option label="电极" value="电极" />
             <el-option label="标准" value="标准" />
           </el-select>
         </el-descriptions-item>
@@ -84,6 +84,7 @@
           </el-upload>
         </el-descriptions-item>
       </el-descriptions>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
