@@ -196,9 +196,9 @@ export const constantRoutes = [
         meta: { title: '委外对账', icon: 'documentation', affix: true }
       },
       {
-        path: 'index8',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'gongyingshang',
+        component: () => import('@/views/caigou/gongyingshang/index'),
+        name: 'gongyingshang',
         meta: { title: '供应商', icon: 'documentation', affix: true }
       },
       {
