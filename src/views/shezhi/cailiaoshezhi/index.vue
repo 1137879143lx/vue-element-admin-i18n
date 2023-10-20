@@ -25,7 +25,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
       <el-descriptions direction="horizontal" border column="2">
         <el-descriptions-item span="1" label="*物料编码">
           <el-input v-model="Material_code" placeholder="物料编码">
