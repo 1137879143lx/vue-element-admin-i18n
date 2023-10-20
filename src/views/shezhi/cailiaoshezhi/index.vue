@@ -74,8 +74,8 @@
         </el-descriptions-item>
         <el-descriptions-item label="状态">
           <template>
-            <el-radio v-model="radio" label="1">启用</el-radio>
-            <el-radio v-model="radio" label="2">禁用</el-radio>
+            <el-radio v-model="radio" label="启用">启用</el-radio>
+            <el-radio v-model="radio" label="禁用">禁用</el-radio>
           </template>
         </el-descriptions-item>
         <el-descriptions-item label="图片">
@@ -103,7 +103,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      radio: '1',
+      radio: '启用',
       Safety_stock: null,
       Maximum_inventory: null,
       Class_of_material: '',
