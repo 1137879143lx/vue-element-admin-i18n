@@ -7,7 +7,6 @@
 </style>
 
 <script>
-
 export default {
   name: 'Gongzhuangguanli',
   data() {

@@ -234,9 +234,9 @@ export const constantRoutes = [
         meta: { title: '生产任务', icon: 'documentation', affix: true }
       },
       {
-        path: 'index3',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'shengchanbaogong',
+        component: () => import('@/views/shengchan/shengchanbaogong/index'),
+        name: 'shengchanbaogong',
         meta: { title: '生产报工', icon: 'documentation', affix: true }
       },
       {
@@ -246,9 +246,9 @@ export const constantRoutes = [
         meta: { title: '下料列表', icon: 'documentation', affix: true }
       },
       {
-        path: 'index5',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'gongzhuangguanli',
+        component: () => import('@/views/shengchan/gongzhuangguanli/index'),
+        name: 'gongzhuangguanli',
         meta: { title: '工装管理', icon: 'documentation', affix: true }
       },
       {
