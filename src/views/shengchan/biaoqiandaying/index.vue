@@ -33,7 +33,7 @@
               <!-- <th scope="row">材料</th> -->
               <td>AL6061</td>
               <td rowspan="3">
-                <div id="qrCode" ref="qrCodeDiv" />
+                <div id="qrCode" ref="qrCodeDiv" style="padding: 5px" />
               </td>
             </tr>
             <tr>
@@ -90,7 +90,7 @@ export default {
         targetStyles: '*',
         scanStyles: true,
         maxWidth: 1000,
-        font_size: 0.5,
+        font_size: 0.6,
         honorMarginPadding: true
       })
     }
@@ -112,7 +112,6 @@ table {
   border: 2px solid rgb(0, 0, 0);
   letter-spacing: 1px;
   font-family: sans-serif;
-  font-size: 0.2rem;
   width: 70mm;
   height: 40mm;
   color: black;
@@ -124,7 +123,7 @@ td,
 th {
   border: 1px solid rgb(0, 0, 0);
   /* padding: 5px 10px; */
-  font-size: 0.2rem;
+  font-size: 0.6rem;
   padding: 0;
   margin: 0;
 }
@@ -132,7 +131,7 @@ th {
 td {
   text-align: center;
   align-items: center;
-  font-size: 0.2rem;
+  font-size: 0.6rem;
   padding: 0;
   margin: 0;
 }
