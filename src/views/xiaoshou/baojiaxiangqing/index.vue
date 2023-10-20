@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column width="260" label="加工工序">
           <template slot-scope="">
-            <el-button size="mini" type="text">下料0.1+CNC1.2+后处理0.05+黑色阳极</el-button>
+            <el-button size="mini" type="text">编辑</el-button>
           </template>
         </el-table-column>
         <el-table-column width="120" label="编程工艺费(￥)">
