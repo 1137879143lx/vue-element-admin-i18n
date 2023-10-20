@@ -300,18 +300,6 @@ export const constantRoutes = [
         meta: { title: '检验进站', icon: 'documentation', affix: true }
       },
       {
-        path: 'index2',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
-        meta: { title: '成品检验', icon: 'documentation', affix: true }
-      },
-      {
-        path: 'index3',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
-        meta: { title: '过程检验', icon: 'documentation', affix: true }
-      },
-      {
         path: 'jianyanjilu',
         component: () => import('@/views/pingzhi/jianyanjilu/index'),
         name: 'jianyanjilu',
@@ -356,10 +344,10 @@ export const constantRoutes = [
         meta: { title: '价格设置', icon: 'documentation', affix: true }
       },
       {
-        path: 'index3',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
-        meta: { title: '材料设置', icon: 'documentation', affix: true }
+        path: 'cailiaoshezhi',
+        component: () => import('@/views/shezhi/cailiaoshezhi/index'),
+        name: 'cailiaoshezhi',
+        meta: { title: '物料设置', icon: 'documentation', affix: true }
       },
       {
         path: 'index4',

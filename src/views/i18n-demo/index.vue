@@ -1,44 +1,31 @@
 <template>
   <div>
-    <el-card class="box-card" style="margin-top:40px;">
+    <el-card class="box-card" style="margin-top: 40px">
       <div slot="header" class="clearfix">
         <svg-icon icon-class="international" />
-        <span style="margin-left:10px;">{{ $t('i18nView.title') }}</span>
+        <span style="margin-left: 10px">{{ $t('i18nView.title') }}</span>
       </div>
       <div>
         <el-radio-group v-model="lang" size="small">
-          <el-radio label="zh" border>
-            简体中文
-          </el-radio>
-          <el-radio label="en" border>
-            English
-          </el-radio>
-          <el-radio label="es" border>
-            Español
-          </el-radio>
-          <el-radio label="ja" border>
-            日本語
-          </el-radio>
+          <el-radio label="zh" border>简体中文</el-radio>
+          <el-radio label="en" border>English</el-radio>
+          <el-radio label="es" border>Español</el-radio>
+          <el-radio label="ja" border>日本語</el-radio>
         </el-radio-group>
-        <el-tag style="margin-top:15px;display:block;" type="info">
+        <el-tag style="margin-top: 15px; display: block" type="info">
           {{ $t('i18nView.note') }}
         </el-tag>
       </div>
     </el-card>
 
-    <el-row :gutter="20" style="margin:100px 15px 50px;">
+    <el-row :gutter="20" style="margin: 100px 15px 50px">
       <el-col :span="12" :xs="24">
         <div class="block">
           <el-date-picker v-model="date" :placeholder="$t('i18nView.datePlaceholder')" type="date" />
         </div>
         <div class="block">
           <el-select v-model="value" :placeholder="$t('i18nView.selectPlaceholder')">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="block">
@@ -82,26 +69,28 @@ export default {
   data() {
     return {
       date: '',
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
+      tableData: [
+        {
+          date: '2016-05-03',
+          name: 'Tom',
+          address: 'No. 189, Grove St, Los Angeles'
+        },
+        {
+          date: '2016-05-02',
+          name: 'Tom',
+          address: 'No. 189, Grove St, Los Angeles'
+        },
+        {
+          date: '2016-05-04',
+          name: 'Tom',
+          address: 'No. 189, Grove St, Los Angeles'
+        },
+        {
+          date: '2016-05-01',
+          name: 'Tom',
+          address: 'No. 189, Grove St, Los Angeles'
+        }
+      ],
       options: [],
       value: ''
     }
@@ -158,7 +147,7 @@ export default {
   max-width: 100%;
   margin: 20px auto;
 }
-.item-btn{
+.item-btn {
   margin-bottom: 15px;
   margin-left: 0px;
 }
