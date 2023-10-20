@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="full-screen-card">
+    <el-card class="full-screen-card" :body-style="{ padding: '5px' }">
       <div slot="header" class="clearfix">
         <span>生产任务</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />

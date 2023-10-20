@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card header="采购申请">
+    <el-card header="采购申请" :body-style="{ padding: '5px' }">
       <div slot="header" class="clearfix">
         <span>采购申请</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />

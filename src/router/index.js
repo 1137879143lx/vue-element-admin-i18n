@@ -222,12 +222,6 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigoushenqing',
-        meta: { title: '生产需求', icon: 'documentation', affix: true }
-      },
-      {
         path: 'shengchanrenwu',
         component: () => import('@/views/shengchan/shengchanrenwu/index'),
         name: 'shengchanrenwu',
@@ -287,7 +281,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/pinzhi',
     component: Layout,
@@ -301,9 +294,9 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigoushenqing',
+        path: 'jianyanjinzhan',
+        component: () => import('@/views/pingzhi/jianyanjinzhan/index'),
+        name: 'jianyanjinzhan',
         meta: { title: '检验进站', icon: 'documentation', affix: true }
       },
       {
@@ -319,9 +312,9 @@ export const constantRoutes = [
         meta: { title: '过程检验', icon: 'documentation', affix: true }
       },
       {
-        path: 'index4',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'jianyanjilu',
+        component: () => import('@/views/pingzhi/jianyanjilu/index'),
+        name: 'jianyanjilu',
         meta: { title: '检验记录', icon: 'documentation', affix: true }
       },
       {
@@ -331,9 +324,9 @@ export const constantRoutes = [
         meta: { title: '品质报表', icon: 'documentation', affix: true }
       },
       {
-        path: 'index6',
-        component: () => import('@/views/documentation/index'),
-        name: 'caigou',
+        path: 'liangjujieyong',
+        component: () => import('@/views/pingzhi/liangjujieyong/index'),
+        name: 'liangjujieyong',
         meta: { title: '量具借用', icon: 'documentation', affix: true }
       }
     ]

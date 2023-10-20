@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card shadow="never">
+    <el-card shadow="never" :body-style="{ padding: '5px' }">
       <template slot="header">
         <span>采购申请 新增</span>
         <el-button style="float: right; margin-left: 5px" size="mini" type="link ">保存并提交</el-button>
@@ -29,7 +29,7 @@
       </el-row>
     </el-card>
     <!-- <el-divider /> -->
-    <br />
+    <br>
 
     <el-card class="box-card" shadow="never">
       <div slot="header" class="clearfix">
@@ -51,7 +51,8 @@
           pageSize: pageSize,
           page: page
         }"
-        @change="changePage">
+        @change="changePage"
+      >
         <el-table-column type="index" width="60" align="center" />
         <el-table-column type="selection" width="60" align="center" />
         <el-table-column label="物料编码">
@@ -106,7 +107,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <br />
+    <br>
     <el-card>
       <template slot="header">备注</template>
       <el-input v-model="Remarks" rows="2" type="textarea" placeholder="请输入备注" />

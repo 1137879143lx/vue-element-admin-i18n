@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card shadow="never">
+    <el-card shadow="never" :body-style="{ padding: '5px' }">
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存并提交</el-button>
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存</el-button>
       <el-descriptions title="报价详情">

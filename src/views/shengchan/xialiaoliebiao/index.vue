@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="card1">
+    <el-card class="card1" :body-style="{ padding: '5px' }">
       <div slot="header" class="clearfix">
         <span>下料列表</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />

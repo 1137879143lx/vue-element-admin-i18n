@@ -1,57 +1,43 @@
 <template>
   <div class="mixin-components-container">
     <el-row>
-      <el-card class="box-card">
+      <el-card class="box-card" :body-style="{ padding: '5px' }">
         <div slot="header" class="clearfix">
           <span>Buttons</span>
         </div>
-        <div style="margin-bottom:50px;">
+        <div style="margin-bottom: 50px">
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn blue-btn" to="/documentation/index">
-              Documentation
-            </router-link>
+            <router-link class="pan-btn blue-btn" to="/documentation/index">Documentation</router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn light-blue-btn" to="/icon/index">
-              Icons
-            </router-link>
+            <router-link class="pan-btn light-blue-btn" to="/icon/index">Icons</router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn pink-btn" to="/excel/export-excel">
-              Excel
-            </router-link>
+            <router-link class="pan-btn pink-btn" to="/excel/export-excel">Excel</router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn green-btn" to="/table/complex-table">
-              Table
-            </router-link>
+            <router-link class="pan-btn green-btn" to="/table/complex-table">Table</router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn tiffany-btn" to="/example/create">
-              Form
-            </router-link>
+            <router-link class="pan-btn tiffany-btn" to="/example/create">Form</router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn yellow-btn" to="/theme/index">
-              Theme
-            </router-link>
+            <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
           </el-col>
         </div>
       </el-card>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top:50px;">
+    <el-row :gutter="20" style="margin-top: 50px">
       <el-col :span="6">
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '5px' }">
           <div slot="header" class="clearfix">
             <span>Material Design 的input</span>
           </div>
-          <div style="height:100px;">
+          <div style="height: 100px">
             <el-form :model="demo" :rules="demoRules">
               <el-form-item prop="title">
-                <md-input v-model="demo.title" icon="el-icon-search" name="title" placeholder="输入标题">
-                  标题
-                </md-input>
+                <md-input v-model="demo.title" icon="el-icon-search" name="title" placeholder="输入标题">标题</md-input>
               </el-form-item>
             </el-form>
           </div>
@@ -59,7 +45,7 @@
       </el-col>
 
       <el-col :span="6">
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '5px' }">
           <div slot="header" class="clearfix">
             <span>图片hover效果</span>
           </div>
@@ -72,20 +58,18 @@
       </el-col>
 
       <el-col :span="6">
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '5px' }">
           <div slot="header" class="clearfix">
             <span>水波纹 waves v-directive</span>
           </div>
           <div class="component-item">
-            <el-button v-waves type="primary">
-              水波纹效果
-            </el-button>
+            <el-button v-waves type="primary">水波纹效果</el-button>
           </div>
         </el-card>
       </el-col>
 
       <el-col :span="6">
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '5px' }">
           <div slot="header" class="clearfix">
             <span>hover text</span>
           </div>
@@ -96,14 +80,14 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top:50px;">
+    <el-row :gutter="20" style="margin-top: 50px">
       <el-col :span="8">
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '5px' }">
           <div slot="header" class="clearfix">
             <span>Share</span>
           </div>
-          <div class="component-item" style="height:420px;">
-            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章" />
+          <div class="component-item" style="height: 420px">
+            <dropdown-menu :items="articleList" style="margin: 0 auto" title="系列文章" />
           </div>
         </el-card>
       </el-col>
@@ -163,7 +147,7 @@ export default {
   padding: 30px;
   min-height: calc(100vh - 84px);
 }
-.component-item{
+.component-item {
   min-height: 100px;
 }
 </style>

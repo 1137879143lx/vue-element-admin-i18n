@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card :body-style="{ padding: '5px' }">
       <div slot="header" class="clearfix">
         <span>销售订单</span>
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />

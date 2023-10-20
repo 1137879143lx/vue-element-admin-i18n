@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-card class="box-card">
+    <el-card class="box-card" :body-style="{ padding: '5px' }">
       <div slot="header">
         <a class="link-type link-title" target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/theme.html">
           {{ $t('theme.documentation') }}

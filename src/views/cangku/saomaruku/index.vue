@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="cardbox">
+    <el-card class="cardbox" :body-style="{ padding: '5px' }">
       <div slot="header" class="clearfix">
         <span>扫码入库</span>
         <el-button icon="el-icon-printer" style="float: right; padding: 0px 3px" type="text" @click="print()">保存并打印</el-button>

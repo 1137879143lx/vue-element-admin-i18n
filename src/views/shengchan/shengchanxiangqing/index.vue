@@ -1,5 +1,5 @@
 <template>
-  <el-card header="任务详情">
+  <el-card header="任务详情" :body-style="{ padding: '5px' }">
     <div slot="header" class="clearfix">
       <span>任务详情</span>
       <el-button-group style="float: right">
