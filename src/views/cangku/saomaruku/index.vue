@@ -3,12 +3,12 @@
     <el-card class="cardbox">
       <div slot="header" class="clearfix">
         <span>扫码入库</span>
-        <el-button style="float: right; padding: 0px 3px" type="text">保存并打印</el-button>
+        <el-button icon="el-icon-printer" style="float: right; padding: 0px 3px" type="text" @click="print()">保存并打印</el-button>
         <el-button style="float: right; padding: 0px 3px" type="text">添加到送货表</el-button>
       </div>
       <el-descriptions border column="2">
         <el-descriptions-item label="工单号">
-          <el-input placeholder="请输入工单号" />
+          <el-input autofocus placeholder="请输入工单号" />
         </el-descriptions-item>
         <el-descriptions-item label="实际入库数量">
           <el-input placeholder="请输入当前入库数量" />
@@ -16,10 +16,9 @@
       </el-descriptions>
       <br>
       <br>
-      <el-descriptions border column="2" title="物料信息">
+      <el-descriptions id="print-content" extra="十三层地狱科技有限责任公司" colon="true" border column="2" title="物料信息">
         <el-descriptions-item label="客户">南天门研发所</el-descriptions-item>
         <el-descriptions-item label="工单号">{{ Batch_number }}</el-descriptions-item>
-
         <el-descriptions-item label="物料编码">02-62-00-0369-00</el-descriptions-item>
         <el-descriptions-item label="物料名称">天天快乐水</el-descriptions-item>
         <el-descriptions-item label="版本">02</el-descriptions-item>
