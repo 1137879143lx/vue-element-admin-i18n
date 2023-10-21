@@ -50,6 +50,9 @@
 </template>
 
 <script>
+// 导入客户api
+import { getlist } from '../../../../src/api/Customer.js' // eslint-disable-line
+
 export default {
   data() {
     return {
@@ -88,6 +91,20 @@ export default {
           Address: '天安门1号广场113号'
         }
       ]
+    }
+  },
+  // 初始函数 页面切换到这时
+  mounted() {
+    // 获取客户列表
+    this.getCustomerList()
+  },
+
+  methods: {
+    // 获取客户列表
+    getCustomerList() {
+      getlist().then((res) => {
+        console.log(res)
+      })
     }
   }
 }

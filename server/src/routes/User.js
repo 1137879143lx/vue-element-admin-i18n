@@ -5,6 +5,9 @@ const router = express.Router()
 // 导入用户集合构造函数
 const User = require('../models/User')
 // 导入moment模块
+// const moment = require('moment')
+const jwt = require('jsonwebtoken') // 导入jsonwebtoken模块
+const config = require('../config/config') // 导入配置文件
 
 // 创建用户POST请求
 router.post('/create', (req, res) => {
@@ -56,14 +59,29 @@ router.post('/login', (req, res) => {
       msg: '用户名或密码不能为空'
     })
   }
-  // 查询数据库中是否存在该用户
+  // 查询数据库中是否存在该用户    //返回给用户数据 tonken
+
   User.findOne({ username, password })
     .then((data) => {
       // 如果存在
       if (data) {
+        // 生成token
+        const token =
+          'Bearer ' +
+          jwt.sign(
+            {
+              id: data._id,
+              username: data.username
+            },
+            config.jwtSecretKey,
+            { expiresIn: config.expiresIn }
+          )
         return res.json({
           code: 200,
-          msg: '登录成功'
+          msg: '登录成功',
+          data: {
+            token: token
+          }
         })
       }
       // 如果不存在
@@ -80,39 +98,12 @@ router.post('/login', (req, res) => {
     })
 })
 // 获取用户信息
-router.get('/info', (req, res) => {
-  // 接收参数
-  const { username } = req.query
-  // 判断参数是否为空
-  if (!username) {
-    return res.json({
-      code: 401,
-      msg: '用户名不能为空'
-    })
-  }
-  // 查询数据库中是否存在该用户
-  User.findOne({ username })
-    .then((data) => {
-      // 如果存在
-      if (data) {
-        return res.json({
-          code: 200,
-          msg: '获取用户信息成功',
-          data
-        })
-      }
-      // 如果不存在
-      return res.json({
-        code: 402,
-        msg: '用户名不存在'
-      })
-    })
-    .catch((err) => {
-      res.json({
-        code: 500,
-        msg: err.message
-      })
-    })
+// eslint-disable-next-line space-before-function-paren
+router.get('/info', async (req, res) => {
+  // Extract the token from the 'token' query parameter
+  //
+  console.log(req.user) // eslint-disable-next-line space-before-function-paren
+  res.json(req.user)
 })
 // 修改用户信息
 router.post('/update', (req, res) => {

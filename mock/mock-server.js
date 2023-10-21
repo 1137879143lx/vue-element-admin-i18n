@@ -9,7 +9,7 @@ const mockDir = path.join(process.cwd(), 'mock')
 function registerRoutes(app) {
   let mockLastIndex
   const { mocks } = require('./index.js')
-  const mocksForServer = mocks.map(route => {
+  const mocksForServer = mocks.map((route) => {
     return responseFake(route.url, route.type, route.response)
   })
   for (const mock of mocksForServer) {
@@ -24,7 +24,7 @@ function registerRoutes(app) {
 }
 
 function unregisterRoutes() {
-  Object.keys(require.cache).forEach(i => {
+  Object.keys(require.cache).forEach((i) => {
     if (i.includes(mockDir)) {
       delete require.cache[require.resolve(i)]
     }
@@ -43,39 +43,43 @@ const responseFake = (url, type, respond) => {
   }
 }
 
-module.exports = app => {
+module.exports = (app) => {
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }))
+  app.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  )
 
   const mockRoutes = registerRoutes(app)
   var mockRoutesLength = mockRoutes.mockRoutesLength
   var mockStartIndex = mockRoutes.mockStartIndex
 
   // watch files, hot reload mock server
-  chokidar.watch(mockDir, {
-    ignored: /mock-server/,
-    ignoreInitial: true
-  }).on('all', (event, path) => {
-    if (event === 'change' || event === 'add') {
-      try {
-        // remove mock routes stack
-        app._router.stack.splice(mockStartIndex, mockRoutesLength)
+  chokidar
+    .watch(mockDir, {
+      ignored: /mock-server/,
+      ignoreInitial: true
+    })
+    .on('all', (event, path) => {
+      if (event === 'change' || event === 'add') {
+        try {
+          // remove mock routes stack
+          app._router.stack.splice(mockStartIndex, mockRoutesLength)
 
-        // clear routes cache
-        unregisterRoutes()
+          // clear routes cache
+          unregisterRoutes()
 
-        const mockRoutes = registerRoutes(app)
-        mockRoutesLength = mockRoutes.mockRoutesLength
-        mockStartIndex = mockRoutes.mockStartIndex
+          const mockRoutes = registerRoutes(app)
+          mockRoutesLength = mockRoutes.mockRoutesLength
+          mockStartIndex = mockRoutes.mockStartIndex
 
-        console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
-      } catch (error) {
-        console.log(chalk.redBright(error))
+          console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
+        } catch (error) {
+          console.log(chalk.redBright(error))
+        }
       }
-    }
-  })
+    })
 }
