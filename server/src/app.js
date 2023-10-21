@@ -4,7 +4,8 @@ const cors = require('cors')
 // 引入路由
 const userRouter = require('./routes/User')
 const customerRouter = require('./routes/Customer')
-const suppliersRouter = require('./routes/Suppliers')
+const suppliersRouter = require('./routes/Supplier')
+const cutting_stock_list = require('./routes/Cutting_stock_list')
 
 // 创建服务器
 const app = express()
@@ -22,6 +23,7 @@ app.use(express.static('./public'))
 app.use('/api/user', userRouter) // // 引入路由
 app.use('/api/customer', customerRouter) // // 使用路由
 app.use('/api/suppliers', suppliersRouter) // // 使用路由
+app.use('/api/cutting_stock_list', cutting_stock_list)
 
 //
 //
