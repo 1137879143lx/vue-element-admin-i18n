@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   }, //
   // 数组类型
   role: {
-    type: [] //
+    type: [String] //
   }, // 角色
 
   // 创建时间 改为东8区时间  加上8小时
@@ -37,14 +37,10 @@ const userSchema = new mongoose.Schema({
     default: 'Y'
   }, // 是否启用
   mobile: {
-    type: String,
-    required: [false, '手机号不能为空'], // 必填
-    unique: true // 唯一
+    type: String
   },
   email: {
-    type: String,
-    required: [false, '邮箱不能为空'], // 必填
-    unique: true // 唯一
+    type: String
   }, // 邮箱
   description: {
     type: String,
