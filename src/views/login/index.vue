@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">
           {{ $t('login.title') }}

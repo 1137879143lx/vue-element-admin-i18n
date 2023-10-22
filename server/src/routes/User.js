@@ -12,7 +12,7 @@ const config = require('../config/config') // 导入配置文件
 // 创建用户POST请求
 router.post('/create', (req, res) => {
   // 接收参数
-  const { username, password, email, mobile } = req.body
+  const { username, password, email, mobile, name, role } = req.body
   // 判断参数是否为空
   if (!username || !password) {
     return res.send({
@@ -32,7 +32,7 @@ router.post('/create', (req, res) => {
       }
       // 如果不存在
       // 创建用户
-      return User.create({ username, password, email, mobile })
+      return User.create({ username, password, email, mobile, name, role })
     })
     .then((data) => {
       // 响应
@@ -71,7 +71,10 @@ router.post('/login', (req, res) => {
           jwt.sign(
             {
               id: data._id,
-              username: data.username
+              username: data.username,
+              email: data.email,
+              mobile: data.mobile,
+              role: data.role
             },
             config.jwtSecretKey,
             { expiresIn: config.expiresIn }
@@ -100,9 +103,12 @@ router.post('/login', (req, res) => {
 // 获取用户信息
 // eslint-disable-next-line space-before-function-paren
 router.get('/info', async (req, res) => {
-  // Extract the token from the 'token' query parameter
-  //
+  // // console.log(req.user);//获取解析 authorization 后的数据  请求头里面 不是token 而是authorization
+  // {"code":200,"data":{"roles":["admin"],"introduction":"I am a super administrator","avatar":"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif","name":"Super Admin"}}
   console.log(req.user) // eslint-disable-next-line space-before-function-paren
+  const userid = req.user.id
+  // 根据ID查询用户信息
+
   res.json(req.user)
 })
 // 修改用户信息

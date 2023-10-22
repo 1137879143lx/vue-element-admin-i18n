@@ -16,15 +16,15 @@ const userSchema = new mongoose.Schema({
     minlength: [6, '密码长度不能小于6'],
     maxlength: [20, '密码长度不能大于20']
   },
-  age: {
-    type: Number,
-    min: [0, '年龄不能小于0'],
-    max: [120, '年龄不能大于120']
-  }, // 年龄
-  role: {
+  name: {
     type: String,
-    default: '普通用户'
+    required: [false, '姓名不能为空']
+  }, //
+  // 数组类型
+  role: {
+    type: [] //
   }, // 角色
+
   // 创建时间 改为东8区时间  加上8小时
   created: {
     type: Date,
@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
 // 当数据修改时，自动更新时间
 // eslint-disable-next-line space-before-function-paren
 userSchema.pre('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { created: Date.now() })
+  this.findOneAndUpdate({}, { created: Date.now() + 60 * 60 * 8 * 1000 })
   next()
 })
 
