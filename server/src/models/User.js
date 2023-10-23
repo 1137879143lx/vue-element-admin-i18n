@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     required: [false, '姓名不能为空']
   }, //
   // 数组类型
-  role: {
+  roles: {
     type: [String] //
   }, // 角色
 

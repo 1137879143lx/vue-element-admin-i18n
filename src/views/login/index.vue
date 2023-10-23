@@ -1,3 +1,4 @@
+<!-- eslint-disable space-before-function-paren -->
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left">
@@ -102,8 +103,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '1995.10242'
+        username: '016604',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -119,7 +120,8 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      // eslint-disable-next-line space-before-function-paren
+      handler: function (route) {
         const query = route.query
         if (query) {
           this.redirect = query.redirect

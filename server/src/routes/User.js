@@ -12,7 +12,7 @@ const config = require('../config/config') // 导入配置文件
 // 创建用户POST请求
 router.post('/create', (req, res) => {
   // 接收参数
-  const { username, password, email, mobile, name, role } = req.body
+  const { username, password, email, mobile, name, roles, avatar, description } = req.body
   // 判断参数是否为空
   if (!username || !password) {
     return res.send({
@@ -32,7 +32,7 @@ router.post('/create', (req, res) => {
       }
       // 如果不存在
       // 创建用户
-      return User.create({ username, password, email, mobile, name, role })
+      return User.create({ username, password, email, mobile, name, roles, avatar, description })
     })
     .then((data) => {
       // 响应
@@ -74,7 +74,10 @@ router.post('/login', (req, res) => {
               username: data.username,
               email: data.email,
               mobile: data.mobile,
-              role: data.role
+              roles: data.roles,
+              avatar: data.avatar,
+              name: data.name,
+              description: data.description
             },
             config.jwtSecretKey,
             { expiresIn: config.expiresIn }
@@ -106,10 +109,19 @@ router.get('/info', async (req, res) => {
   // // console.log(req.user);//获取解析 authorization 后的数据  请求头里面 不是token 而是authorization
   // {"code":200,"data":{"roles":["admin"],"introduction":"I am a super administrator","avatar":"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif","name":"Super Admin"}}
   console.log(req.user) // eslint-disable-next-line space-before-function-paren
-  const userid = req.user.id
+  const user = req.user
+  // res.status(200).send(123)
   // 根据ID查询用户信息
 
-  res.json(req.user)
+  res.json({
+    code: 200,
+    data: {
+      roles: user.roles,
+      name: user.name,
+      avatar: user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      introduction: user.description || 'I am a super administrator'
+    }
+  })
 })
 // 修改用户信息
 router.post('/update', (req, res) => {
