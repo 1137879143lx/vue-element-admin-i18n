@@ -162,7 +162,14 @@ router.post('/update', (req, res) => {
       })
     })
 })
-// 删除用户
+
+// swagger删除用户swagger写注释
+/**
+ * @swagger
+ * /api/user/list:
+ *
+ *
+ */
 router.get('/delete', (req, res) => {
   // 接收参数
   const { username } = req.query
@@ -201,7 +208,23 @@ router.get('/delete', (req, res) => {
       })
     })
 })
-// 获取用户列表
+
+/** 获取用户列表
+ * @swagger
+ * /api/user/list:
+ *  get:
+ *   tags:
+ *   - 用户管理
+ *  summary: 获取用户列表
+ * description: 获取用户列表
+ * responses:
+ * 200:
+ * description: 成功
+ * 401:
+ * description: 失败
+ * 500:
+ * description: 服务器内部错误
+ */
 router.get('/list', (req, res) => {
   // 查询数据库中的用户列表
   User.find()
@@ -220,6 +243,14 @@ router.get('/list', (req, res) => {
       })
     })
 })
+// 用户退出
+router.post('/logout', (req, res) => {
+  res.json({
+    code: 200,
+    msg: '退出成功'
+  })
+})
+
 // 导出路由
 module.exports = router
 // 3.在server\src\index.js中引入路由
