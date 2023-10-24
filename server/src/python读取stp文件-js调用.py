@@ -47,6 +47,8 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     density = float(sys.argv[2])
     display, start_display, add_menu, add_function_to_menu = init_display()  # 初始化显示
+    # //更改背景颜色为白色
+    display.set_bg_gradient_color(255, 255, 255, 255, 255, 255)
 
     # filename = r"C:\Users\Administrator\Desktop\_model106.stp"
     my_shape = read_shape_from_stp(filename)
@@ -65,30 +67,26 @@ if __name__ == "__main__":
     length, width, height = round(length, 2), round(width, 2), round(height, 2)
 
     # Assuming a specific material density (e.g., steel with density 7.85 g/cm^3)
-   # density = 7.85  # g/cm^3
+    # density = 7.85  # g/cm^3
     weight = round((density * volume) / 1000000, 2)  # kg
 
     # 计算基于零件长*宽*高的“方块”体积和重量
-    block_volume = round((length+10) * (width+10) * (height+10), 2)
+    block_volume = round((length + 10) * (width + 10) * (height + 10), 2)
     block_weight = round((density * block_volume) / 1000000, 2)  # kg
 
     # 保存结果到字典中
     results = {
         "area": area,
         "volume": volume,
-        "dimensions": {
-            "length": length,
-            "width": width,
-            "height": height
-        },
+        "dimensions": {"length": length, "width": width, "height": height},
         "block_dimensions": {
-            "length": length+10,
-            "width": width+10,
-            "height": height+10
+            "length": length + 10,
+            "width": width + 10,
+            "height": height + 10,
         },
         "weight(KG)": round(weight, 2),
         "block_weight(KG)": round(block_weight, 2),
-        "image": image_filename  # 新增基于长*宽*高的“方块”重量
+        "image": image_filename,  # 新增基于长*宽*高的“方块”重量
     }
 
     # 输出JSON格式的结果
