@@ -25,9 +25,9 @@ app.use(express.static('../public'))
 
 // 这里解析验证token的中间件
 app.use(
-	expressjwt({ secret: config.jwtSecretKey }).unless({
-		path: ['/api/user/login', '/api/user/create'],
-	})
+  expressjwt({ secret: config.jwtSecretKey }).unless({
+    path: ['/api/user/login', '/api/user/create']
+  })
 )
 
 app.use('/api/user', userRouter) // // 引入路由
@@ -37,21 +37,20 @@ app.use('/api/cutting_stock_list', cutting_stock_list) // // 使用路由
 app.use('/api/pr_ReplenishmentRequisition', pr_ReplenishmentRequisition) // // 使用路由
 
 //
-//
 // 解析错误中间件
 // eslint-disable-next-line space-before-function-paren
 app.use(function (err, req, res, next) {
-	console.log(req.body, req.headers)
-	// 省略其它代码...
-	console.log('错误的中间件?' + err)
-	// 捕获身份认证失败的错误
-	if (err.name === 'UnauthorizedError') {
-		return res.json({ status: 505, msg: '身份认证失败,请重新登录' })
-	}
-	// 未知错误...
+  console.log(req.body, req.headers)
+  // 省略其它代码...
+  console.log('错误的中间件?' + err)
+  // 捕获身份认证失败的错误
+  if (err.name === 'UnauthorizedError') {
+    return res.json({ status: 505, msg: '身份认证失败,请重新登录' })
+  }
+  // 未知错误...
 })
 
 // 监听端口
 app.listen(3333, () => {
-	console.log('server is running at http://localhost: 3333')
+  console.log('server is running at http://localhost: 3333')
 })
