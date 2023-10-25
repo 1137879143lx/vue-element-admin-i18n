@@ -9,40 +9,31 @@ const customerSchema = new mongoose.Schema({
     unique: true
   },
   ShortName: {
-    type: String,
-    required: [true, '客户简称不能为空']
+    type: String
   },
   FullName: {
-    type: String,
-    required: [true, '客户全称不能为空']
+    type: String
   },
   Address: {
-    type: String,
-    required: [true, '客户地址不能为空']
+    type: String
   },
   Contact: {
-    type: String,
-    required: [true, '客户联系人不能为空']
+    type: String
   },
   Tel: {
-    type: String,
-    required: [true, '客户电话不能为空']
+    type: String
   },
   Email: {
-    type: String,
-    required: [true, '客户邮箱不能为空']
+    type: String
   },
   Phone: {
-    type: String,
-    required: [true, '客户手机不能为空']
+    type: String
   },
   Tax: {
-    type: String,
-    required: [true, '客户税号不能为空']
+    type: String
   },
   CurrencyCode: {
-    type: String,
-    required: [true, '客户币种不能为空']
+    type: String
   },
   enable_flag: {
     type: String,
