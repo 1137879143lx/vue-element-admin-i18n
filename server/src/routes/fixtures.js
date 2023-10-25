@@ -25,11 +25,6 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET /fixtures/:id 获取指定 ID 的夹具
-router.get('/:id', getFixture, (req, res) => {
-  res.status(200).json({ code: 200, data: res.fixture }) // 返回数据中包含 code: 200 表示请求成功
-})
-
 // POST /fixtures 创建新夹具
 router.post('/', async (req, res) => {
   const fixture = new Fixture(req.body)
