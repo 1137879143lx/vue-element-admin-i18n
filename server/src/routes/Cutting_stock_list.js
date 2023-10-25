@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
   const page = parseInt(req.query.page) || 1 // 获取页码，默认为第一页
   const limit = parseInt(req.query.limit) || 10 // 获取每页数据条数，默认为 10 条
   const skip = (page - 1) * limit // 计算需要跳过的数据条数
+  // eslint-disable-next-line object-curly-spacing
   const query = req.query.q ? { $text: { $search: req.query.q } } : {} // 根据用户输入的参数进行查询
   try {
     /**

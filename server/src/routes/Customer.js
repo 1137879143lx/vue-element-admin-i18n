@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable space-before-function-paren */
 const express = require('express')
 const router = express.Router()
 const Customer = require('../models/Customer')
@@ -54,9 +56,10 @@ router.get('/:id', async (req, res) => {
 })
 
 // 更新客户
+// eslint-disable-next-line space-before-function-paren
 router.put('/:id', async (req, res) => {
   try {
-    const { ShortName, FullName, Address, Contact, Tel, Email, Phone, Tax, CurrencyCode } = req.body
+    const { ShortName, FullName } = req.body
     if (!ShortName || !FullName) {
       return res.status(400).json({ code: 400, msg: 'ShortName 和 FullName 不能为空' })
     }
