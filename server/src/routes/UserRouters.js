@@ -11,71 +11,7 @@ const jwt = require('jsonwebtoken') // 导入jsonwebtoken模块
 const config = require('../config/config') // 导入配置文件
 
 // 创建用户swagger写注释 //配置文件
-/**
- * @swagger
- * /admin/user/create:
- *   post:
- *     tags:
- *       - 用户管理
- *     name: 创建用户
- *     summary: 创建用户
- *     description: 创建用户
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: username
- *         description: 用户名
- *         in: formData
- *         required: true
- *         type: string
- *       - name: password
- *         description: 密码
- *         in: formData
- *         required: true
- *         type: string
- *       - name: email
- *         description: 邮箱
- *         in: formData
- *         required: false
- *         type: string
- *       - name: mobile
- *         description: 手机号
- *         in: formData
- *         required: false
- *         type: string
- *       - name: name
- *         description: 昵称
- *         in: formData
- *         required: false
- *         type: string
- *       - name: roles
- *         description: 角色
- *         in: formData
- *         required: false
- *         type: array
- *         items:
- *           type: string
- *       - name: avatar
- *         description: 头像
- *         in: formData
- *         required: false
- *         type: string
- *       - name: description
- *         description: 描述
- *         in: formData
- *         required: false
- *         type: string
- *     responses:
- *       200:
- * 	   description: 创建成功
- * 	 401:
- * 	   description: 创建失败
- * 	 500:
- * 	   description: 服务器内部错误
- * 	 400:
- * 	   description: 参数错误
- * 	 402:
- * */
+
 router.post('/create', (req, res) => {
   // 接收参数
   const { username, password, email, mobile, name, roles, avatar, description } = req.body
@@ -116,33 +52,6 @@ router.post('/create', (req, res) => {
 })
 
 // 登录请求swagger写注释
-/** 用户登录
- * @swagger
- * /api/user/login:
- *  post:
- *   tags:
- *   - 用户管理
- *  summary: 用户登录
- * description: 用户登录
- * parameters:
- * - name: username
- *   in: query
- *   description: 用户名
- *   required: true
- *   type: string
- * - name: password
- *   in: query
- *   description: 密码
- *   required: true
- *   type: string
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- */
 router.post('/login', (req, res) => {
   // 接收参数
   const { username, password } = req.body
@@ -219,77 +128,8 @@ router.get('/info', async (req, res) => {
 })
 
 // swagger修改用户swagger写注释
-/** 修改用户
- * @swagger
- * /api/user/update:
- *  post:
- *   tags:
- *   - 用户管理
- *  summary: 修改用户
- * description: 修改用户
- * parameters:
- * - name: username
- *   in: query
- *   description: 用户名
- *   required: true
- *   type: string
- * - name: password
- *   in: query
- *   description: 密码
- *   required: true
- *   type: string
- * - name: age
- *   in: query
- *   description: 年龄
- *   required: true
- *   type: number
- * - name: role
- *   in: query
- *   description: 角色
- *   required: true
- *   type: string
- * - name: mobile
- *   in: query
- *   description: 手机号
- *   required: true
- *   type: number
- * - name: email
- *   in: query
- *   description: 邮箱
- *   required: true
- *   type: string
- * - name: description
- *   in: query
- *   description: 描述
- *   required: true
- *   type: string
- * - name: avatar
- *   in: query
- *   description: 头像
- *   required: true
- *   type: string
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- */
 router.post('/update', (req, res) => {
   // 接收参数
-  /**
-   * Handles the request body and extracts the necessary properties.
-   * @param {Object} req - The request object.
-   * @param {string} req.body.username - The username of the user.
-   * @param {string} req.body.password - The password of the user.
-   * @param {number} req.body.age - The age of the user.
-   * @param {string} req.body.role - The role of the user.
-   * @param {string} req.body.mobile - The mobile number of the user.
-   * @param {string} req.body.email - The email address of the user.
-   * @param {string} req.body.description - The description of the user.
-   * @param {string} req.body.avatar - The avatar of the user.
-   */
   const { username, password, age, role, mobile, email, description, avatar } = req.body
   // 判断参数是否为空
   if (!username) {
@@ -328,28 +168,6 @@ router.post('/update', (req, res) => {
 })
 
 // swagger删除用户swagger写注释
-/** 删除用户
- * @swagger
- * /api/user/delete:
- *  get:
- *   tags:
- *   - 用户管理
- *  summary: 删除用户
- * description: 删除用户
- * parameters:
- * - name: username
- *   in: query
- *   description: 用户名
- *   required: true
- *   type: string
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- */
 router.get('/delete', (req, res) => {
   // 接收参数
   const { username } = req.query
@@ -388,23 +206,7 @@ router.get('/delete', (req, res) => {
       })
     })
 })
-
-/** 获取用户列表
- * @swagger
- * /api/user/list:
- *  get:
- *   tags:
- *   - 用户管理
- *  summary: 获取用户列表
- * description: 获取用户列表
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- */
+// 获取用户列表
 router.get('/list', (req, res) => {
   // 查询数据库中的用户列表
   User.find()
@@ -424,25 +226,6 @@ router.get('/list', (req, res) => {
     })
 })
 // 用户退出 退出成功
-/** 用户退出
- * @swagger
- * /api/user/logout:
- *  post:
- *   tags:
- *   - 用户管理
- *  summary: 用户退出
- * description: 用户退出
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- * 400:
- * description: 参数错误
- */
-
 router.post('/logout', (req, res) => {
   res.json({
     code: 200,
@@ -451,24 +234,6 @@ router.post('/logout', (req, res) => {
 })
 
 // 查询本月有多少个用户注册
-/** 查询本月有多少个用户注册
- * @swagger
- * /api/user/month:
- *  get:
- *   tags:
- *   - 用户管理
- *  summary: 查询本月有多少个用户注册
- * description: 查询本月有多少个用户注册
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- * 400:
- * description: 参数错误
- */
 router.get('/month', (req, res) => {
   // 获取当前时间
   const now = new Date()

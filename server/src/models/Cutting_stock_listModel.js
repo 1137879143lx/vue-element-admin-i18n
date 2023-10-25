@@ -4,6 +4,7 @@
 const mongoose = require('mongoose')
 const db = require('../config/db')
 const moment = require('moment')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const cutting_stock_listSchema = new mongoose.Schema({
   Production_order: {
     type: String,
@@ -72,5 +73,6 @@ const cutting_stock_listSchema = new mongoose.Schema({
     get: (v) => moment(v).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') // 东8区时间 加上8小时
   }
 })
+cutting_stock_listSchema.plugin(mongoosePaginate)
 module.exports = db.model('cutting_stock_list', cutting_stock_listSchema)
 // module.exports = Cutting_stock_list // 导出下料列表模型

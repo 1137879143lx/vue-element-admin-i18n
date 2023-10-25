@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const db = require('../config/db')
 const moment = require('moment')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const customerSchema = new mongoose.Schema({
   CustomerId: {
     type: String,
@@ -51,5 +52,6 @@ const customerSchema = new mongoose.Schema({
     get: (v) => moment(v).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') // 东8区时间 加上8小时
   }
 })
+customerSchema.plugin(mongoosePaginate)
 const Customer = db.model('customers', customerSchema)
 module.exports = Customer // 导出客户模型

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const moment = require('moment')
 // Your code here
 const db = require('../config/db')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -59,5 +60,7 @@ userSchema.pre('findOneAndUpdate', function (next) {
   next()
 })
 
+// 分页插件
+userSchema.plugin(mongoosePaginate)
 const User = db.model('User', userSchema)
 module.exports = User

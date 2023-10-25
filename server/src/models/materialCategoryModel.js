@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const mongoosePaginate = require('mongoose-paginate-v2')
 const materialCategorySchema = new mongoose.Schema({
   content: {
     type: String,
@@ -16,6 +16,7 @@ const materialCategorySchema = new mongoose.Schema({
   }
 })
 
+materialCategorySchema.plugin(mongoosePaginate)
 const MaterialCategory = mongoose.model('MaterialCategory', materialCategorySchema)
 
 module.exports = MaterialCategory
