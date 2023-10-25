@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const mongoosePaginate = require('mongoose-paginate-v2')
 const gaugeBorrowingSchema = new mongoose.Schema({
   status: {
     type: String,
@@ -51,6 +51,7 @@ const gaugeBorrowingSchema = new mongoose.Schema({
   }
 })
 
+gaugeBorrowingSchema.plugin(mongoosePaginate)
 const GaugeBorrowing = mongoose.model('GaugeBorrowing', gaugeBorrowingSchema)
 
 module.exports = GaugeBorrowing

@@ -3,6 +3,8 @@
 const mongoose = require('mongoose')
 const db = require('../config/db')
 const moment = require('moment')
+const mongoosePaginate = require('mongoose-paginate-v2')
+
 const Pr_ReplenishmentRequisitionSchema = new mongoose.Schema({
   BillId: {
     type: String,
@@ -63,6 +65,8 @@ const Pr_ReplenishmentRequisitionSchema = new mongoose.Schema({
     default: 'Y'
   } // 是否启用
 })
+
+Pr_ReplenishmentRequisitionSchema.plugin(mongoosePaginate)
 const Pr_ReplenishmentRequisition = db.model('Pr_ReplenishmentRequisition', Pr_ReplenishmentRequisitionSchema)
 module.exports = Pr_ReplenishmentRequisition
 // # sourceMappingURL=Pr_ReplenishmentRequisition.js.map

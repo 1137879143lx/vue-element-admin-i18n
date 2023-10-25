@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const mongoosePaginate = require('mongoose-paginate-v2')
 const inspectionRecordSchema = new mongoose.Schema({
   materialCode: {
     type: String,
@@ -67,6 +67,7 @@ const inspectionRecordSchema = new mongoose.Schema({
   }
 })
 
+inspectionRecordSchema.plugin(mongoosePaginate)
 const InspectionRecord = mongoose.model('InspectionRecord', inspectionRecordSchema)
 
 module.exports = InspectionRecord

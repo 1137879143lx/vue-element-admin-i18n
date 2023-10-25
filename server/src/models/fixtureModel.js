@@ -1,23 +1,5 @@
 const mongoose = require('mongoose')
-
-/**
- * Fixture schema for MongoDB
- * @typedef {Object} FixtureSchema
- * @property {string} fixtureNumber - The fixture number
- * @property {string} fixtureType - The fixture type
- * @property {string} partNumber - The part number
- * @property {string} partVersion - The part version
- * @property {string} requisitionNumber - The requisition number
- * @property {string} materialNumber - The material number
- * @property {string} materialName - The material name
- * @property {string} materialSpec - The material specification
- * @property {number} quantity - The quantity of the material
- * @property {number} requisitionQuantity - The requisition quantity of the material
- * @property {string} status - The status of the fixture
- * @property {string} [note] - Optional note for the fixture
- * @property {mongoose.Schema.Types.ObjectId} createdBy - The user who created the fixture
- * @property {Date} [createdAt=Date.now] - The date when the fixture was created
- */
+const mongoosePaginate = require('mongoose-paginate-v2')
 const fixtureSchema = new mongoose.Schema({
   fixtureNumber: {
     type: String,
@@ -77,6 +59,7 @@ const fixtureSchema = new mongoose.Schema({
   }
 })
 
+fixtureSchema.plugin(mongoosePaginate)
 const Fixture = mongoose.model('Fixture', fixtureSchema)
 
 module.exports = Fixture

@@ -1,24 +1,6 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
-/**
- * Mongoose schema for production tasks.
- * @typedef {Object} ProductionTaskSchema
- * @property {string} taskNumber - The task number.
- * @property {string} customer - The customer name.
- * @property {string} project - The project name.
- * @property {string} image - The image name.
- * @property {string} materialCode - The material code.
- * @property {string} materialName - The material name.
- * @property {string} version - The version number.
- * @property {number} quantity - The quantity of the material.
- * @property {string} type - The type of the material.
- * @property {Date} customerDeliveryDate - The delivery date for the customer.
- * @property {string} status - The status of the task.
- * @property {string} process - The process of the task.
- * @property {string} urgency - The urgency of the task.
- * @property {mongoose.Schema.Types.ObjectId} createdBy - The ID of the user who created the task.
- * @property {Date} createdAt - The date when the task was created.
- */
 const productionTaskSchema = new mongoose.Schema({
   taskNumber: {
     type: String,
@@ -83,6 +65,7 @@ const productionTaskSchema = new mongoose.Schema({
   }
 })
 
+productionTaskSchema.plugin(mongoosePaginate)
 const ProductionTask = mongoose.model('ProductionTask', productionTaskSchema)
 
 module.exports = ProductionTask

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const mongoosePaginate = require('mongoose-paginate-v2')
 const unitSchema = new mongoose.Schema({
   content: {
     type: String,
@@ -15,6 +15,8 @@ const unitSchema = new mongoose.Schema({
     default: Date.now
   }
 })
+
+unitSchema.plugin(mongoosePaginate)
 
 const Unit = mongoose.model('Unit', unitSchema)
 

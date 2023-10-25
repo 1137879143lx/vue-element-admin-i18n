@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const db = require('../config/db')
 const moment = require('moment')
+// const mongoosePaginate = require('mongoose-paginate-v2')
 const supplierSchema = new mongoose.Schema({
   SupplierId: {
     type: String,
@@ -51,8 +52,6 @@ const supplierSchema = new mongoose.Schema({
     get: (v) => moment(v).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') // 东8区时间 加上8小时
   }
 })
-// supplierSchema.set('toJSON', { getters: true }) // 在查询时，转换为JSON对象 //
-// supplierSchema.set('toObject', { getters: true }) // 在查询时，转换为Object对象
+
+// supplierSchema.plugin(mongoosePaginate)
 module.exports = db.model('suppliers', supplierSchema)
-// Compare this snippet from server\src\router\index.js:
-// // Path: server\src\router\index.js

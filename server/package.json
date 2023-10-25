@@ -5,7 +5,8 @@
     "express-jwt": "^5.3.3",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
-    "mongoose": "^7.6.3"
+    "mongoose": "^7.6.3",
+    "mongoose-paginate-v2": "^1.7.4"
   },
   "devDependencies": {
     "eslint": "^8.52.0",

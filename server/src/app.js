@@ -42,10 +42,10 @@ app.use(function (err, req, res, next) {
     return res.json({ status: 505, msg: '身份认证失败,请重新登录' })
   }
   // 未知错误...
+  next(err) // fix for Problem 1
 })
 
-// 123333
-app.use('/api/user', userRouter) // // 引入路由
+app.use('/api/user', userRouter) // 引入路由
 app.use('/api/customer', customerRouter) // // 使用路由
 app.use('/api/suppliers', supplierRouter) // // 使用路由
 app.use('/api/cutting_stock_list', cuttingStockListRouter) // // 使用路由

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const mongoosePaginate = require('mongoose-paginate-v2')
 const inspectionRegistrationSchema = new mongoose.Schema({
   employeeName: {
     type: String,
@@ -43,6 +43,7 @@ const inspectionRegistrationSchema = new mongoose.Schema({
   }
 })
 
+inspectionRegistrationSchema.plugin(mongoosePaginate)
 const InspectionRegistration = mongoose.model('InspectionRegistration', inspectionRegistrationSchema)
 
 module.exports = InspectionRegistration
