@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
   try {
     /**
      * Retrieves a list of cutting stock items from the database.
-     *
      * @async
      * @function
      * @param {number} skip - The number of items to skip.
