@@ -23,22 +23,16 @@ app.use(express.json())
 
 // 静态资源托管中间件
 app.use(express.static('../public'))
+// 路由
 
 // 验证token中间件
 app.use(
   expressjwt({ secret: config.jwtSecretKey }).unless({
-    path: ['/api/user/login', '/']
+    path: ['/api/user/login', '/api/user/create']
   })
 )
 
-// 使用路由模块
-app.use('/api/user', userRouter)
-app.use('/api/customers', customerRouter)
-app.use('/api/suppliers', supplierRouter)
-app.use('/api/cutting-stock-list', cuttingStockListRouter)
-app.use('/api/pr-replenishment-requisition', prReplenishmentRequisitionRouter)
-
-// 错误处理中间件
+// 解析错误中间件
 // eslint-disable-next-line space-before-function-paren
 app.use(function (err, req, res, next) {
   console.log(req.body, req.headers)
@@ -49,6 +43,13 @@ app.use(function (err, req, res, next) {
   }
   // 未知错误...
 })
+
+// 123333
+app.use('/api/user', userRouter) // // 引入路由
+app.use('/api/customer', customerRouter) // // 使用路由
+app.use('/api/suppliers', supplierRouter) // // 使用路由
+app.use('/api/cutting_stock_list', cuttingStockListRouter) // // 使用路由
+app.use('/api/pr_ReplenishmentRequisition', prReplenishmentRequisitionRouter) // // 使用路由
 
 // 监听端口
 app.listen(3333, () => {
