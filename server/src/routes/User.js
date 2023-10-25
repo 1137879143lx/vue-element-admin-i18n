@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-spacing */
 // 导入express
 const express = require('express')
 // 创建路由对象
@@ -197,23 +198,6 @@ router.post('/login', (req, res) => {
       })
     })
 })
-// swagger获取用户信息swagger写注释
-/** 获取用户信息
- * @swagger
- * /api/user/info:
- *  get:
- *   tags:
- *   - 用户管理
- *  summary: 获取用户信息
- * description: 获取用户信息
- * responses:
- * 200:
- * description: 成功
- * 401:
- * description: 失败
- * 500:
- * description: 服务器内部错误
- */
 // eslint-disable-next-line space-before-function-paren
 router.get('/info', async (req, res) => {
   // // console.log(req.user);//获取解析 authorization 后的数据  请求头里面 不是token 而是authorization
@@ -466,11 +450,49 @@ router.post('/logout', (req, res) => {
   })
 })
 
+// 查询本月有多少个用户注册
+/** 查询本月有多少个用户注册
+ * @swagger
+ * /api/user/month:
+ *  get:
+ *   tags:
+ *   - 用户管理
+ *  summary: 查询本月有多少个用户注册
+ * description: 查询本月有多少个用户注册
+ * responses:
+ * 200:
+ * description: 成功
+ * 401:
+ * description: 失败
+ * 500:
+ * description: 服务器内部错误
+ * 400:
+ * description: 参数错误
+ */
+router.get('/month', (req, res) => {
+  // 获取当前时间
+  const now = new Date()
+  // 获取本月第一天的时间
+  const start = new Date(now.getFullYear(), now.getMonth(), 1)
+  // 获取本月最后一天的时间
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+  // 查询数据库中的用户列表
+  User.find({ createdAt: { $gte: start, $lte: end } })
+    .then((data) => {
+      // 响应
+      res.json({
+        code: 200,
+        msg: '获取本月用户注册数量成功',
+        data: data.length
+      })
+    })
+    .catch((err) => {
+      res.json({
+        code: 500,
+        msg: err.message
+      })
+    })
+})
+
 // 导出路由
 module.exports = router
-// 3.在server\src\index.js中引入路由
-// // 引入路由
-// const userRouter = require('./routes/User')
-// // 使用路由
-// app.use('/api/user', userRouter)
-// 4.在server\src\index.js中启动服务器

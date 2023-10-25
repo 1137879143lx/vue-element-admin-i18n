@@ -6,39 +6,8 @@ const Cutting_stock_list = require('../models/Cutting_stock_list')
 
 // 修改下料列表
 router.put('/cutting_stock_list/:id', async (req, res) => {
-  const {
-    Production_order,
-    Material_code,
-    Material_name,
-    Version,
-    Cutting_name,
-    Cutting_number,
-    Cutting_size,
-    Theoretical_dosage,
-    Actual_dosage,
-    Customer_delivery,
-    Cutting_date,
-    Cutting_personnel,
-    Is_cutting
-  } = req.body
-  const cutting_stock_list = await Cutting_stock_list.findByIdAndUpdate(req.params.id, {
-    Production_order: Production_order,
-    Material_code: Material_code,
-    Material_name: Material_name,
-    Version: Version,
-    Cutting_name: Cutting_name,
-    Cutting_number: Cutting_number,
-    Cutting_size: Cutting_size,
-    Theoretical_dosage: Theoretical_dosage,
-    Actual_dosage: Actual_dosage,
-    Customer_delivery: Customer_delivery,
-    Cutting_date: Cutting_date,
-    Cutting_personnel: Cutting_personnel,
-    Is_cutting: Is_cutting
-  })
+  const cutting_stock_list = await Cutting_stock_list.findByIdAndUpdate(req.params.id, req.body)
   res.send(cutting_stock_list)
-  const cutting_stock_list2 = await Cutting_stock_list.findByIdAndUpdate(req.params.id, req.body)
-  res.send(cutting_stock_list2)
 })
 
 // 删除下料列表

@@ -9,40 +9,31 @@ const supplierSchema = new mongoose.Schema({
     unique: true
   },
   ShortName: {
-    type: String,
-    required: [true, '供应商简称不能为空']
+    type: String
   },
   FullName: {
-    type: String,
-    required: [true, '供应商全称不能为空']
+    type: String
   },
   Address: {
-    type: String,
-    required: [true, '供应商地址不能为空']
+    type: String
   },
   Contact: {
-    type: String,
-    required: [true, '供应商联系人不能为空']
+    type: String
   },
   Tel: {
-    type: String,
-    required: [true, '供应商电话不能为空']
+    type: String
   },
   Email: {
-    type: String,
-    required: [true, '供应商邮箱不能为空']
+    type: String
   },
   Phone: {
-    type: String,
-    required: [true, '供应商手机不能为空']
+    type: String
   },
   Tax: {
-    type: String,
-    required: [true, '供应商税号不能为空']
+    type: String
   },
   CurrencyCode: {
-    type: String,
-    required: [true, '供应商币种不能为空']
+    type: String
   },
   enable_flag: {
     type: String,
