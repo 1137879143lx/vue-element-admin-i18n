@@ -3,7 +3,7 @@
 
 const express = require('express')
 const router = express.Router()
-const Pr_ReplenishmentRequisition = require('../models/Pr_ReplenishmentRequisition')
+const Pr_ReplenishmentRequisition = require('../models/Pr_ReplenishmentRequisitionModel')
 
 // 获取所有补料申请单
 router.get('/', async (req, res, next) => {

@@ -2,7 +2,7 @@
 
 const express = require('express')
 const router = express.Router()
-const Supplier = require('../models/Supplier')
+const Supplier = require('../models/SupplierModel')
 
 // 创建供应商
 router.post('/create', (req, res) => {

@@ -4,11 +4,11 @@ const expressjwt = require('express-jwt')
 const config = require('./config/config')
 
 // 引入路由模块
-const userRouter = require('./routes/User')
-const customerRouter = require('./routes/Customer')
-const supplierRouter = require('./routes/Supplier')
-const cuttingStockListRouter = require('./routes/Cutting_stock_list')
-const prReplenishmentRequisitionRouter = require('./routes/Pr_ReplenishmentRequisition')
+const userRouter = require('./routes/UserRouters')
+const customerRouter = require('./routes/CustomerRouters')
+const supplierRouter = require('./routes/SupplierRouters')
+const cuttingStockListRouter = require('./routes/Cutting_stock_listRouters')
+const prReplenishmentRequisitionRouter = require('./routes/Pr_ReplenishmentRequisitionRouters')
 
 const app = express()
 

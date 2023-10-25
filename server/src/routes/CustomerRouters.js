@@ -2,7 +2,7 @@
 /* eslint-disable space-before-function-paren */
 const express = require('express')
 const router = express.Router()
-const Customer = require('../models/Customer')
+const Customer = require('../models/CustomerModel')
 
 // 创建客户
 router.post('/create', async (req, res) => {

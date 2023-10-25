@@ -1,7 +1,7 @@
 /* eslint-disable space-before-function-paren */
 const express = require('express')
 const router = express.Router()
-const Cutting_stock_list = require('../models/Cutting_stock_list')
+const Cutting_stock_list = require('../models/Cutting_stock_listModel')
 
 router.get('/', async (req, res) => {
   const page = parseInt(req.query.page) || 1 // 获取页码，默认为第一页

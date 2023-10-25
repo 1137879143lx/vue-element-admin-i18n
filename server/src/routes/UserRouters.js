@@ -4,7 +4,7 @@ const express = require('express')
 // 创建路由对象
 const router = express.Router()
 // 导入用户集合构造函数
-const User = require('../models/User')
+const User = require('../models/UserModel')
 // 导入moment模块
 // const moment = require('moment')
 const jwt = require('jsonwebtoken') // 导入jsonwebtoken模块
