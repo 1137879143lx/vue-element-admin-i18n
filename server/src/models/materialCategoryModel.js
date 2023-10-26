@@ -2,14 +2,13 @@ const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 const db = require('../config/db')
 const materialCategorySchema = new mongoose.Schema({
-  content: {
+  name: {
     type: String,
     required: true,
     unique: true
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: String
   },
   createdAt: {
     type: Date,

@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
     res.status(200).json({ code: 200, data: materials, page, totalPages }) // 返回查询结果、页码和总页数
   } catch (err) {
-    res.status(500).json({ code: 500, message: err.message }) // 返回错误信息
+    res.json({ code: 500, message: err.message }) // 返回错误信息
   }
 })
 
@@ -27,12 +27,12 @@ router.get('/:id', getMaterial, (req, res) => {
 // POST /materials 创建新物料
 router.post('/', async (req, res) => {
   const material = new Material(req.body) // 创建新物料对象
-
+  console.log(req.body)
   try {
     const newMaterial = await material.save() // 将新物料对象保存到数据库中
-    res.status(201).json({ code: 200, data: newMaterial }) // 返回成功信息和新物料对象
+    res.json({ code: 200, data: newMaterial }) // 返回成功信息和新物料对象
   } catch (err) {
-    res.status(400).json({ code: 400, message: err.message }) // 返回错误信息
+    res.json({ code: 400, message: err.message }) // 返回错误信息
   }
 })
 
@@ -48,7 +48,7 @@ router.patch('/:id', getMaterial, async (req, res) => {
     const updatedMaterial = await res.material.save() // 保存更新后的物料对象
     res.status(200).json({ code: 200, data: updatedMaterial }) // 返回成功信息和更新后的物料对象
   } catch (err) {
-    res.status(400).json({ code: 400, message: err.message }) // 返回错误信息
+    res.json({ code: 400, message: err.message }) // 返回错误信息
   }
 })
 
@@ -58,7 +58,7 @@ router.delete('/:id', getMaterial, async (req, res) => {
     await res.material.remove() // 删除指定 ID 的物料
     res.status(200).json({ code: 200, message: 'Material deleted' }) // 返回删除成功的消息
   } catch (err) {
-    res.status(500).json({ code: 500, message: err.message }) // 返回错误信息
+    res.json({ code: 500, message: err.message }) // 返回错误信息
   }
 })
 
@@ -69,10 +69,10 @@ async function getMaterial(req, res, next) {
   try {
     material = await Material.findById(req.params.id) // 查找指定 ID 的物料
     if (material == null) {
-      return res.status(404).json({ code: 404, message: 'Material not found' }) // 返回错误信息
+      return res.json({ code: 404, message: 'Material not found' }) // 返回错误信息
     }
   } catch (err) {
-    return res.status(500).json({ code: 500, message: err.message }) // 返回错误信息
+    return res.json({ code: 500, message: err.message }) // 返回错误信息
   }
 
   res.material = material // 将物料对象赋值给 res.material

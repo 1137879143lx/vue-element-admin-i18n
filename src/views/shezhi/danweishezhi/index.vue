@@ -3,73 +3,73 @@
     <el-card size="mini" shadow="hover">
       <el-form :inline="true" class="search-form" size="mini">
         <el-form-item label="单位名称">
-          <el-input v-model="searchName" placeholder="请输入单位名称" />
+          <el-input v-model="UnitsearchName" placeholder="请输入单位名称" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search">搜索</el-button>
+          <el-button type="primary" @click="Unitsearch">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="add">新增</el-button>
+          <el-button type="primary" @click="Unitadd">新增</el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="tableData" style="width: 100%" size="mini" height="530">
-        <el-table-column label="序号" type="index" />
+      <el-table :data="UnittableData" style="width: 100%" size="mini" height="530">
+        <el-table-column label="#" type="index" />
 
         <el-table-column prop="name" label="单位" />
         <el-table-column prop="createdBy" label="创建人" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="mini" @click="edit(scope.row)">编辑</el-button>
-            <el-button type="text" size="mini" @click="remove(scope.row)">删除</el-button>
+            <el-button type="text" size="mini" @click="Unitremove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        v-if="totalPages > 1"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="totalPages"
+        v-if="UnittotalPages > 1"
+        :current-page="UnitcurrentPage"
+        :page-size="UnitpageSize"
+        :total="UnittotalPages"
         small
-        @current-change="handlePageChange"
+        @current-change="UnithandlePageChange"
       />
     </el-card>
-    <!--  -->
+
+    <!-- 物料类型 -->
     <el-card size="mini" shadow="hover">
       <el-form :inline="true" class="search-form" size="mini">
         <el-form-item label="物料类型">
-          <el-input v-model="searchName" placeholder="请输入物料类型" />
+          <el-input v-model="MaterialType_searchName" placeholder="请输入物料类型" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search">搜索</el-button>
+          <el-button type="primary" @click="MaterialType_search">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="add">新增</el-button>
+          <el-button type="primary" @click="MaterialType_add">新增</el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="tableData" style="width: 100%" size="mini" height="530">
-        <el-table-column label="序号" type="index" />
+      <el-table :data="MaterialType_tableData" style="width: 100%" size="mini" height="530">
+        <el-table-column label="#" type="index" />
 
-        <el-table-column prop="materialType" label="物料类型" />
+        <el-table-column prop="name" label="物料类型" />
         <el-table-column prop="createdBy" label="创建人" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="mini" @click="edit(scope.row)">编辑</el-button>
-            <el-button type="text" size="mini" @click="remove(scope.row)">删除</el-button>
+            <el-button type="text" size="mini" @click="MaterialType_remove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <el-pagination
-        v-if="totalPages > 1"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="totalPages"
+        v-if="MaterialType_totalPages > 1"
+        :current-page="MaterialType_currentPage"
+        :page-size="MaterialType_pageSize"
+        :total="MaterialType_totalPages"
         small
-        @current-change="handlePageChange"
+        @current-change="MaterialType_handlePageChange"
       />
     </el-card>
+
     <!-- 标签设置 -->
-    <el-card size="mini" shadow="hover">
+    <!-- <el-card size="mini" shadow="hover">
       <el-form :inline="true" class="search-form" size="mini">
         <el-form-item label="标签名称">
           <el-input v-model="searchName" placeholder="请输入标签名称" />
@@ -100,11 +100,10 @@
         :page-size="pageSize"
         :total="totalPages"
         small
-        @current-change="handlePageChange"
-      />
+        @current-change="handlePageChange" />
     </el-card>
 
-    <el-dialog :visible.sync="dialogVisible" title="单位设置" width="30%">
+    <el-dialog :visible.sync="UnitdialogVisible" title="单位设置" width="30%">
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item label="单位名称" prop="name">
           <el-input v-model="form.name" />
@@ -112,59 +111,59 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="UnitdialogVisible = false">取消</el-button>
         <el-button type="primary" @click="submitForm">确定</el-button>
       </div>
     </el-dialog>
+  </div> -->
   </div>
 </template>
 
 <script>
-import { getlist, addUnit, updateUnit, deleteUnit } from '@/api/units'
-
+import { getlist, addUnit, deleteUnit } from '@/api/units'
+import * as materialCategory from '@/api/materialCategory'
+// MaterialType 物料类型
 export default {
   name: 'Danweishezhi',
   data() {
     return {
-      tableData: [],
-      searchName: '',
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      totalPages: 0,
-      dialogVisible: false,
-      form: {
-        name: ''
-      },
-      rules: {
-        name: [{ required: true, message: '请输入单位名称', trigger: 'blur' }]
-      }
+      UnittableData: [],
+      UnitsearchName: '',
+      UnitcurrentPage: 1,
+      UnitpageSize: 10,
+      Unittotal: 0,
+      UnittotalPages: 0,
+      UnitdialogVisible: false,
+      // //////////////////////////
+      MaterialType_tableData: [],
+      MaterialType_searchName: '',
+      MaterialType_currentPage: 1,
+      MaterialType_pageSize: 10,
+      MaterialType_total: 0,
+      MaterialType_totalPages: 0
     }
   },
 
   methods: {
-    async search() {
-      console.log(`currentPage: ${this.currentPage}, pageSize: ${this.pageSize}, searchName: ${this.searchName}`)
+    async Unitsearch() {
       const { data, count } = await getlist({
-        page: this.currentPage,
-        limit: this.pageSize,
-        name: this.searchName
+        page: this.UnitcurrentPage,
+        limit: this.UnitpageSize,
+        name: this.UnitsearchName
       })
 
-      this.tableData = data
-      this.totalPages = count
+      this.UnittableData = data
+      this.UnittotalPages = count
     },
-    add() {
-      this.form = { name: '' }
-      this.dialogVisible = true
-    },
-
-    async edit(row) {
-      this.form = { ...row }
-      this.dialogVisible = true
+    async Unitadd() {
+      await addUnit({
+        name: this.UnitsearchName
+      })
+      this.UnitsearchName = ''
+      this.Unitsearch()
     },
 
-    async remove(row) {
+    async Unitremove(row) {
       const confirmed = await this.$confirm(`确认删除 ${row.name} 吗？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -172,40 +171,61 @@ export default {
       }).catch(() => false)
       if (confirmed) {
         await deleteUnit(row._id)
-        this.search()
+        this.Unitsearch()
       }
     },
 
-    async submitForm() {
-      const valid = await this.$refs.form.validate().catch(() => false)
-
-      if (valid) {
-        if (this.form._id) {
-          await updateUnit(this.form._id, this.form)
-        } else {
-          await addUnit(this.form)
-        }
-
-        this.dialogVisible = false
-        this.search()
+    UnithandlePageChange(page) {
+      this.UnitcurrentPage = page
+      this.Unitsearch()
+    },
+    // /////////////////////  物料类型 /////////////////////// /
+    async MaterialType_search() {
+      const res = await materialCategory.getlist({
+        name: this.MaterialType_searchName,
+        page: this.MaterialType_currentPage,
+        limit: this.MaterialType_pageSize
+      })
+      this.MaterialType_tableData = res.data
+      this.MaterialType_totalPages = res.count
+    },
+    async MaterialType_add() {
+      // ...
+      await materialCategory.add({
+        name: this.MaterialType_searchName
+      })
+      this.MaterialType_searchName = ''
+      this.MaterialType_search()
+    },
+    async MaterialType_edit(row) {
+      // ...
+      await materialCategory.update(row._id, {
+        name: this.MaterialType_searchName
+      })
+    },
+    async MaterialType_remove(row) {
+      // ...
+      const confirmed = await this.$confirm(`确认删除 ${row.name} 吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(() => false)
+      if (confirmed) {
+        await materialCategory.deletes(row._id)
+        this.MaterialType_search()
       }
     },
-
-    handlePageChange(page) {
-      this.currentPage = page
-      this.search()
-    },
-    getPaginationParams() {
-      const page = this.currentPage
-      const limit = this.pageSize
-      const skip = (page - 1) * limit
-      return { page, limit, skip }
+    MaterialType_handlePageChange(page) {
+      this.MaterialType_currentPage = page
+      console.log(this.MaterialType_currentPage)
+      this.MaterialType_search()
     }
   },
 
   // eslint-disable-next-line vue/order-in-components
   async mounted() {
-    this.search()
+    this.Unitsearch()
+    this.MaterialType_search()
   }
 }
 </script>

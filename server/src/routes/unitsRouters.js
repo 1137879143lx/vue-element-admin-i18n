@@ -15,13 +15,13 @@ router.get('/', async (req, res) => {
     const count = await UnitModel.countDocuments(query)
     res.json({ code: 200, data: units, count })
   } catch (err) {
-    res.status(500).json({ code: 500, message: err.message })
+    res.json({ code: 500, message: err.message })
   }
 })
 
 // GET /units/:id
 router.get('/:id', getUnit, (req, res) => {
-  res.status(200).json({ code: 200, data: res.unit }) // 返回查询结果
+  res.json({ code: 200, data: res.unit }) // 返回查询结果
 })
 
 // POST /units
@@ -32,9 +32,9 @@ router.post('/', async (req, res) => {
   })
   try {
     const newUnit = await unit.save() // 创建新的单位
-    res.status(200).json({ code: 200, data: newUnit }) // 返回创建结果
+    res.json({ code: 200, data: newUnit, message: '创建成功' }) // 返回创建结果
   } catch (err) {
-    res.status(400).json({ code: 400, message: err.message }) // 返回错误信息
+    res.json({ code: 400, message: err.message }) // 返回错误信息
   }
 })
 
@@ -44,7 +44,7 @@ router.delete('/:id', getUnit, async (req, res) => {
     await UnitModel.deleteOne({ _id: req.params.id }) // 删除指定的单位
     res.status(200).json({ code: 200, message: 'Unit deleted' }) // 返回删除成功信息
   } catch (err) {
-    res.status(500).json({ code: 500, message: err.message }) // 返回错误信息
+    res.json({ code: 500, message: err.message }) // 返回错误信息
   }
 })
 // PUT /units/:id
@@ -58,9 +58,9 @@ router.put('/:id', getUnit, async (req, res) => {
       res.unit.description = description
     }
     await res.unit.save()
-    res.status(200).json({ code: 200, message: 'Unit updated' })
+    res.json({ code: 200, message: 'Unit updated' })
   } catch (err) {
-    res.status(500).json({ code: 500, message: err.message })
+    res.json({ code: 500, message: err.message })
   }
 })
 // 定义 getUnit 中间件函数，用于查询指定的单位
@@ -69,10 +69,10 @@ async function getUnit(req, res, next) {
   try {
     unit = await UnitModel.findById(req.params.id)
     if (unit == null) {
-      return res.status(404).json({ code: 404, message: 'Unit not found' })
+      res.json({ code: 404, message: 'Unit not found' })
     }
   } catch (err) {
-    return res.status(500).json({ code: 500, message: err.message })
+    res.json({ code: 500, message: err.message })
   }
 
   res.unit = unit

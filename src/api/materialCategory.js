@@ -8,26 +8,25 @@ export function getlist(params) {
   })
 }
 
-export function add(params) {
+export function add(data) {
   return request({
     url: '/api/materialCategory',
     method: 'post',
-    params
+    data
   })
 }
 
-export function put(params) {
+export function put(id, data) {
   return request({
-    url: '/api/materialCategory',
+    url: `/api/materialCategory/${id}`,
     method: 'put',
-    params
+    data
   })
 }
 
-export function deletes(params) {
+export function deletes(id) {
   return request({
-    url: '/api/materialCategory',
-    method: 'delete',
-    params
+    url: `/api/materialCategory/${id}`,
+    method: 'delete'
   })
 }

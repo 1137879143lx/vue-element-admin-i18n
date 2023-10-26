@@ -19,7 +19,7 @@ router.post('/create', (req, res) => {
   if (!username || !password) {
     return res.send({
       code: 401,
-      msg: '用户名或密码不能为空'
+      message: '用户名或密码不能为空'
     })
   }
   // 查询数据库中是否存在该用户
@@ -29,7 +29,7 @@ router.post('/create', (req, res) => {
       if (data) {
         return res.send({
           code: 402,
-          msg: '用户名已存在'
+          message: '用户名已存在'
         })
       }
       // 如果不存在
@@ -40,13 +40,13 @@ router.post('/create', (req, res) => {
       // 响应
       res.send({
         code: 200,
-        msg: '用户创建成功'
+        message: '用户创建成功'
       })
     })
     .catch((err) => {
       res.send({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })
@@ -59,7 +59,7 @@ router.post('/login', (req, res) => {
   if (!username || !password) {
     return res.json({
       code: 401,
-      msg: '用户名或密码不能为空'
+      message: '用户名或密码不能为空'
     })
   }
   // 查询数据库中是否存在该用户    //返回给用户数据 tonken
@@ -87,7 +87,7 @@ router.post('/login', (req, res) => {
           )
         return res.json({
           code: 200,
-          msg: '登录成功',
+          message: '登录成功',
           data: {
             token: token
           }
@@ -97,13 +97,13 @@ router.post('/login', (req, res) => {
       console.log(username, password)
       return res.json({
         code: 402,
-        msg: '用户名或密码错误'
+        message: '用户名或密码错误'
       })
     })
     .catch((err) => {
       res.json({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })
@@ -135,7 +135,7 @@ router.post('/update', (req, res) => {
   if (!username) {
     return res.json({
       code: 401,
-      msg: '用户名不能为空'
+      message: '用户名不能为空'
     })
   }
   // 查询数据库中是否存在该用户
@@ -149,20 +149,20 @@ router.post('/update', (req, res) => {
       // 如果不存在
       return res.json({
         code: 402,
-        msg: '用户名不存在'
+        message: '用户名不存在'
       })
     })
     .then((data) => {
       // 响应
       res.json({
         code: 200,
-        msg: '修改用户信息成功'
+        message: '修改用户信息成功'
       })
     })
     .catch((err) => {
       res.json({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })
@@ -189,20 +189,20 @@ router.get('/delete', (req, res) => {
       // 如果不存在
       return res.json({
         code: 402,
-        msg: '用户名不存在'
+        message: '用户名不存在'
       })
     })
     .then((data) => {
       // 响应
       res.json({
         code: 200,
-        msg: '删除用户成功'
+        message: '删除用户成功'
       })
     })
     .catch((err) => {
       res.json({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })
@@ -214,14 +214,14 @@ router.get('/list', (req, res) => {
       // 响应
       res.json({
         code: 200,
-        msg: '获取用户列表成功',
+        message: '获取用户列表成功',
         data
       })
     })
     .catch((err) => {
       res.json({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })
@@ -229,7 +229,7 @@ router.get('/list', (req, res) => {
 router.post('/logout', (req, res) => {
   res.json({
     code: 200,
-    msg: '退出成功'
+    message: '退出成功'
   })
 })
 
@@ -247,14 +247,14 @@ router.get('/month', (req, res) => {
       // 响应
       res.json({
         code: 200,
-        msg: '获取本月用户注册数量成功',
+        message: '获取本月用户注册数量成功',
         data: data.length
       })
     })
     .catch((err) => {
       res.json({
         code: 500,
-        msg: err.message
+        message: err.message
       })
     })
 })

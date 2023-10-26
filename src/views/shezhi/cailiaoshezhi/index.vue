@@ -60,7 +60,7 @@
         </el-descriptions-item>
         <el-descriptions-item label="*物料类别">
           <el-select v-model="Class_of_material" placeholder="请选择" clearable @visible-change="Material_Category_search">
-            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.content" :value="item.content" />
+            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="状态">
