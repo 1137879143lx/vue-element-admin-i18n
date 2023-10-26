@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
+const db = require('../config/db')
 const materialCategorySchema = new mongoose.Schema({
   content: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   createdAt: {
     type: Date,
@@ -17,6 +18,6 @@ const materialCategorySchema = new mongoose.Schema({
 })
 
 materialCategorySchema.plugin(mongoosePaginate)
-const MaterialCategory = mongoose.model('MaterialCategory', materialCategorySchema)
+const MaterialCategory = db.model('MaterialCategory', materialCategorySchema)
 
 module.exports = MaterialCategory

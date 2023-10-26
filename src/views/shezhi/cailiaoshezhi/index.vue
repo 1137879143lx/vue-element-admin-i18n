@@ -41,13 +41,8 @@
         <el-descriptions-item label="标签" />
 
         <el-descriptions-item label="*单位">
-          <el-select v-model="unit" placeholder="请选择" clearable>
-            <el-option label="KG" value="KG" />
-            <el-option label="PCS" value="PCS" />
-            <el-option label="套" value="套" />
-            <el-option label="米" value="米" />
-            <el-option label="台" value="台" />
-            <el-option label="支" value="支" />
+          <el-select v-model="unit" placeholder="请选择" clearable @visible-change="unit_search">
+            <el-option v-for="(item, index) in unitlis" :key="index" :label="item.name" :value="item.name" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="密度Kg/m3">
@@ -64,12 +59,8 @@
           <el-input v-model="Unit_price" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="*物料类别">
-          <el-select v-model="Class_of_material" placeholder="请选择" clearable>
-            <el-option label="原材料" value="原材料" />
-            <el-option label="产品" value="产品" />
-            <el-option label="零件" value="零件" />
-            <el-option label="电极" value="电极" />
-            <el-option label="标准" value="标准" />
+          <el-select v-model="Class_of_material" placeholder="请选择" clearable @visible-change="Material_Category_search">
+            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.content" :value="item.content" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="状态">
@@ -98,6 +89,8 @@
 </style>
 
 <script>
+import * as materialCategory from '@/api/materialCategory'
+import * as units from '@/api/units'
 export default {
   name: 'Cailiaoshezhi',
   data() {
@@ -107,7 +100,9 @@ export default {
       Safety_stock: null,
       Maximum_inventory: null,
       Class_of_material: '',
+      Class_of_material_list: [],
       unit: '',
+      unitlis: [],
       Material_code: '',
       Material_name: '',
       density: '',
@@ -128,6 +123,31 @@ export default {
     },
     New_additions() {
       console.log('新增物料编码')
+    },
+    Material_Category_search(visible) {
+      // visible 参数表示下拉框是否展开
+      if (visible) {
+        // 下拉框展开时的处理逻辑
+        console.log('下拉框展开')
+        materialCategory.getlist().then((res) => {
+          this.Class_of_material_list = res.data
+          console.log(res)
+        })
+      } else {
+        // 下拉框收起时的处理逻辑
+        console.log('下拉框收起')
+      }
+    },
+    unit_search(visible) {
+      if (visible) {
+        console.log('下拉框展开')
+        units.getlist().then((res) => {
+          this.unitlis = res.data
+          console.log(res)
+        })
+      } else {
+        console.log('下拉框收起')
+      }
     }
   }
 }

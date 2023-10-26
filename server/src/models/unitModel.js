@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2')
+const db = require('../config/db')
 const unitSchema = new mongoose.Schema({
-  content: {
+  name: {
     type: String,
-    required: true
+    required: true,
+    unique: true // 唯一性约束
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: String // 引用类型
   },
   createdAt: {
     type: Date,
@@ -16,8 +15,6 @@ const unitSchema = new mongoose.Schema({
   }
 })
 
-unitSchema.plugin(mongoosePaginate)
-
-const Unit = mongoose.model('Unit', unitSchema)
-
+// unitSchema.plugin(mongoosePaginate)
+const Unit = db.model('Unit', unitSchema)
 module.exports = Unit

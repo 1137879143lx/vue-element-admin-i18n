@@ -350,6 +350,25 @@ export const constantRoutes = [
         meta: { title: '物料设置', icon: 'documentation', affix: true }
       },
       {
+        path: 'biaoqianshezhi',
+        component: () => import('@/views/shezhi/biaoqianshezhi/index'),
+        name: 'biaoqianshezhi',
+        meta: { title: '标签设置', icon: 'documentation', affix: true }
+      },
+      {
+        path: 'danweishezhi',
+        component: () => import('@/views/shezhi/danweishezhi/index'),
+        name: 'danweishezhi',
+        meta: { title: '单位设置', icon: 'documentation', affix: true }
+      },
+      {
+        path: 'leixingshezhi',
+        component: () => import('@/views/shezhi/leixingshezhi/index'),
+        name: 'leixingshezhi',
+        meta: { title: '类型设置', icon: 'documentation', affix: true }
+      },
+
+      {
         path: 'index4',
         component: () => import('@/views/documentation/index'),
         name: 'caigou',

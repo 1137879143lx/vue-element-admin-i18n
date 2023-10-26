@@ -3,13 +3,18 @@ const express = require('express')
 const router = express.Router()
 const TagModel = require('../models/tagModel')
 
-// 获取所有标签
 router.get('/', async (req, res) => {
+  const { page = 1, limit = 10, ...query } = req.query
+  const skip = (page - 1) * limit
+
   try {
-    const tags = await TagModel.find()
-    res.status(200).json(tags)
+    const tags = await TagModel.find(query).skip(skip).limit(limit)
+    const count = await TagModel.countDocuments(query)
+    const totalPages = Math.ceil(count / limit)
+
+    res.status(200).json({ code: 200, data: tags, page, totalPages })
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ code: 500, message: err.message })
   }
 })
 

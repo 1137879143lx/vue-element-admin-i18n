@@ -1,41 +1,36 @@
 import request from '@/utils/request'
 
-// 查询xun
-export function getlist() {
+// 获取物料类型列表
+export function getMaterialTypes(params) {
   return request({
-    url: '/api/Customer/list',
-    method: 'get'
+    url: '/api/material-types',
+    method: 'get',
+    params
   })
 }
-// 新增
-export function add(data) {
+
+// 新增物料类型
+export function addMaterialType(data) {
   return request({
-    url: '/api/Customer/add',
+    url: '/api/material-types',
     method: 'post',
     data
   })
 }
-// 删除
-export function del(data) {
+
+// 编辑物料类型
+export function editMaterialType(id, data) {
   return request({
-    url: '/api/Customer/del',
-    method: 'post',
+    url: `/api/material-types/${id}`,
+    method: 'put',
     data
   })
 }
-// 修改
-export function edit(data) {
+
+// 删除物料类型
+export function deleteMaterialType(id) {
   return request({
-    url: '/api/Customer/edit',
-    method: 'post',
-    data
-  })
-}
-// 查询
-export function search(data) {
-  return request({
-    url: '/api/Customer/search', // 假地址 自行替换
-    method: 'post',
-    data
+    url: `/api/material-types/${id}`,
+    method: 'delete'
   })
 }

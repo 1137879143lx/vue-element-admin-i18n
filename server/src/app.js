@@ -9,12 +9,13 @@ const customerRouter = require('./routes/CustomerRouters')
 const supplierRouter = require('./routes/SupplierRouters')
 const cuttingStockListRouter = require('./routes/Cutting_stock_listRouters')
 const prReplenishmentRequisitionRouter = require('./routes/Pr_ReplenishmentRequisitionRouters')
+const MaterialCategoryRouter = require('./routes/MaterialCategoryRouters')
+const UnitRouter = require('./routes/unitsRouters')
 
 const app = express()
 
 // 跨域中间件
 app.use(cors())
-
 // 解析post请求中间件
 app.use(express.urlencoded({ extended: false }))
 
@@ -50,6 +51,8 @@ app.use('/api/customer', customerRouter) // // 使用路由
 app.use('/api/suppliers', supplierRouter) // // 使用路由
 app.use('/api/cutting_stock_list', cuttingStockListRouter) // // 使用路由
 app.use('/api/pr_ReplenishmentRequisition', prReplenishmentRequisitionRouter) // // 使用路由
+app.use('/api/materialCategory', MaterialCategoryRouter) // // 使用路由
+app.use('/api/units', UnitRouter) // // 使用路由
 
 // 监听端口
 app.listen(3333, () => {
