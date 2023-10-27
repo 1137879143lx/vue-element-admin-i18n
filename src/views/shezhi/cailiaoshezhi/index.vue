@@ -2,71 +2,93 @@
   <div class="cailiaoshezhi">
     <el-card shadow="always" :body-style="{ padding: '5px' }">
       <div slot="header">
-        <span>物料设置</span>
+        <span>
+          物料设置
+          <span v-if="selectedItems.length > 0" style="color: rgb(14, 91, 235); font-size: 0.5em">已选择 {{ selectedItems.length }} 项</span>
+        </span>
+
         <el-button size="mini" style="float: right; margin: 0" type="link">已删除物料</el-button>
         <el-button size="mini" style="float: right; margin: 0" type="link">导入</el-button>
         <el-button size="mini" style="float: right; margin: 0" type="link">下载导入模板</el-button>
         <el-button size="mini" style="float: right; margin: 0" type="link" @click="dialogVisible = true">新增</el-button>
       </div>
       <!-- card body -->
-      <el-table>
+      <el-table :data="tableData" size="mini" @selection-change="handleSelectionChange">
         <el-table-column type="index" />
         <el-table-column type="selection" />
-        <el-table-column label="图片" />
-        <el-table-column label="物料编码" />
-        <el-table-column label="物料名称" />
-        <el-table-column label="描述" />
-        <el-table-column label="标签" />
-        <el-table-column label="单位" />
-        <el-table-column label="状态" />
+
+        <el-table-column prop="code" label="物料编码" min-width="120" />
+        <el-table-column prop="name" label="物料名称" min-width="120" />
+        <el-table-column prop="description" label="描述" min-width="120" />
+        <el-table-column prop="tags" label="标签" />
+        <el-table-column prop="unit" label="单位" />
+        <el-table-column prop="density" label="密度Kg/m3" />
+        <el-table-column prop="maxInventory" label="最大库存" />
+        <el-table-column prop="inventory" label="安全库存" />
+        <el-table-column prop="price" label="单价" />
+        <el-table-column prop="category" label="物料类别" />
+
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status === '启用'" type="success">启用</el-tag>
+            <el-tag v-if="scope.row.status === '禁止'" type="danger">禁止</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="图片">
+          <template slot-scope="scope">
+            <img :src="scope.row.image" alt="未上传" style="width: 40px; height: 40px">
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
-          <el-button type="text">编辑</el-button>
-          <el-button type="text">删除</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" size="mini" @click="edit(scope.row)">编辑</el-button>
+            <el-button type="text" size="mini" @click="remove(scope.row)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
     <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
       <el-descriptions direction="horizontal" border column="2">
         <el-descriptions-item span="1" label="*物料编码">
-          <el-input v-model="Material_code" clearable placeholder="物料编码">
+          <el-input v-model="materials_form.code" clearable placeholder="物料编码">
             <el-button slot="append" icon="el-icon-eleme" @click="New_additions()" />
           </el-input>
         </el-descriptions-item>
         <el-descriptions-item label="*物料名称">
-          <el-input v-model="Material_name" clearable placeholder="物料名称" />
+          <el-input v-model="materials_form.name" clearable placeholder="物料名称" />
         </el-descriptions-item>
         <el-descriptions-item label="物料描述">
-          <el-input v-model="Material_description" clearable placeholder="物料描述" />
+          <el-input v-model="materials_form.description" clearable placeholder="物料描述" />
         </el-descriptions-item>
         <el-descriptions-item label="标签" />
 
         <el-descriptions-item label="*单位">
-          <el-select v-model="unit" placeholder="请选择" clearable @visible-change="unit_search">
+          <el-select v-model="materials_form.unit" placeholder="请选择" clearable @visible-change="unit_search">
             <el-option v-for="(item, index) in unitlis" :key="index" :label="item.name" :value="item.name" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="密度Kg/m3">
-          <el-input v-model="density" placeholder="如果是原材料，则必填" clearable />
+          <el-input v-model="materials_form.density" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="最大库存">
-          <el-input v-model="Maximum_inventory" placeholder="最大库存数量" clearable />
+          <el-input v-model="materials_form.maxInventory" placeholder="最大库存数量" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="安全库存">
-          <el-input v-model="Safety_stock" placeholder="安全库存数量" clearable />
+          <el-input v-model="materials_form.inventory" placeholder="安全库存数量" clearable />
         </el-descriptions-item>
 
         <el-descriptions-item label="单价(元)">
-          <el-input v-model="Unit_price" placeholder="如果是原材料，则必填" clearable />
+          <el-input v-model="materials_form.price" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
         <el-descriptions-item label="*物料类别">
-          <el-select v-model="Class_of_material" placeholder="请选择" clearable @visible-change="Material_Category_search">
+          <el-select v-model="materials_form.category" placeholder="请选择" clearable @visible-change="Material_Category_search">
             <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="状态">
           <template>
-            <el-radio v-model="radio" label="启用">启用</el-radio>
-            <el-radio v-model="radio" label="禁用">禁用</el-radio>
+            <el-radio v-model="materials_form.status" label="启用">启用</el-radio>
+            <el-radio v-model="materials_form.status" label="禁用">禁用</el-radio>
           </template>
         </el-descriptions-item>
         <el-descriptions-item label="图片">
@@ -78,7 +100,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -91,28 +113,38 @@
 <script>
 import * as materialCategory from '@/api/materialCategory'
 import * as units from '@/api/units'
+import * as materials from '@/api/materials'
 export default {
   name: 'Cailiaoshezhi',
   data() {
     return {
       dialogVisible: false,
-      radio: '启用',
-      Safety_stock: null,
-      Maximum_inventory: null,
-      Class_of_material: '',
-      Class_of_material_list: [],
-      unit: '',
+      tableData: [],
       unitlis: [],
-      Material_code: '',
-      Material_name: '',
-      density: '',
-      Unit_price: '',
-      Material_description: '',
-      fileList: ''
+      Class_of_material_list: [],
+      selectedItems: [],
+      materials_form: {
+        code: '',
+        name: '',
+        description: '',
+        tags: '',
+        unit: '',
+        density: '',
+        maxInventory: '',
+        inventory: '',
+        safetyStock: '',
+        price: '',
+        category: '',
+        status: '启用',
+        image: '',
+        fileList: ''
+      }
     }
   },
-  mounted() {},
 
+  async mounted() {
+    await this.getTableData()
+  },
   methods: {
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -148,6 +180,40 @@ export default {
       } else {
         console.log('下拉框收起')
       }
+    },
+    async edit(row) {
+      // TODO: 实现编辑操作的逻辑
+      console.log('编辑', row)
+    },
+    async remove(row) {
+      const confirmResult = await this.$confirm('确认删除该物料吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(() => false)
+
+      if (confirmResult) {
+        await materials.deleteMaterial(row.id)
+        await this.getTableData()
+        this.$message.success('删除成功')
+      }
+    },
+    async getTableData() {
+      const { data } = await materials.getMaterials()
+      this.tableData = data
+    },
+    async submitForm() {
+      try {
+        await materials.addMaterial(this.materials_form)
+        this.$message.success('添加成功')
+        // this.dialogVisible = false
+        await this.getTableData()
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    handleSelectionChange(selection) {
+      this.selectedItems = selection
     }
   }
 }

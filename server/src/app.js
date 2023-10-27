@@ -11,6 +11,7 @@ const cuttingStockListRouter = require('./routes/Cutting_stock_listRouters')
 const prReplenishmentRequisitionRouter = require('./routes/Pr_ReplenishmentRequisitionRouters')
 const MaterialCategoryRouter = require('./routes/MaterialCategoryRouters')
 const UnitRouter = require('./routes/unitsRouters')
+const MaterialRouter = require('./routes/materialsRouters')
 
 const app = express()
 
@@ -53,6 +54,7 @@ app.use('/api/cutting_stock_list', cuttingStockListRouter) // // 使用路由
 app.use('/api/pr_ReplenishmentRequisition', prReplenishmentRequisitionRouter) // // 使用路由
 app.use('/api/materialCategory', MaterialCategoryRouter) // // 使用路由
 app.use('/api/units', UnitRouter) // // 使用路由
+app.use('/api/materials', MaterialRouter) // // 使用路由
 
 // 监听端口
 app.listen(3333, () => {

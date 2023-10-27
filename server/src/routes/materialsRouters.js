@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
   try {
     const materials = await Material.find(query).skip(skip).limit(limit) // 查询物料列表
     const count = await Material.countDocuments(query) // 查询符合条件的文档数量
-    const totalPages = Math.ceil(count / limit) // 计算总页数
+    // const totalPages = Math.ceil(count / limit) // 计算总页数
 
-    res.status(200).json({ code: 200, data: materials, page, totalPages }) // 返回查询结果、页码和总页数
+    res.json({ code: 200, data: materials, page, count }) // 返回查询结果、页码和总页数
   } catch (err) {
     res.json({ code: 500, message: err.message }) // 返回错误信息
   }
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 
 // GET /materials/:id 获取指定 ID 的物料
 router.get('/:id', getMaterial, (req, res) => {
-  res.status(200).json({ code: 200, data: res.material }) // 返回查询结果
+  res.json({ code: 200, data: res.material }) // 返回查询结果
 })
 
 // POST /materials 创建新物料
@@ -46,7 +46,7 @@ router.patch('/:id', getMaterial, async (req, res) => {
 
   try {
     const updatedMaterial = await res.material.save() // 保存更新后的物料对象
-    res.status(200).json({ code: 200, data: updatedMaterial }) // 返回成功信息和更新后的物料对象
+    res.json({ code: 200, data: updatedMaterial }) // 返回成功信息和更新后的物料对象
   } catch (err) {
     res.json({ code: 400, message: err.message }) // 返回错误信息
   }
@@ -56,7 +56,7 @@ router.patch('/:id', getMaterial, async (req, res) => {
 router.delete('/:id', getMaterial, async (req, res) => {
   try {
     await res.material.remove() // 删除指定 ID 的物料
-    res.status(200).json({ code: 200, message: 'Material deleted' }) // 返回删除成功的消息
+    res.json({ code: 200, message: 'Material deleted' }) // 返回删除成功的消息
   } catch (err) {
     res.json({ code: 500, message: err.message }) // 返回错误信息
   }

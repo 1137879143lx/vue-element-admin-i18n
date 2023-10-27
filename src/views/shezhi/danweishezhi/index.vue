@@ -67,55 +67,6 @@
         @current-change="MaterialType_handlePageChange"
       />
     </el-card>
-
-    <!-- 标签设置 -->
-    <!-- <el-card size="mini" shadow="hover">
-      <el-form :inline="true" class="search-form" size="mini">
-        <el-form-item label="标签名称">
-          <el-input v-model="searchName" placeholder="请输入标签名称" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="search">搜索</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="add">新增</el-button>
-        </el-form-item>
-      </el-form>
-      <el-table :data="tableData" style="width: 100%" size="mini" height="530">
-        <el-table-column label="序号" type="index" />
-
-        <el-table-column prop="label" label="标签" />
-        <el-table-column prop="createdBy" label="创建人" />
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="text" size="mini" @click="edit(scope.row)">编辑</el-button>
-            <el-button type="text" size="mini" @click="remove(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination
-        v-if="totalPages > 1"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="totalPages"
-        small
-        @current-change="handlePageChange" />
-    </el-card>
-
-    <el-dialog :visible.sync="UnitdialogVisible" title="单位设置" width="30%">
-      <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item label="单位名称" prop="name">
-          <el-input v-model="form.name" />
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="UnitdialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitForm">确定</el-button>
-      </div>
-    </el-dialog>
-  </div> -->
   </div>
 </template>
 

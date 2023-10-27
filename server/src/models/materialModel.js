@@ -1,58 +1,48 @@
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
+const db = require('../config/db')
 const materialSchema = new mongoose.Schema({
   code: {
     type: String,
-    required: true
+    required: true, // 必填
+    unique: true // 唯一的
   },
   name: {
     type: String,
     required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   tags: {
-    type: [String],
-    required: true
+    type: [String]
   },
   unit: {
-    type: String,
-    required: true
+    type: String
   },
   density: {
-    type: Number,
-    required: true
+    type: Number
   },
   maxStock: {
-    type: Number,
-    required: true
+    type: Number
   },
   safetyStock: {
-    type: Number,
-    required: true
+    type: Number
   },
   price: {
-    type: Number,
-    required: true
+    type: Number
   },
   category: {
-    type: String,
-    required: true
+    type: String
   },
   status: {
-    type: String,
-    required: true
+    type: String
   },
   image: {
-    type: String,
-    required: true
+    type: String
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: String
   },
   createdAt: {
     type: Date,
@@ -65,6 +55,6 @@ const materialSchema = new mongoose.Schema({
 })
 
 materialSchema.plugin(mongoosePaginate)
-const Material = mongoose.model('Material', materialSchema)
+const Material = db.model('Material', materialSchema)
 
 module.exports = Material
