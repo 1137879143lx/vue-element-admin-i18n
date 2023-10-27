@@ -12,6 +12,7 @@ const prReplenishmentRequisitionRouter = require('./routes/Pr_ReplenishmentRequi
 const MaterialCategoryRouter = require('./routes/MaterialCategoryRouters')
 const UnitRouter = require('./routes/unitsRouters')
 const MaterialRouter = require('./routes/materialsRouters')
+const uploadRouter = require('./routes/upLoadRouters')
 
 const app = express()
 
@@ -24,28 +25,17 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 // 静态资源托管中间件
-app.use(express.static('../public'))
+// app.use(express.static('../public'))
+app.use(express.static('public'))
+
 // 路由
 
 // 验证token中间件
 app.use(
   expressjwt({ secret: config.jwtSecretKey }).unless({
-    path: ['/api/user/login', '/api/user/create']
+    path: ['/api/user/login', '/api/user/create', '/uploads']
   })
 )
-
-// 解析错误中间件
-// eslint-disable-next-line space-before-function-paren
-app.use(function (err, req, res, next) {
-  console.log(req.body, req.headers)
-  console.log('错误的中间件?' + err)
-  // 捕获身份认证失败的错误
-  if (err.name === 'UnauthorizedError') {
-    return res.json({ status: 505, msg: '身份认证失败,请重新登录' })
-  }
-  // 未知错误...
-  next(err) // fix for Problem 1
-})
 
 app.use('/api/user', userRouter) // 引入路由
 app.use('/api/customer', customerRouter) // // 使用路由
@@ -55,6 +45,20 @@ app.use('/api/pr_ReplenishmentRequisition', prReplenishmentRequisitionRouter) //
 app.use('/api/materialCategory', MaterialCategoryRouter) // // 使用路由
 app.use('/api/units', UnitRouter) // // 使用路由
 app.use('/api/materials', MaterialRouter) // // 使用路由
+app.use('/api', uploadRouter) // // 使用路由
+
+// 解析错误中间件
+// eslint-disable-next-line space-before-function-paren
+app.use(function (err, req, res, next) {
+  console.log(req.body, req.headers)
+  console.log('错误的中间件:' + err)
+  // 捕获身份认证失败的错误
+  if (err.name === 'UnauthorizedError') {
+    return res.json({ status: 505, msg: '身份认证失败,请重新登录' })
+  }
+  // 未知错误...
+  next(err) // fix for Problem 1
+})
 
 // 监听端口
 app.listen(3333, () => {

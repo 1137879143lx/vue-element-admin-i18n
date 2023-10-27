@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/html-self-closing -->
 <template>
   <div class="cailiaoshezhi">
     <el-card shadow="always" :body-style="{ padding: '5px' }">
@@ -36,7 +37,8 @@
         </el-table-column>
         <el-table-column label="图片">
           <template slot-scope="scope">
-            <img :src="scope.row.image" alt="未上传" style="width: 40px; height: 40px">
+            <img :src="scope.row.image" alt="未上传" style="width: 40px; height: 40px" />
+            <!-- <img src="http://127.0.0.1:3333/1698395026433.png" alt="未上传" style="width: 40px; height: 40px" /> -->
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -49,6 +51,16 @@
     </el-card>
     <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
       <el-descriptions direction="horizontal" border column="2">
+        <el-descriptions-item label="*物料类别">
+          <el-select v-model="materials_form.category" placeholder="请选择" clearable @visible-change="Material_Category_search">
+            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
+          </el-select>
+        </el-descriptions-item>
+        <el-descriptions-item label="*单位">
+          <el-select v-model="materials_form.unit" placeholder="请选择" clearable @visible-change="unit_search">
+            <el-option v-for="(item, index) in unitlis" :key="index" :label="item.name" :value="item.name" />
+          </el-select>
+        </el-descriptions-item>
         <el-descriptions-item span="1" label="*物料编码">
           <el-input v-model="materials_form.code" clearable placeholder="物料编码">
             <el-button slot="append" icon="el-icon-eleme" @click="New_additions()" />
@@ -62,11 +74,6 @@
         </el-descriptions-item>
         <el-descriptions-item label="标签" />
 
-        <el-descriptions-item label="*单位">
-          <el-select v-model="materials_form.unit" placeholder="请选择" clearable @visible-change="unit_search">
-            <el-option v-for="(item, index) in unitlis" :key="index" :label="item.name" :value="item.name" />
-          </el-select>
-        </el-descriptions-item>
         <el-descriptions-item label="密度Kg/m3">
           <el-input v-model="materials_form.density" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
@@ -80,11 +87,7 @@
         <el-descriptions-item label="单价(元)">
           <el-input v-model="materials_form.price" placeholder="如果是原材料，则必填" clearable />
         </el-descriptions-item>
-        <el-descriptions-item label="*物料类别">
-          <el-select v-model="materials_form.category" placeholder="请选择" clearable @visible-change="Material_Category_search">
-            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
-          </el-select>
-        </el-descriptions-item>
+
         <el-descriptions-item label="状态">
           <template>
             <el-radio v-model="materials_form.status" label="启用">启用</el-radio>
@@ -92,8 +95,19 @@
           </template>
         </el-descriptions-item>
         <el-descriptions-item label="图片">
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" multiple :limit="1" :file-list="fileList">
+          <el-upload
+            class="upload-demo"
+            action="http://127.0.0.1:3333/api/upload"
+            :headers="{ Authorization: token }"
+            :on-success="handleSuccess"
+            :on-error="handleError"
+            :before-upload="beforeUpload"
+            :file-list="fileList"
+            :limit="1"
+            :auto-upload="true"
+          >
             <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
           </el-upload>
         </el-descriptions-item>
       </el-descriptions>
@@ -106,14 +120,19 @@
   </div>
 </template>
 
-<style lang="sass" scoped>
-@import './index.scss'
+<style>
+.el-upload__tip {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #999;
+}
 </style>
 
 <script>
 import * as materialCategory from '@/api/materialCategory'
 import * as units from '@/api/units'
 import * as materials from '@/api/materials'
+import { getToken } from '@/utils/auth' // get token from cookie
 export default {
   name: 'Cailiaoshezhi',
   data() {
@@ -138,12 +157,15 @@ export default {
         status: '启用',
         image: '',
         fileList: ''
-      }
+      },
+      fileList: [],
+      token: ''
     }
   },
 
   async mounted() {
     await this.getTableData()
+    this.getToken()
   },
   methods: {
     handleClose(done) {
@@ -214,6 +236,35 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedItems = selection
+    },
+    handleSuccess(response, file, fileList) {
+      this.fileList = fileList
+      this.materials_form.image = response.fileUrl
+      this.$message.success('上传成功')
+    },
+    // eslint-disable-next-line handle-callback-err
+    handleError(error, file, fileList) {
+      this.fileList = fileList
+      this.$message.error('上传失败')
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('只能上传jpg/png文件')
+      }
+
+      if (!isLt2M) {
+        this.$message.error('文件大小不能超过2MB')
+      }
+
+      return isJPG && isLt2M
+    },
+    // 获取浏览器中的token
+    getToken() {
+      this.token = getToken()
+      console.log(this.token)
     }
   }
 }
