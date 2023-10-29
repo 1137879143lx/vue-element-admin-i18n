@@ -6,7 +6,7 @@
         <el-button style="margin-left: 10px" size="mini" icon="el-icon-search" circle @click="drawer = true" />
         <el-button style="margin-left: 5px" size="mini" icon="el-icon-refresh" circle />
         <span style="float: right; padding: 3px 20px">
-          <el-button type="text" @click="$router.push('../caigou/caigoushenqing_xinzeng')">新增</el-button>
+          <el-button type="text" @click="$router.push('../xiaoshou/baojiaxiangqing')">新增</el-button>
           <el-button type="text">删除</el-button>
           <el-button type="text">导出数据</el-button>
           <el-button type="text">已删除数据</el-button>
@@ -40,7 +40,6 @@
           </template>
         </el-table-column>
         <!-- <el-table-column property="approval" label="审核" /> -->
-        <el-table-column property="deliveryDate" label="确认交期" />
 
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
@@ -113,6 +112,7 @@ export default {
         }
       ]
     }
-  }
+  },
+  methods: {}
 }
 </script>

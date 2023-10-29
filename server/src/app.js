@@ -27,13 +27,14 @@ app.use(express.json())
 // 静态资源托管中间件
 // app.use(express.static('../public'))
 app.use(express.static('public'))
+app.use(express.static('public/uploads'))
 
 // 路由
 
 // 验证token中间件
 app.use(
   expressjwt({ secret: config.jwtSecretKey }).unless({
-    path: ['/api/user/login', '/api/user/create', '/uploads']
+    path: ['/api/user/login', '/api/user/create']
   })
 )
 

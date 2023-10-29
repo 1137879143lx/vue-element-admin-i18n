@@ -24,13 +24,33 @@ router.get('/:id', getMaterial, (req, res) => {
   res.json({ code: 200, data: res.material }) // 返回查询结果
 })
 
-// POST /materials 创建新物料
+// POST /materials 创建新物料或更新已有物料
 router.post('/', async (req, res) => {
   const material = new Material(req.body) // 创建新物料对象
-  console.log(req.body)
   try {
-    const newMaterial = await material.save() // 将新物料对象保存到数据库中
-    res.json({ code: 200, data: newMaterial }) // 返回成功信息和新物料对象
+    const existingMaterial = await Material.findOne({ _id: material.id }) // 查找已有物料
+
+    if (existingMaterial) {
+      // 如果已有物料存在，则更新该物料（除了 ID 以外的其他属性）
+      existingMaterial.name = material.name
+      existingMaterial.description = material.description
+      existingMaterial.price = material.price
+      existingMaterial.image = material.image
+      existingMaterial.category = material.category
+      existingMaterial.unit = material.unit
+      existingMaterial.supplier = material.supplier
+      existingMaterial.stock = material.stock
+      existingMaterial.status = material.status
+      existingMaterial.remark = material.remark
+      existingMaterial.updatedAt = Date.now()
+
+      const updatedMaterial = await existingMaterial.save() // 将更新后的物料保存到数据库中
+      res.json({ code: 200, data: updatedMaterial }) // 返回成功信息和更新后的物料对象
+    } else {
+      // 如果已有物料不存在，则创建新物料
+      const newMaterial = await material.save() // 将新物料对象保存到数据库中
+      res.json({ code: 200, data: newMaterial }) // 返回成功信息和新物料对象
+    }
   } catch (err) {
     res.json({ code: 400, message: err.message }) // 返回错误信息
   }
@@ -53,12 +73,17 @@ router.patch('/:id', getMaterial, async (req, res) => {
 })
 
 // DELETE /materials/:id 删除指定 ID 的物料
-router.delete('/:id', getMaterial, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    await res.material.remove() // 删除指定 ID 的物料
-    res.json({ code: 200, message: 'Material deleted' }) // 返回删除成功的消息
+    const result = await Material.deleteOne({ _id: req.params.id })
+
+    if (result.deletedCount === 0) {
+      return res.json({ code: 404, message: 'Material not found' })
+    }
+
+    res.json({ code: 200, message: 'Material deleted' })
   } catch (err) {
-    res.json({ code: 500, message: err.message }) // 返回错误信息
+    res.json({ code: 500, message: err.message })
   }
 })
 

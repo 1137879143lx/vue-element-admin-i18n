@@ -6,7 +6,7 @@ const path = require('path')
 // 配置 multer 中间件
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/uploads'))
+    cb(null, path.join(__dirname, '../../public/uploads'))
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname)
@@ -19,7 +19,7 @@ const upload = multer({ storage })
 router.post('/upload', upload.single('file'), (req, res) => {
   console.log(req.file.filename)
   try {
-    const fileUrl = `/uploads/${req.file.filename}`
+    const fileUrl = `/${req.file.filename}`
     res.json({ fileUrl })
   } catch (error) {
     console.error(error)

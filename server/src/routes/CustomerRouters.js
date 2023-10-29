@@ -3,7 +3,7 @@ const router = express.Router() // 创建路由对象
 const Customer = require('../models/CustomerModel') // 引入客户模型
 
 // 创建客户
-router.post('/create', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { CustomerId, ShortName, FullName, Address, Contact, Tel, Email, Phone, Tax, CurrencyCode } = req.body // 解构请求体中的客户信息
     if (!CustomerId || !ShortName || !FullName) {
@@ -22,7 +22,7 @@ router.post('/create', async (req, res) => {
 })
 
 // 获取客户列表
-router.get('/list', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, search } = req.query // 解构请求参数，获取页码、每页数量和查询条件
     const skip = (page - 1) * limit // 计算跳过的文档数量

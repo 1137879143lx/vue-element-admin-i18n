@@ -1,36 +1,36 @@
 import request from '@/utils/request'
 
-// 获取物料类型列表
-export function getMaterialTypes(params) {
+// 获取
+export function getlist(params) {
   return request({
-    url: '/api/material-types',
+    url: '/api/customer',
     method: 'get',
     params
   })
 }
 
-// 新增物料类型
-export function addMaterialType(data) {
+// 新增
+export function add(data) {
   return request({
-    url: '/api/material-types',
+    url: '/api/customer',
     method: 'post',
     data
   })
 }
 
-// 编辑物料类型
-export function editMaterialType(id, data) {
+// 编辑
+export function edit(id, data) {
   return request({
-    url: `/api/material-types/${id}`,
+    url: `/api/customer/${id}`,
     method: 'put',
     data
   })
 }
 
-// 删除物料类型
-export function deleteMaterialType(id) {
+// 删除
+export function deletes(id) {
   return request({
-    url: `/api/material-types/${id}`,
+    url: `/api/customer/${id}`,
     method: 'delete'
   })
 }

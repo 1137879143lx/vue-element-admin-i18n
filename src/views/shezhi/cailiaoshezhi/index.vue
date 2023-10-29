@@ -14,33 +14,68 @@
         <el-button size="mini" style="float: right; margin: 0" type="link" @click="dialogVisible = true">新增</el-button>
       </div>
       <!-- card body -->
-      <el-table :data="tableData" size="mini" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" size="mini" highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="index" />
         <el-table-column type="selection" />
-
-        <el-table-column prop="code" label="物料编码" min-width="120" />
-        <el-table-column prop="name" label="物料名称" min-width="120" />
-        <el-table-column prop="description" label="描述" min-width="120" />
-        <el-table-column prop="tags" label="标签" />
-        <el-table-column prop="unit" label="单位" />
-        <el-table-column prop="density" label="密度Kg/m3" />
-        <el-table-column prop="maxInventory" label="最大库存" />
-        <el-table-column prop="inventory" label="安全库存" />
-        <el-table-column prop="price" label="单价" />
-        <el-table-column prop="category" label="物料类别" />
-
-        <el-table-column prop="status" label="状态">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === '启用'" type="success">启用</el-tag>
-            <el-tag v-if="scope.row.status === '禁止'" type="danger">禁止</el-tag>
-          </template>
-        </el-table-column>
         <el-table-column label="图片">
           <template slot-scope="scope">
-            <img :src="scope.row.image" alt="未上传" style="width: 40px; height: 40px" />
-            <!-- <img src="http://127.0.0.1:3333/1698395026433.png" alt="未上传" style="width: 40px; height: 40px" /> -->
+            <img :src="baseUrl + scope.row.image" alt="未上传" width="40" height="40" style="cursor: pointer" @click="showImage(scope.row.image)" />
           </template>
         </el-table-column>
+
+        <el-table-column prop="code" label="物料编码" min-width="120">
+          <template slot-scope="scope">
+            {{ scope.row.code ? scope.row.code : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="物料名称" min-width="120">
+          <template slot-scope="scope">
+            {{ scope.row.name ? scope.row.name : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="description" label="描述" min-width="120">
+          <template slot-scope="scope">
+            {{ scope.row.description ? scope.row.description : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="tags" label="标签"></el-table-column>
+        <el-table-column prop="unit" label="单位">
+          <template slot-scope="scope">
+            {{ scope.row.unit ? scope.row.unit : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="density" label="密度Kg/m3">
+          <template slot-scope="scope">
+            {{ scope.row.density ? scope.row.density : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="maxInventory" label="最大库存">
+          <template slot-scope="scope">
+            {{ scope.row.maxInventory ? scope.row.maxInventory : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="inventory" label="安全库存">
+          <template slot-scope="scope">
+            {{ scope.row.inventory ? scope.row.inventory : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="price" label="单价">
+          <template slot-scope="scope">
+            {{ scope.row.price ? scope.row.price : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="category" label="物料类别">
+          <template slot-scope="scope">
+            {{ scope.row.category ? scope.row.category : '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status === '启用'" size="mini" effect="light" type="">启用</el-tag>
+            <el-tag v-if="scope.row.status === '禁用'" size="mini" effect="light" type="danger">禁用</el-tag>
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="mini" @click="edit(scope.row)">编辑</el-button>
@@ -117,14 +152,23 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog :visible.sync="imageDialogVisible" width="600px">
+      <div class="container">
+        <img :src="dialogImageUrl" width="600" height="600" alt="大图" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .el-upload__tip {
   margin-top: 10px;
   font-size: 12px;
   color: #999;
+}
+.container {
+  display: flex;
+  justify-content: center;
 }
 </style>
 
@@ -133,6 +177,7 @@ import * as materialCategory from '@/api/materialCategory'
 import * as units from '@/api/units'
 import * as materials from '@/api/materials'
 import { getToken } from '@/utils/auth' // get token from cookie
+import config from '../../../../config'
 export default {
   name: 'Cailiaoshezhi',
   data() {
@@ -159,13 +204,18 @@ export default {
         fileList: ''
       },
       fileList: [],
-      token: ''
+      token: '',
+      baseUrl: '',
+      imageDialogVisible: false,
+      dialogImageUrl: ''
     }
   },
 
   async mounted() {
     await this.getTableData()
     this.getToken()
+    this.baseUrl = config.baseUrl
+    console.log(config.baseUrl)
   },
   methods: {
     handleClose(done) {
@@ -182,30 +232,29 @@ export default {
       // visible 参数表示下拉框是否展开
       if (visible) {
         // 下拉框展开时的处理逻辑
-        console.log('下拉框展开')
         materialCategory.getlist().then((res) => {
           this.Class_of_material_list = res.data
           console.log(res)
         })
       } else {
         // 下拉框收起时的处理逻辑
-        console.log('下拉框收起')
       }
     },
     unit_search(visible) {
       if (visible) {
-        console.log('下拉框展开')
         units.getlist().then((res) => {
           this.unitlis = res.data
           console.log(res)
         })
       } else {
-        console.log('下拉框收起')
+        // 下拉框收起时的处理逻辑
       }
     },
     async edit(row) {
       // TODO: 实现编辑操作的逻辑
       console.log('编辑', row)
+      this.materials_form = row
+      this.dialogVisible = true
     },
     async remove(row) {
       const confirmResult = await this.$confirm('确认删除该物料吗？', '提示', {
@@ -215,9 +264,9 @@ export default {
       }).catch(() => false)
 
       if (confirmResult) {
-        await materials.deleteMaterial(row.id)
+        await materials.deleteMaterial(row._id)
         await this.getTableData()
-        this.$message.success('删除成功')
+        // this.$message.success('删除成功')
       }
     },
     async getTableData() {
@@ -228,7 +277,8 @@ export default {
       try {
         await materials.addMaterial(this.materials_form)
         this.$message.success('添加成功')
-        // this.dialogVisible = false
+        this.dialogVisible = false
+        this.materials_form = ''
         await this.getTableData()
       } catch (error) {
         console.error(error)
@@ -265,6 +315,10 @@ export default {
     getToken() {
       this.token = getToken()
       console.log(this.token)
+    },
+    showImage(imageUrl) {
+      this.dialogImageUrl = this.baseUrl + imageUrl
+      this.imageDialogVisible = true
     }
   }
 }

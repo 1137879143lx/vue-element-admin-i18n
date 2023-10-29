@@ -5,13 +5,18 @@
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存</el-button>
       <el-descriptions title="报价详情">
         <el-descriptions-item label="订单号">202310101755</el-descriptions-item>
-        <el-descriptions-item label="客户"><el-link type="primary">天庭</el-link></el-descriptions-item>
-        <el-descriptions-item label="交货日期">2023-10-15</el-descriptions-item>
+        <el-descriptions-item label="客户">
+          <el-select v-model="Customer" placeholder="请选择" size="mini">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-descriptions-item>
         <el-descriptions-item label="收货地址">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
         <el-descriptions-item label="状态">
           <el-tag size="small">待报价</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="备注">--</el-descriptions-item>
+        <el-descriptions-item label="备注">
+          <el-input v-model="note" size="mini" style="width: 200px" />
+        </el-descriptions-item>
       </el-descriptions>
     </el-card>
 
@@ -191,6 +196,7 @@ export default {
   data() {
     return {
       Return_delivery_time: '',
+      note: '',
       options: [
         {
           value: '1',
