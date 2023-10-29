@@ -9,7 +9,6 @@
           <el-button size="mini" type="text" @click="openDialog">新增客户</el-button>
           <el-button type="text">删除</el-button>
           <el-button type="text">导出数据</el-button>
-          <el-button type="text">已删除数据</el-button>
         </span>
       </div>
 
@@ -25,12 +24,12 @@
 
         <el-table-column label="简称" prop="ShortName" />
         <el-table-column label="全称" prop="FullName" />
-        <el-table-column label="收货地址" prop="Address" />
+        <el-table-column min-width="200" label="收货地址" prop="Address" />
         <el-table-column label="税率%" align="right">
           <template slot-scope="{ row }">{{ row.Tax }}%</template>
         </el-table-column>
-        <el-table-column property="Currency" label="货币" prop="Tel" />
-        <el-table-column property="Contact_Person" label="客户代表">
+        <el-table-column label="货币" prop="CurrencyCode" />
+        <el-table-column label="收货人信息">
           <template slot-scope="{ row }">
             {{ row.Contact }}
             <el-link :underline="false">{{ row.Tel }}</el-link>
@@ -39,15 +38,15 @@
         <el-table-column align="center" label="编辑">
           <template slot-scope="{ row }">
             <span>{{ row.author }}</span>
-            <el-button type="text" size="mini">编辑</el-button>
             |
-            <el-button type="text" size="mini">删除</el-button>
+            <el-button type="text" size="mini" @click="editCustomer(row)">编辑</el-button>
+            <el-button type="text" size="mini" @click="deleteCustomer(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog :visible.sync="dialogVisible" title="新增客户" width="50%">
-      <el-form ref="form" :model="form" :rules="rules" size="mini">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" width="30%">
+      <el-form ref="form" label-width="80px" :model="form" :rules="rules" size="mini">
         <el-form-item label="客户编号" prop="CustomerId">
           <el-input v-model="form.CustomerId" placeholder="请输入客户编号" />
         </el-form-item>
@@ -69,10 +68,7 @@
         <el-form-item label="电子邮箱" prop="Email">
           <el-input v-model="form.Email" placeholder="请输入电子邮箱" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="Phone">
-          <el-input v-model="form.Phone" placeholder="请输入手机号码" />
-        </el-form-item>
-        <el-form-item label="税号" prop="Tax">
+        <el-form-item label="税率" prop="Tax">
           <el-input v-model="form.Tax" placeholder="请输入税号" />
         </el-form-item>
         <el-form-item label="货币代码" prop="CurrencyCode">
@@ -95,6 +91,7 @@ export default {
     return {
       List: [],
       dialogVisible: false, // 控制弹窗的显示和隐藏
+      dialogTitle: '新增客户', // 弹窗的标题
       form: {
         // 表单数据
         CustomerId: '',
@@ -105,8 +102,8 @@ export default {
         Tel: '',
         Email: '',
         Phone: '',
-        Tax: '',
-        CurrencyCode: ''
+        Tax: '13',
+        CurrencyCode: 'RMB'
       },
       rules: {
         // 表单验证规则
@@ -116,24 +113,21 @@ export default {
         Address: [{ required: true, message: '请输入客户地址', trigger: 'blur' }],
         Contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
         Tel: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
-        Email: [{ required: true, message: '请输入电子邮箱', trigger: 'blur' }],
-        Phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' }],
-        Tax: [{ required: true, message: '请输入税号', trigger: 'blur' }],
+        // Email: [{ required: true, message: '请输入电子邮箱', trigger: 'blur' }],
+        Tax: [{ required: true, message: '请输入税率', trigger: 'blur' }],
         CurrencyCode: [{ required: true, message: '请输入货币代码', trigger: 'blur' }]
       }
     }
   },
   // 初始函数 页面切换到这时
   mounted() {
-    // 获取客户列表
-    this.getCustomerList()
+    this.getCustomerList() // 获取客户列表
   },
 
   methods: {
     // 获取客户列表
     getCustomerList() {
       Customer.getlist().then((res) => {
-        console.log(res)
         this.List = res.data
       })
     },
@@ -141,16 +135,51 @@ export default {
       this.dialogVisible = true // 打开弹窗
     },
     submitForm() {
-      this.$refs.form.validate((valid) => {
+      // eslint-disable-next-line space-before-function-paren
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
-          // 在这里提交表单数据到后端进行处理
-          console.log(this.form)
-          Customer.add(this.form)
+          if (this.form._id) {
+            // 如果客户的 ID 存在，则说明用户是在修改客户信息
+            await Customer.update(this.form._id, this.form)
+            this.$message.success('客户信息修改成功')
+          } else {
+            // 如果客户的 ID 不存在，则说明用户是在新增客户
+            await Customer.add(this.form)
+            this.$message.success('客户创建成功')
+          }
+          this.getCustomerList()
           this.dialogVisible = false // 关闭弹窗
+          this.form = ''
         } else {
           return false
         }
       })
+    },
+    editCustomer(row) {
+      if (row._id) {
+        // 如果客户的 ID 存在，则将客户的信息填充到表单中，并将弹窗的标题设置为“编辑客户”
+        this.form = row
+        this.dialogTitle = '编辑客户'
+      } else {
+        // 如果客户的 ID 不存在，则将弹窗的标题设置为“新增客户”
+        this.form = {}
+        this.dialogTitle = '新增客户'
+      }
+      this.dialogVisible = true // 打开弹窗
+    },
+    async deleteCustomer(row) {
+      this.$confirm('确定要删除该客户吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        // eslint-disable-next-line space-before-function-paren
+        .then(async () => {
+          await Customer.deletes(row._id)
+          this.$message.success('客户删除成功')
+          this.getCustomerList()
+        })
+        .catch(() => {})
     }
   }
 }

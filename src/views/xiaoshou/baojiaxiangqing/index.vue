@@ -4,18 +4,21 @@
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存并提交</el-button>
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存</el-button>
       <el-descriptions title="报价详情">
-        <el-descriptions-item label="订单号">202310101755</el-descriptions-item>
+        <el-descriptions-item label="订单号">{{ OrderNumber }}</el-descriptions-item>
         <el-descriptions-item label="客户">
-          <el-select v-model="Customer" placeholder="请选择" size="mini">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          <el-select v-model="Customer" placeholder="请选择" size="mini" style="width: 250px" @change="change">
+            <el-option v-for="item in CustomerOptions" :key="item.CustomerId" :label="item.CustomerId" :value="item.CustomerId">
+              <span style="float: left">{{ item.CustomerId }}</span>
+              <span style="float: right; color: #8492a6; font-size: 12px">{{ item.FullName }}</span>
+            </el-option>
           </el-select>
         </el-descriptions-item>
-        <el-descriptions-item label="收货地址">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+        <el-descriptions-item label="收货地址">{{ Address }}</el-descriptions-item>
         <el-descriptions-item label="状态">
           <el-tag size="small">待报价</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="备注">
-          <el-input v-model="note" size="mini" style="width: 200px" />
+          <el-input v-model="note" size="mini" style="width: 250px" />
         </el-descriptions-item>
       </el-descriptions>
     </el-card>
@@ -28,34 +31,33 @@
         <el-button style="float: right" size="mini" type="link">导出下料清单</el-button>
         <el-button style="float: right" size="mini" type="link">导出报价清单</el-button>
         <el-button style="float: right" size="mini" type="link">导出报价模板</el-button>
+        <el-button style="float: right" size="mini" type="link" @click="addMaterial">新增</el-button>
       </div>
 
       <el-table size="mini" :data="data" :scroll="{ x: 1200 }" :loading="loading" bordered height="500" row-key="id">
         <el-table-column fixed type="index" width="60" align="center" />
         <el-table-column fixed type="selection" width="60" align="center" />
-        <el-table-column fixed min-width="120" label="物料编码">
+        <el-table-column fixed min-width="200" label="物料编码">
           <template slot-scope="scope">
-            <span>{{ scope.row.ParentComponentNo }}</span>
+            <el-input v-model="scope.row.ParentComponentNo" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column fixed min-width="120" label="物料名称">
+        <el-table-column fixed min-width="200" label="物料名称">
           <template slot-scope="scope">
-            <span>
-              {{ scope.row.PartName }}
-            </span>
+            <el-input v-model="scope.row.PartName" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column label="版本">
+        <el-table-column min-width="100" label="版本">
           <template slot-scope="scope">
-            <span>{{ scope.row.Version }}</span>
+            <el-input v-model="scope.row.Version" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column label="数量">
+        <el-table-column min-width="100" label="数量">
           <template slot-scope="scope">
-            <span>{{ scope.row.quantity }}</span>
+            <el-input v-model="scope.row.quantity" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column min-width="220" label="材料">
+        <el-table-column min-width="220" label="材料类型">
           <template slot-scope="scope">
             <el-input v-model="scope.row.Description" size="mini" clearable />
           </template>
@@ -192,11 +194,17 @@
   </div>
 </template>
 <script>
+import * as Customer from '@/api/Customer'
+
 export default {
   data() {
     return {
       Return_delivery_time: '',
       note: '',
+      Customer: '',
+      CustomerOptions: [],
+      Address: '',
+      OrderNumber: '',
       options: [
         {
           value: '1',
@@ -253,125 +261,26 @@ export default {
       page: 1,
       Remarks: '',
       select: '',
-      data: [
-        {
-          id: 0,
-          ParentComponentNo: '02-62-0097-66-00',
-          PartName: '生锈的手术刀',
-          Version: '02',
-          Description: '--',
-          quantity: 2,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-          Degree_of_urgency: '一般',
-          isloding: false
-        },
-        {
-          id: 1,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-          Degree_of_urgency: '一般',
-          isloding: false
-        },
-        {
-          id: 2,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-          isloding: false,
-
-          Degree_of_urgency: '一般'
-        },
-        {
-          id: 3,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-
-          Degree_of_urgency: '一般',
-          isloding: false
-        },
-        {
-          id: 4,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-
-          Degree_of_urgency: '一般',
-          isloding: false
-        },
-        {
-          id: 5,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-
-          Degree_of_urgency: '一般',
-          isloding: false
-        },
-        {
-          id: 6,
-          ParentComponentNo: '02-62-55-66-00',
-          PartName: '天天快乐水',
-          Version: '03',
-          Description: '--',
-          quantity: 15,
-          Remarks: '单独包装',
-          unit: 'PCS',
-          Recommended_suppliers: '北京武器专业供应',
-          Estimated_unit_price: 8858,
-          Return_delivery_time: '2023-10-15',
-
-          Degree_of_urgency: '一般',
-          isloding: false
-        }
-      ]
+      data: []
     }
   },
   mounted() {
-    // ProductService.getProductsMini().then((data) => (this.products = data))
+    this.getCustomerList()
   },
   methods: {
-    changePage() {}
+    changePage() {},
+    getCustomerList() {
+      Customer.getlist().then((res) => {
+        this.CustomerOptions = res.data
+      })
+    },
+    change() {
+      const customer = this.CustomerOptions.find((item) => item.CustomerId === this.Customer) // 根据客户 ID 获取客户的详细信息
+      this.Address = customer ? customer.Address : '' // 将客户的收货地址赋值给 Address 变量
+    },
+    addMaterial() {
+      this.data.push({})
+    }
   }
 }
 </script>

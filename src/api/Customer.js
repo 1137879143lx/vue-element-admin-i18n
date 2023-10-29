@@ -19,7 +19,7 @@ export function add(data) {
 }
 
 // 编辑
-export function edit(id, data) {
+export function update(id, data) {
   return request({
     url: `/api/customer/${id}`,
     method: 'put',
