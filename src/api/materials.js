@@ -7,6 +7,13 @@ export function getMaterials(params) {
     params
   })
 }
+export function getMaterialsSearch(params) {
+  return request({
+    url: '/api/materials/search',
+    method: 'get',
+    params
+  })
+}
 
 export function addMaterial(data) {
   return request({

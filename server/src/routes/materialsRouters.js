@@ -6,6 +6,7 @@ const Material = require('../models/materialModel')
 // GET /materials 获取所有物料
 router.get('/', async (req, res) => {
   const { page = 1, limit = 10, ...query } = req.query // 解构请求参数，获取页码、每页数量和查询条件
+  console.log(req.query)
   const skip = (page - 1) * limit // 计算需要跳过的文档数量
 
   try {
@@ -19,17 +20,27 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET /materials/:id 获取指定 ID 的物料
-router.get('/:id', getMaterial, (req, res) => {
-  res.json({ code: 200, data: res.material }) // 返回查询结果
-})
+// GET /materials/search 搜索物料
+// GET /materials/search 搜索物料
+router.get('/search', async (req, res) => {
+  const query = Object.fromEntries(
+    Object.entries(req.query)
+      .filter(([key, value]) => value)
+      .map(([key, value]) => [key, { $regex: String(value), $options: 'i' }])
+  )
 
+  try {
+    const materials = await Material.find(query)
+    res.json({ code: 200, data: materials })
+  } catch (err) {
+    res.json({ code: 400, message: err.message })
+  }
+})
 // POST /materials 创建新物料或更新已有物料
 router.post('/', async (req, res) => {
   const material = new Material(req.body) // 创建新物料对象
   try {
     const existingMaterial = await Material.findOne({ _id: material.id }) // 查找已有物料
-
     if (existingMaterial) {
       // 如果已有物料存在，则更新该物料（除了 ID 以外的其他属性）
       existingMaterial.name = material.name
@@ -56,19 +67,24 @@ router.post('/', async (req, res) => {
   }
 })
 
-// PATCH /materials/:id 更新指定 ID 的物料
-router.patch('/:id', getMaterial, async (req, res) => {
-  Object.keys(req.body).forEach((key) => {
-    if (res.material[key] !== undefined) {
-      res.material[key] = req.body[key] // 更新物料对象的指定属性
-    }
-  })
+// PUT /materials/:id 更新指定 ID 的物料
+// PUT /materials/:id 更新指定 ID 的物料
+router.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const { _id, ...updates } = req.body
 
   try {
-    const updatedMaterial = await res.material.save() // 保存更新后的物料对象
-    res.json({ code: 200, data: updatedMaterial }) // 返回成功信息和更新后的物料对象
+    const material = await Material.findById(_id)
+    if (!material) {
+      return res.json({ code: 404, message: '物料不存在' })
+    }
+
+    Object.assign(material, updates, { updatedAt: Date.now() })
+
+    const updatedMaterial = await material.save()
+    res.json({ code: 200, data: updatedMaterial })
   } catch (err) {
-    res.json({ code: 400, message: err.message }) // 返回错误信息
+    res.json({ code: 400, message: err.message })
   }
 })
 

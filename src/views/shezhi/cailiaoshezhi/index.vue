@@ -44,7 +44,7 @@
             {{ scope.row.unit ? scope.row.unit : '--' }}
           </template>
         </el-table-column>
-        <el-table-column prop="density" label="密度Kg/m3">
+        <el-table-column prop="density" label="密度g/m3">
           <template slot-scope="scope">
             {{ scope.row.density ? scope.row.density : '--' }}
           </template>
@@ -108,9 +108,38 @@
           <el-input v-model="materials_form.description" clearable placeholder="物料描述" />
         </el-descriptions-item>
         <el-descriptions-item label="标签" />
-
-        <el-descriptions-item label="密度Kg/m3">
-          <el-input v-model="materials_form.density" placeholder="如果是原材料，则必填" clearable />
+        <el-descriptions-item label="密度g/m3">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="铝:2.7
+铜:8.96
+钢:7.85
+不锈钢:7.93
+黄铜:8.5-8.73
+铅:11.34
+锌:7.14
+镁:1.74
+镍:8.9
+钛:4.5
+银:10.49
+金:19.32
+PMMA(有机玻璃):1.17-1.20
+PC(聚碳酸酯):1.20-1.22
+PE(聚乙烯):0.91-0.96
+PET(聚酯):1.38-1.40
+PP(聚丙烯):0.90-0.91
+PVC(聚氯乙烯):1.38-1.58
+PEI(聚醚酰亚胺):1.27-1.32
+PPS(聚苯硫醚):1.35-1.40
+POM(聚甲醛):1.41-1.43
+PEEK(聚醚醚酮):1.30-1.32
+电木(环氧玻纤板):1.80-1.90
+"
+            placement="top"
+          >
+            <el-input v-model="materials_form.density" placeholder="如果是原材料，则必填" clearable />
+          </el-tooltip>
         </el-descriptions-item>
         <el-descriptions-item label="最大库存">
           <el-input v-model="materials_form.maxInventory" placeholder="最大库存数量" clearable />
@@ -132,7 +161,7 @@
         <el-descriptions-item label="图片">
           <el-upload
             class="upload-demo"
-            action="http://127.0.0.1:3333/api/upload"
+            :action="uploadUrl"
             :headers="{ Authorization: token }"
             :on-success="handleSuccess"
             :on-error="handleError"
@@ -152,9 +181,9 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog :visible.sync="imageDialogVisible" width="600px">
+    <el-dialog modal="false" :visible.sync="imageDialogVisible">
       <div class="container">
-        <img :src="dialogImageUrl" width="600" height="600" alt="大图" />
+        <img :src="dialogImageUrl" alt="大图" />
       </div>
     </el-dialog>
   </div>
@@ -180,6 +209,7 @@ import { getToken } from '@/utils/auth' // get token from cookie
 import config from '../../../../config'
 export default {
   name: 'Cailiaoshezhi',
+
   data() {
     return {
       dialogVisible: false,
@@ -207,7 +237,8 @@ export default {
       token: '',
       baseUrl: '',
       imageDialogVisible: false,
-      dialogImageUrl: ''
+      dialogImageUrl: '',
+      uploadUrl: this.baseUrl + '/api/upload'
     }
   },
 
@@ -215,6 +246,7 @@ export default {
     await this.getTableData()
     this.getToken()
     this.baseUrl = config.baseUrl
+    this.uploadUrl = this.baseUrl + '/api/upload'
     console.log(config.baseUrl)
   },
   methods: {
@@ -252,9 +284,10 @@ export default {
     },
     async edit(row) {
       // TODO: 实现编辑操作的逻辑
-      console.log('编辑', row)
+      // console.log('编辑', row)
       this.materials_form = row
       this.dialogVisible = true
+      // this.fileList = [{ url: row.image }]
     },
     async remove(row) {
       const confirmResult = await this.$confirm('确认删除该物料吗？', '提示', {
@@ -274,13 +307,29 @@ export default {
       this.tableData = data
     },
     async submitForm() {
+      const temporaryform = this.materials_form
       try {
-        await materials.addMaterial(this.materials_form)
-        this.$message.success('添加成功')
+        if (this.materials_form._id) {
+          await materials.editMaterial(this.materials_form.id, this.materials_form)
+          this.$message.success('编辑成功')
+        } else {
+          await materials.addMaterial(this.materials_form)
+          this.$message.success('添加成功')
+        }
         this.dialogVisible = false
-        this.materials_form = ''
+        this.materials_form = {
+          _id: '',
+          code: '',
+          name: '',
+          description: '',
+          tags: '',
+          unit: '',
+          status: '启用',
+          image: ''
+        }
         await this.getTableData()
       } catch (error) {
+        this.materials_form = temporaryform
         console.error(error)
       }
     },
@@ -304,7 +353,6 @@ export default {
       if (!isJPG) {
         this.$message.error('只能上传jpg/png文件')
       }
-
       if (!isLt2M) {
         this.$message.error('文件大小不能超过2MB')
       }

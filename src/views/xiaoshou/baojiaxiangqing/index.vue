@@ -4,7 +4,7 @@
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存并提交</el-button>
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存</el-button>
       <el-descriptions title="报价详情">
-        <el-descriptions-item label="订单号">{{ OrderNumber }}</el-descriptions-item>
+        <el-descriptions-item label="订单号">{{ orderNumber }}</el-descriptions-item>
         <el-descriptions-item label="客户">
           <el-select v-model="Customer" placeholder="请选择" size="mini" style="width: 250px" @change="change">
             <el-option v-for="item in CustomerOptions" :key="item.CustomerId" :label="item.CustomerId" :value="item.CustomerId">
@@ -34,22 +34,40 @@
         <el-button style="float: right" size="mini" type="link" @click="addMaterial">新增</el-button>
       </div>
 
-      <el-table size="mini" :data="data" :scroll="{ x: 1200 }" :loading="loading" bordered height="500" row-key="id">
+      <el-table size="mini" :data="FormData" :scroll="{ x: 1200 }" :loading="loading" height="500" row-key="id">
         <el-table-column fixed type="index" width="60" align="center" />
         <el-table-column fixed type="selection" width="60" align="center" />
-        <el-table-column fixed min-width="200" label="物料编码">
+        <el-table-column fixed min-width="200" label="零件编码">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.ParentComponentNo" size="mini" />
+            <el-select
+              v-model="scope.row.materialCode"
+              size="mini"
+              filterable
+              reserve-keyword
+              remote
+              clearable
+              default-first-option
+              :remote-method="searchParentComponentNo"
+              :loading="loading"
+              :popper-append-to-body="true"
+              placeholder="请输入零件编码"
+              @change="changeParentComponentNo(scope.row)"
+            >
+              <el-option v-for="item in parentComponentNoOptions" :key="item.value" :label="item.label" :value="item.value" style="width: 250px">
+                <span style="float: left">{{ item.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 10px">{{ item.names }}</span>
+              </el-option>
+            </el-select>
           </template>
         </el-table-column>
-        <el-table-column fixed min-width="200" label="物料名称">
+        <el-table-column fixed min-width="200" label="零件名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.PartName" size="mini" />
+            <el-input v-model="scope.row.materialName" size="mini" />
           </template>
         </el-table-column>
         <el-table-column min-width="100" label="版本">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Version" size="mini" />
+            <el-input v-model="scope.row.version" size="mini" />
           </template>
         </el-table-column>
         <el-table-column min-width="100" label="数量">
@@ -57,24 +75,38 @@
             <el-input v-model="scope.row.quantity" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column min-width="220" label="材料类型">
+        <el-table-column min-width="240" label="材料名称">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" clearable />
+            <el-select
+              v-model="scope.row.material"
+              size="mini"
+              clearable
+              filterable
+              remote
+              :remote-method="querySearch"
+              placeholder="请输入材料名称"
+              style="width: 230px"
+            >
+              <el-option v-for="material in materials" :key="material.id" :label="material.name" :value="material.name">
+                <span style="float: left">{{ material.name }}</span>
+                <span style="float: right; color: #8492a6; font-size: 10px">{{ material.code }}</span>
+              </el-option>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column min-width="180" label="表面处理">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" clearable />
+            <el-input v-model="scope.row.Surface_treatment" size="mini" clearable />
           </template>
         </el-table-column>
         <el-table-column min-width="180" label="下料尺寸">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" clearable />
+            <el-input v-model="scope.row.cuttingSize" size="mini" clearable />
           </template>
         </el-table-column>
         <el-table-column min-width="100" label="下料数量">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" />
+            <el-input v-model="scope.row.cuttingQuantity" size="mini" />
           </template>
         </el-table-column>
         <el-table-column width="260" label="加工工序">
@@ -84,49 +116,49 @@
         </el-table-column>
         <el-table-column width="120" label="编程工艺费(￥)">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" />
+            <el-input v-model="scope.row.programmingFee" size="mini" />
           </template>
         </el-table-column>
         <el-table-column width="120" label="紧急程度">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.Degree_of_urgency" size="mini" placeholder="请选择">
+            <el-select v-model="scope.row.urgency" size="mini" placeholder="请选择">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </template>
         </el-table-column>
         <el-table-column width="120" label="额外刀具费(￥)">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Description" size="mini" />
+            <el-input v-model="scope.row.additionalToolingFee" size="mini" />
           </template>
         </el-table-column>
         <el-table-column min-width="120" label="材料费(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.materialFee }}</span>
           </template>
         </el-table-column>
         <el-table-column min-width="150" label="表面积mm²">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.surfaceArea }}</span>
           </template>
         </el-table-column>
         <el-table-column min-width="150" label="体积mm³">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.volume }}</span>
           </template>
         </el-table-column>
         <el-table-column min-width="120" label="毛坯重量(Kg)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.roughWeight }}</span>
           </template>
         </el-table-column>
         <el-table-column min-width="120" label="净重量(Kg)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.netWeight }}</span>
           </template>
         </el-table-column>
         <el-table-column min-width="150" label="表面处理费(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.surfaceTreatmentFee }}</span>
           </template>
         </el-table-column>
 
@@ -137,38 +169,38 @@
         </el-table-column>
         <el-table-column width="120" label="包装检验费5%(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.packagingInspectionFee }}</span>
           </template>
         </el-table-column>
         <el-table-column width="120" label="快递费(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.expressFee }}</span>
           </template>
         </el-table-column>
         <el-table-column width="120" label="管理费5%(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.managementFee }}</span>
           </template>
         </el-table-column>
         <el-table-column width="120" label="利润10%(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.profit }}</span>
           </template>
         </el-table-column>
         <el-table-column width="120" label="单价含税13%(￥)">
           <template slot-scope="scope">
-            <el-tag size="mini" effect="dark" type="success">{{ scope.row.Estimated_unit_price }}</el-tag>
+            <el-tag size="mini" effect="dark" type="success">{{ scope.row.unitPriceTaxIncluded }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column width="120" label="总价含税13%(￥)">
           <template slot-scope="scope">
-            <span>{{ scope.row.Estimated_unit_price }}</span>
+            <span>{{ scope.row.totalPriceTaxIncluded }}</span>
           </template>
         </el-table-column>
         <el-table-column width="250" label="回复交期">
           <template slot-scope="scope">
             <el-date-picker
-              v-model="scope.row.Return_delivery_time"
+              v-model="scope.row.replyDeliveryDate"
               size="mini"
               align="left"
               type="date"
@@ -195,16 +227,21 @@
 </template>
 <script>
 import * as Customer from '@/api/Customer'
+import * as materials from '@/api/materials'
 
 export default {
   data() {
     return {
+      loading: false,
+      parentComponentNoOptions: [],
       Return_delivery_time: '',
       note: '',
       Customer: '',
       CustomerOptions: [],
       Address: '',
-      OrderNumber: '',
+      orderNumber: '20231030001',
+      category: '零件', // 待搜索的零件类别
+      Type_of_material: '原材料', // 待搜索的原材料类别
       options: [
         {
           value: '1',
@@ -256,12 +293,13 @@ export default {
       value1: '',
       value2: '',
       total: 100,
-      loading: false,
       pageSize: 10,
       page: 1,
       Remarks: '',
       select: '',
-      data: []
+      FormData: [],
+      searchResults: [],
+      materials: []
     }
   },
   mounted() {
@@ -279,7 +317,39 @@ export default {
       this.Address = customer ? customer.Address : '' // 将客户的收货地址赋值给 Address 变量
     },
     addMaterial() {
-      this.data.push({})
+      this.FormData.push({})
+    },
+    async searchParentComponentNo(query) {
+      this.loading = true
+      try {
+        const { data } = await materials.getMaterialsSearch({ code: query, category: this.category, status: '启用' })
+        this.parentComponentNoOptions = data.map((item) => ({
+          value: item.code,
+          label: item.code,
+          names: item.name
+        }))
+        console.log(this.parentComponentNoOptions)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    changeParentComponentNo(row) {
+      const selectedItem = this.parentComponentNoOptions.find((item) => item.value === row.materialCode)
+      if (selectedItem) {
+        row.materialName = selectedItem.names
+      }
+    },
+    async querySearch(queryString, cb) {
+      try {
+        // eslint-disable-next-line object-curly-spacing
+        // const response = await this.$http.get('/api/materials/search', { params: { name: queryString } })
+        const { data } = await materials.getMaterialsSearch({ name: queryString, category: this.Type_of_material, status: '启用' })
+        this.materials = data
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 }
