@@ -85,7 +85,7 @@
         <el-table-column label="#" type="index" />
 
         <el-table-column prop="name" label="表面处理" />
-        <el-table-column prop="createdBy" label="单价" />
+        <el-table-column prop="createdBy" label="单价 元/mm²" />
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="mini" @click="MaterialType_remove(scope.row)">删除</el-button>
