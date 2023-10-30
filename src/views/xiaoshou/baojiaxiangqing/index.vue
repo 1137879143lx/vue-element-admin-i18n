@@ -87,7 +87,7 @@
               placeholder="请输入材料名称"
               style="width: 230px"
             >
-              <el-option v-for="material in materials" :key="material.id" :label="material.name" :value="material.name">
+              <el-option v-for="material in materials" :key="material._id" :label="material.name" :value="material.name">
                 <span style="float: left">{{ material.name }}</span>
                 <span style="float: right; color: #8492a6; font-size: 10px">{{ material.code }}</span>
               </el-option>

@@ -112,8 +112,9 @@
           <el-tooltip
             class="item"
             effect="dark"
-            content="铝:2.7
-铜:8.96
+            content="铝6061:2.7
+            铝7075:2.8
+            紫铜:8.96
 钢:7.85
 不锈钢:7.93
 黄铜:8.5-8.73

@@ -67,6 +67,41 @@
         @current-change="MaterialType_handlePageChange"
       />
     </el-card>
+
+    <!-- 表面处理 -->
+    <el-card size="mini" shadow="hover">
+      <el-form :inline="true" class="search-form" size="mini">
+        <el-form-item label="表面处理">
+          <el-input v-model="MaterialType_searchName" placeholder="请输入表面处理" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="MaterialType_search">搜索</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="MaterialType_add">新增</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table :data="MaterialType_tableData" style="width: 100%" size="mini" height="530">
+        <el-table-column label="#" type="index" />
+
+        <el-table-column prop="name" label="表面处理" />
+        <el-table-column prop="createdBy" label="单价" />
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="mini" @click="MaterialType_remove(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        v-if="MaterialType_totalPages > 1"
+        :current-page="MaterialType_currentPage"
+        :page-size="MaterialType_pageSize"
+        :total="MaterialType_totalPages"
+        small
+        @current-change="MaterialType_handlePageChange"
+      />
+    </el-card>
   </div>
 </template>
 
