@@ -19,6 +19,29 @@ router.get('/', async (req, res) => {
     res.json({ code: 500, message: err.message }) // 返回错误信息
   }
 })
+// generateCode
+// POST /materials/generateCode 生成物料编码
+// POST /materials/generateSerialNumber 生成流水号
+router.post('/generateCode', async (req, res) => {
+  console.log(req.body)
+  try {
+    const serialNumber = await generateSerialNumber(req.body.code) // 调用 generateSerialNumber 方法生成流水号
+    console.log(serialNumber)
+    res.json({ code: 200, data: serialNumber }) // 返回生成的流水号
+  } catch (err) {
+    res.json({ code: 500, message: err.message }) // 返回错误信息
+  }
+})
+
+const generateSerialNumber = async (code) => {
+  const materials = await Material.find({ code: new RegExp(`^${code}-\\d{4}-\\d{2}$`) })
+    .sort({ code: -1 })
+    .limit(1) // 获取最后一个物料编码 02-62-00-5989-00
+  console.log(materials)
+  const lastCode = materials.length ? parseInt(materials[0].code.slice(-7, -3)) : 0 // 如果存在最后一个物料编码，则获取它的后四位并转换为整数，否则默认为 0
+  const nextCode = (lastCode + 1).toString().padStart(4, '0') // 将最后一个物料编码的后四位加 1，并转换为字符串，不足四位则在前面补 0
+  return `${code}-${nextCode}-00` // 返回流水号
+}
 
 // GET /materials/search 搜索物料
 // GET /materials/search 搜索物料

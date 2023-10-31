@@ -23,6 +23,14 @@ export function addMaterial(data) {
   })
 }
 
+export function generateCode(data) {
+  return request({
+    url: '/api/materials/generateCode',
+    method: 'post',
+    data
+  })
+}
+
 export function editMaterial(id, data) {
   return request({
     url: `/api/materials/${id}`,

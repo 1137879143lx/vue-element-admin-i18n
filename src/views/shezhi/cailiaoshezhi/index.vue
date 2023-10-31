@@ -7,7 +7,6 @@
           物料设置
           <span v-if="selectedItems.length > 0" style="color: rgb(14, 91, 235); font-size: 0.5em">已选择 {{ selectedItems.length }} 项</span>
         </span>
-
         <el-button size="mini" style="float: right; margin: 0" type="link">已删除物料</el-button>
         <el-button size="mini" style="float: right; margin: 0" type="link">导入</el-button>
         <el-button size="mini" style="float: right; margin: 0" type="link">下载导入模板</el-button>
@@ -22,7 +21,6 @@
             <img :src="baseUrl + scope.row.image" alt="未上传" width="40" height="40" style="cursor: pointer" @click="showImage(scope.row.image)" />
           </template>
         </el-table-column>
-
         <el-table-column prop="code" label="物料编码" min-width="120">
           <template slot-scope="scope">
             {{ scope.row.code ? scope.row.code : '--' }}
@@ -87,14 +85,11 @@
     <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
       <el-descriptions direction="horizontal" border :column="2">
         <el-descriptions-item label="*物料类别">
-          <el-select
-            v-model="materials_form.category"
-            placeholder="请选择"
-            clearable
-            @visible-change="Material_Category_search"
-            @change="onCategoryChange()"
-          >
-            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
+          <el-select v-model="materials_form.category" placeholder="请选择" clearable @change="onCategoryChange()">
+            <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name">
+              <span style="float: left">{{ item.name }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.codeRule }}</span>
+            </el-option>
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="*单位">
@@ -248,11 +243,18 @@ export default {
   },
 
   async mounted() {
+    // 获取表格数据
     await this.getTableData()
+    // 获取 token
     this.getToken()
+    // 设置基础 URL 和上传 URL
     this.baseUrl = config.baseUrl
     this.uploadUrl = this.baseUrl + '/api/upload'
-    console.log(config.baseUrl)
+    // 获取物料类别列表
+    materialCategory.getlist().then((res) => {
+      this.Class_of_material_list = res.data
+      console.log(res)
+    })
   },
   methods: {
     handleClose(done) {
@@ -264,19 +266,15 @@ export default {
     },
     New_additions() {
       console.log('新增物料编码')
-    },
-    Material_Category_search(visible) {
-      // visible 参数表示下拉框是否展开
-      if (visible) {
-        // 下拉框展开时的处理逻辑
-        materialCategory.getlist().then((res) => {
-          this.Class_of_material_list = res.data
-          console.log(res)
+      materials
+        .generateCode({
+          code: '02-62-00'
         })
-      } else {
-        // 下拉框收起时的处理逻辑
-      }
+        .then((res) => {
+          this.materials_form.code = res.data
+        })
     },
+
     async edit(row) {
       // TODO: 实现编辑操作的逻辑
       // console.log('编辑', row)
@@ -312,6 +310,7 @@ export default {
           this.$message.success('添加成功')
         }
         this.dialogVisible = false
+        await this.getTableData()
         this.materials_form = {
           _id: '',
           code: '',
@@ -320,9 +319,9 @@ export default {
           tags: '',
           unit: '',
           status: '启用',
-          image: ''
+          image: '',
+          category: temporaryform.temporaryform
         }
-        await this.getTableData()
       } catch (error) {
         this.materials_form = temporaryform
         console.error(error)
