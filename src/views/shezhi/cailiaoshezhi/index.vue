@@ -23,7 +23,7 @@
         </el-table-column>
         <el-table-column prop="code" label="物料编码" min-width="120">
           <template slot-scope="scope">
-            {{ scope.row.code ? scope.row.code : '--' }}
+            <el-button type="text" size="mini" @click="edit(scope.row)">{{ scope.row.code ? scope.row.code : '--' }}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="物料名称" min-width="120">
@@ -195,6 +195,7 @@ PEEK(聚醚醚酮):1.30-1.32
   font-size: 12px;
   color: #999;
 }
+
 .container {
   display: flex;
   justify-content: center;
