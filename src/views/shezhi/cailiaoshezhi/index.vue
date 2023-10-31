@@ -238,7 +238,8 @@ export default {
       imageDialogVisible: false,
       dialogImageUrl: '',
       uploadUrl: this.baseUrl + '/api/upload',
-      dialogWidth: 'auto'
+      dialogWidth: 'auto',
+      code: ''
     }
   },
 
@@ -268,7 +269,7 @@ export default {
       console.log('新增物料编码')
       materials
         .generateCode({
-          code: '02-62-00'
+          code: '02-' + this.code + '-00'
         })
         .then((res) => {
           this.materials_form.code = res.data
@@ -370,6 +371,10 @@ export default {
     onCategoryChange() {
       const selectedCategory = this.Class_of_material_list.find((category) => category.name === this.materials_form.category)
       this.materials_form.unit = selectedCategory ? selectedCategory.unit : ''
+
+      const selectedCategorycodeRule = this.materials_form.category // 获取当前选中的物料类别
+      const selectedCategoryObj = this.Class_of_material_list.find((item) => item.name === selectedCategorycodeRule) // 查找该物料类别对应的对象
+      this.code = selectedCategoryObj ? selectedCategoryObj.codeRule : '' // 获取该物料类别对应的 codeRule 值
     }
   }
 }
