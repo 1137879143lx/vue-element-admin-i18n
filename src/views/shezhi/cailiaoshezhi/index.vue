@@ -85,16 +85,20 @@
       </el-table>
     </el-card>
     <el-dialog title="新增物料" :visible.sync="dialogVisible" width="60%">
-      <el-descriptions direction="horizontal" border column="2">
+      <el-descriptions direction="horizontal" border :column="2">
         <el-descriptions-item label="*物料类别">
-          <el-select v-model="materials_form.category" placeholder="请选择" clearable @visible-change="Material_Category_search">
+          <el-select
+            v-model="materials_form.category"
+            placeholder="请选择"
+            clearable
+            @visible-change="Material_Category_search"
+            @change="onCategoryChange()"
+          >
             <el-option v-for="(item, index) in Class_of_material_list" :key="index" :label="item.name" :value="item.name" />
           </el-select>
         </el-descriptions-item>
         <el-descriptions-item label="*单位">
-          <el-select v-model="materials_form.unit" placeholder="请选择" clearable @visible-change="unit_search">
-            <el-option v-for="(item, index) in unitlis" :key="index" :label="item.name" :value="item.name" />
-          </el-select>
+          <el-input v-model="materials_form.unit" disabled placeholder="单位" />
         </el-descriptions-item>
         <el-descriptions-item span="1" label="*物料编码">
           <el-input v-model="materials_form.code" clearable placeholder="物料编码">
@@ -182,7 +186,7 @@ PEEK(聚醚醚酮):1.30-1.32
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog modal="false" :visible.sync="imageDialogVisible">
+    <el-dialog :modal="true" :visible.sync="imageDialogVisible" :width="dialogWidth">
       <div class="container">
         <img :src="dialogImageUrl" alt="大图" />
       </div>
@@ -204,7 +208,6 @@ PEEK(聚醚醚酮):1.30-1.32
 
 <script>
 import * as materialCategory from '@/api/materialCategory'
-import * as units from '@/api/units'
 import * as materials from '@/api/materials'
 import { getToken } from '@/utils/auth' // get token from cookie
 import config from '../../../../config'
@@ -239,7 +242,8 @@ export default {
       baseUrl: '',
       imageDialogVisible: false,
       dialogImageUrl: '',
-      uploadUrl: this.baseUrl + '/api/upload'
+      uploadUrl: this.baseUrl + '/api/upload',
+      dialogWidth: 'auto'
     }
   },
 
@@ -267,16 +271,6 @@ export default {
         // 下拉框展开时的处理逻辑
         materialCategory.getlist().then((res) => {
           this.Class_of_material_list = res.data
-          console.log(res)
-        })
-      } else {
-        // 下拉框收起时的处理逻辑
-      }
-    },
-    unit_search(visible) {
-      if (visible) {
-        units.getlist().then((res) => {
-          this.unitlis = res.data
           console.log(res)
         })
       } else {
@@ -368,6 +362,15 @@ export default {
     showImage(imageUrl) {
       this.dialogImageUrl = this.baseUrl + imageUrl
       this.imageDialogVisible = true
+      const image = new Image()
+      image.src = this.dialogImageUrl
+      image.onload = () => {
+        this.dialogWidth = `${image.width}px`
+      }
+    },
+    onCategoryChange() {
+      const selectedCategory = this.Class_of_material_list.find((category) => category.name === this.materials_form.category)
+      this.materials_form.unit = selectedCategory ? selectedCategory.unit : ''
     }
   }
 }

@@ -1,15 +1,17 @@
 const mongoose = require('mongoose')
+const db = require('../config/db')
 
 const surfaceTreatmentSchema = new mongoose.Schema({
   // 表面处理名称
   name: {
-    type: String,
-    required: true
+    type: String, // 字符串类型
+    required: true, // 必填
+    unique: true // 唯一性
   },
   // 单价
   price: {
-    type: Number,
-    required: true
+    type: Number, // 数字类型
+    required: true // 必填
   },
   // 创建时间
   createdAt: {
@@ -18,6 +20,6 @@ const surfaceTreatmentSchema = new mongoose.Schema({
   }
 })
 
-const SurfaceTreatment = mongoose.model('SurfaceTreatment', surfaceTreatmentSchema)
+const SurfaceTreatment = db.model('SurfaceTreatment', surfaceTreatmentSchema)
 
 module.exports = SurfaceTreatment

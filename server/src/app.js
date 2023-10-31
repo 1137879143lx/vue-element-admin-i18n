@@ -13,6 +13,7 @@ const MaterialCategoryRouter = require('./routes/MaterialCategoryRouters')
 const UnitRouter = require('./routes/unitsRouters')
 const MaterialRouter = require('./routes/materialsRouters')
 const uploadRouter = require('./routes/upLoadRouters')
+const SurfaceTreatmentRouter = require('./routes/surfaceTreatmentRouter')
 
 const app = express()
 
@@ -47,6 +48,7 @@ app.use('/api/materialCategory', MaterialCategoryRouter) // // 使用路由
 app.use('/api/units', UnitRouter) // // 使用路由
 app.use('/api/materials', MaterialRouter) // // 使用路由
 app.use('/api', uploadRouter) // // 使用路由
+app.use('/api/surfaceTreatment', SurfaceTreatmentRouter) // // 使用路由
 
 // 解析错误中间件
 // eslint-disable-next-line space-before-function-paren

@@ -1,8 +1,18 @@
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 const db = require('../config/db')
+
 const materialCategorySchema = new mongoose.Schema({
   name: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  unit: {
+    type: String,
+    required: true
+  },
+  codeRule: {
     type: String,
     required: true,
     unique: true
