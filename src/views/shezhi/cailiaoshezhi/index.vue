@@ -69,7 +69,7 @@
         </el-table-column>
         <el-table-column prop="status" label="启用">
           <template slot-scope="scope">
-            <el-switch :value="scope.row.status === '启用'" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch disabled :value="scope.row.status === '启用'" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </template>
         </el-table-column>
 

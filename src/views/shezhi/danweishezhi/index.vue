@@ -114,7 +114,7 @@
             @current-change="handleProcessPageChange"
           />
         </el-card>
-        <el-dialog :visible.sync="addProcessDialogVisible" title="新增工序设置">
+        <el-dialog :visible.sync="addProcessDialogVisible" title="新增工序设置" width="30%">
           <el-form ref="addProcessForm" :model="addProcessForm" :rules="addProcessFormRules" label-width="100px">
             <el-form-item label="工序名称" prop="name">
               <el-input v-model="addProcessForm.name" placeholder="请输入工序名称" />
@@ -333,7 +333,8 @@ export default {
     },
 
     async handleProcessPageChange(page) {
-      // Handle page change
+      this.processForm.page = page
+      this.getProcess()
     },
     showAddProcessDialog() {
       this.addProcessDialogVisible = true
@@ -363,6 +364,6 @@ export default {
   justify-content: space-around; */
 }
 .card-container > * {
-  margin: 5px 5px;
+  margin: 5px 15px;
 }
 </style>

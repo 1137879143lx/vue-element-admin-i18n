@@ -226,6 +226,13 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <!--  -->
+    <el-dialog class="input-new-tag2" :visible="true" title="编辑加工工序" width="35%">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -363,3 +370,5 @@ export default {
   }
 }
 </script>
+
+<style lang="scss"></style>
