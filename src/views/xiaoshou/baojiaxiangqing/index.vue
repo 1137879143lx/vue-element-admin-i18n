@@ -85,7 +85,7 @@
               remote
               :remote-method="querySearch"
               placeholder="请输入材料名称"
-              style="width: 230px"
+              style="width: 200px"
             >
               <el-option v-for="material in materials" :key="material._id" :label="material.name" :value="material.name">
                 <span style="float: left">{{ material.name }}</span>
@@ -94,9 +94,12 @@
             </el-select>
           </template>
         </el-table-column>
+        <!-- // v-model="scope.row.Surface_treatment" -->
         <el-table-column min-width="180" label="表面处理">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.Surface_treatment" size="mini" clearable />
+            <el-select v-model="scope.row.Surface_treatment" filterable remote clearable placeholder="请输入表面处理" size="small">
+              <el-option v-for="item in SurfaceResults" :key="item._id" :label="item.name" :value="item.name" />
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column min-width="180" label="下料尺寸">
@@ -228,7 +231,7 @@
 <script>
 import * as Customer from '@/api/Customer'
 import * as materials from '@/api/materials'
-
+import * as surfaceTreatment from '@/api/surfaceTreatment'
 export default {
   data() {
     return {
@@ -298,12 +301,13 @@ export default {
       Remarks: '',
       select: '',
       FormData: [],
-      searchResults: [],
+      SurfaceResults: [],
       materials: []
     }
   },
   mounted() {
     this.getCustomerList()
+    this.loadSurface()
   },
   methods: {
     changePage() {},
@@ -350,6 +354,11 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    loadSurface() {
+      surfaceTreatment.getlist().then((res) => {
+        this.SurfaceResults = res.data
+      })
     }
   }
 }

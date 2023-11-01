@@ -143,7 +143,7 @@ export default {
 
     async MaterialType_edit(row) {
       // ...
-      await materialCategory.update(row._id, {
+      await materialCategory.put(row._id, {
         name: this.MaterialType_searchName
       })
     },

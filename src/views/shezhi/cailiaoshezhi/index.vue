@@ -67,10 +67,9 @@
             {{ scope.row.category ? scope.row.category : '--' }}
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态">
+        <el-table-column prop="status" label="启用">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === '启用'" size="mini" effect="light" type="">启用</el-tag>
-            <el-tag v-if="scope.row.status === '禁用'" size="mini" effect="light" type="danger">禁用</el-tag>
+            <el-switch :value="scope.row.status === '启用'" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </template>
         </el-table-column>
 
