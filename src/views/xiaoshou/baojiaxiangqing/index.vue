@@ -227,7 +227,60 @@
       </el-table>
     </el-card>
     <!--  -->
-    <el-dialog class="input-new-tag2" :visible="true" title="编辑加工工序" width="35%">
+    <el-dialog :visible="true" title="编辑加工工序" width="50%">
+      <div class="container">
+        <el-table size="mini" :data="tableData" style="width: 60%" height="535px">
+          <el-table-column type="index" label="#" />
+          <el-table-column type="selection" />
+          <el-table-column prop="name" label="工序">
+            <template slot-scope="scope">
+              <el-select v-model="scope.row.name" size="mini" placeholder="请选择">
+                <el-option label="待入站" value="待入站" />
+                <el-option label="已入站" value="已入站" />
+                <el-option label="加工中" value="加工中" />
+                <el-option label="已加工" value="已加工" />
+                <el-option label="暂停中" value="暂停中" />
+                <el-option label="外协中" value="外协中" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column prop="description" label="预计工时">
+            <template slot-scope="scope">
+              <!--  eslint-disable-next-line vue/html-self-closing -->
+              <el-input-number
+                v-model="scope.row.description"
+                size="mini"
+                controls-position="right"
+                :min="0.01"
+                :max="100"
+                :step="0.05"
+                @change="handleChange"
+              ></el-input-number>
+            </template>
+          </el-table-column>
+          <el-table-column prop="price" label="状态">
+            <template slot-scope="scope">
+              <el-select v-model="scope.row.price" size="mini" placeholder="请选择">
+                <el-option label="待入站" value="待入站" />
+                <el-option label="已入站" value="已入站" />
+                <el-option label="加工中" value="加工中" />
+                <el-option label="已加工" value="已加工" />
+                <el-option label="暂停中" value="暂停中" />
+                <el-option label="外协中" value="外协中" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <!--  eslint-disable-next-line vue/no-unused-vars -->
+            <template slot-scope="scope">
+              <el-button size="mini" icon="el-icon-delete" type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="button-list">
+          <el-button v-for="processes in List_of_processes" :key="processes._id" size="mini" type="text">+ {{ processes.name }}</el-button>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -239,6 +292,7 @@
 import * as Customer from '@/api/Customer'
 import * as materials from '@/api/materials'
 import * as surfaceTreatment from '@/api/surfaceTreatment'
+import * as processStep from '@/api/processStep'
 export default {
   data() {
     return {
@@ -309,12 +363,22 @@ export default {
       select: '',
       FormData: [],
       SurfaceResults: [],
-      materials: []
+      materials: [],
+      showTag: true,
+      List_of_processes: [],
+      tableData: [
+        { id: 1, name: '商品1', description: '这是商品1的描述', price: '待入站' },
+        { id: 2, name: '商品2', description: '这是商品2的描述', price: '待入站' },
+        { id: 3, name: '商品3', description: '这是商品3的描述', price: '待入站' },
+        { id: 4, name: '商品4', description: '这是商品4的描述', price: '待入站' },
+        { id: 5, name: '商品5', description: '这是商品5的描述', price: '待入站' }
+      ]
     }
   },
   mounted() {
     this.getCustomerList()
     this.loadSurface()
+    this.loadProcess()
   },
   methods: {
     changePage() {},
@@ -339,7 +403,7 @@ export default {
           label: item.code,
           names: item.name
         }))
-        console.log(this.parentComponentNoOptions)
+        // console.log(this.parentComponentNoOptions)
       } catch (error) {
         console.error(error)
       } finally {
@@ -366,9 +430,55 @@ export default {
       surfaceTreatment.getlist().then((res) => {
         this.SurfaceResults = res.data
       })
+    },
+    async loadProcess() {
+      const res = await processStep.get({
+        page: 1,
+        limit: 1000
+      })
+      this.List_of_processes = res.data
+      this.List_of_processes = this.List_of_processes.concat(this.SurfaceResults)
+      console.log(this.List_of_processes)
     }
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  // 按钮宽度 等宽
+  .el-button {
+    width: 70%;
+  }
+  .el-button {
+    margin-bottom: 3px;
+  }
+}
+.button-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 500px;
+  overflow-y: auto;
+  width: 150px;
+  border-radius: 5px;
+  // padding: 2px;
+  border: 1px solid #f1f1f1;
+  margin-top: 35px;
+  //鼠标移动到按钮上 背景颜色改变
+  .el-button:hover {
+    background-color: #f1f1f1;
+  }
+
+  //左对齐
+  .el-button {
+    text-align: left;
+    margin: 1px 1px;
+    padding-left: 5px;
+    width: 100%;
+  }
+}
+</style>
