@@ -392,11 +392,13 @@ export default {
       materials: [],
       showTag: true,
       List_of_processes: [],
-      tableData: [],
-      template: '',
-      processdialogVisible: false,
-      Process_template: '',
-      editindex: 0
+      tableData: [
+        { id: 1, name: '商品1', description: '这是商品1的描述', price: '待入站' },
+        { id: 2, name: '商品2', description: '这是商品2的描述', price: '待入站' },
+        { id: 3, name: '商品3', description: '这是商品3的描述', price: '待入站' },
+        { id: 4, name: '商品4', description: '这是商品4的描述', price: '待入站' },
+        { id: 5, name: '商品5', description: '这是商品5的描述', price: '待入站' }
+      ]
     }
   },
   mounted() {
@@ -463,28 +465,8 @@ export default {
         limit: 1000
       })
       this.List_of_processes = res.data
-    },
-    AddprocessesList(name) {
-      this.tableData.push({
-        name: name,
-        description: 0.1,
-        price: '待入站'
-      })
-    },
-    removeProcessList(index) {
-      this.tableData.splice(index, 1)
-    },
-    // 编辑加工工序
-    Editing_process(row, index) {
-      this.processdialogVisible = true
-      this.tableData = row.tableData
-      this.editindex = index
-    },
-    // 确定加工工序
-    determineProcess() {
-      this.processdialogVisible = false
-      this.FormData[this.editindex].tableData = this.tableData
-      console.log(this.FormData)
+      this.List_of_processes = this.List_of_processes.concat(this.SurfaceResults)
+      console.log(this.List_of_processes)
     }
   }
 }
