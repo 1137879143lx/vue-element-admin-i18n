@@ -112,7 +112,7 @@
             <el-input v-model="scope.row.cuttingQuantity" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column width="300" label="加工工序">
+        <el-table-column width="350" label="加工工序">
           <template slot-scope="scope">
             <el-button v-if="scope.row.tableData.length" size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">
               <span v-for="item in scope.row.tableData" :key="item.name" style="font-size: 1em">{{ item.name }}({{ item.description }})→</span>
@@ -504,6 +504,7 @@ export default {
   align-items: center;
   max-height: 500px;
   overflow-y: auto;
+  overflow-x: hidden; // 隐藏X方向的滚动条
   width: 150px;
   border-radius: 5px;
   // padding: 2px;
@@ -518,7 +519,7 @@ export default {
   .el-button {
     text-align: left;
     margin: 1px 1px;
-    padding-left: 5px;
+    padding-left: 15px;
     width: 100%;
   }
 }
