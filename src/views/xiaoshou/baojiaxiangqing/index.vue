@@ -112,9 +112,13 @@
             <el-input v-model="scope.row.cuttingQuantity" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column width="260" label="加工工序">
-          <template slot-scope="">
-            <el-button size="mini" type="text">编辑</el-button>
+        <el-table-column min-width="260" label="加工工序">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.tableData.length" size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">
+              <!-- {{ scope.row }} -->
+              <span v-for="item in scope.row.tableData" :key="item.name" style="font-size: 0.5">{{ item.name }}({{ item.description }})→</span>
+            </el-button>
+            <el-button v-else size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">编辑</el-button>
           </template>
         </el-table-column>
         <el-table-column width="120" label="编程工艺费(￥)">
@@ -226,8 +230,17 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <!--  -->
-    <el-dialog :visible="true" title="编辑加工工序" width="50%">
+    <!-- 编辑工序  -->
+    <el-dialog :visible="processdialogVisible" title="编辑加工工序" width="50%">
+      <div>
+        <el-button size="mini" type="">上移</el-button>
+        <el-button size="mini" type="">下移</el-button>
+        工序模板
+        <el-select v-model="Process_template" style="width: 250px" clearable size="mini" placeholder="请选择" />
+        <el-input v-model="template" size="mini" style="width: 250px" placeholder="输入模板名称" />
+        <el-button size="mini" type="">添加到模板</el-button>
+      </div>
+      <!-- 上移 下移 保存为模板 模板中选择 -->
       <div class="container">
         <el-table size="mini" :data="tableData" style="width: 60%" height="535px">
           <el-table-column type="index" label="#" />
@@ -235,27 +248,23 @@
           <el-table-column prop="name" label="工序">
             <template slot-scope="scope">
               <el-select v-model="scope.row.name" size="mini" placeholder="请选择">
-                <el-option label="待入站" value="待入站" />
-                <el-option label="已入站" value="已入站" />
-                <el-option label="加工中" value="加工中" />
-                <el-option label="已加工" value="已加工" />
-                <el-option label="暂停中" value="暂停中" />
-                <el-option label="外协中" value="外协中" />
+                <el-option
+                  v-for="processes in List_of_processes"
+                  :key="processes._id"
+                  style="width: 200px"
+                  size="mini"
+                  :label="processes.name"
+                  :value="processes.name"
+                />
+                <el-option label="----------------" value="----------------" />
+                <el-option v-for="Surface in SurfaceResults" :key="Surface._id" size="mini" :label="Surface.name" :value="Surface.name" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column prop="description" label="预计工时">
             <template slot-scope="scope">
               <!--  eslint-disable-next-line vue/html-self-closing -->
-              <el-input-number
-                v-model="scope.row.description"
-                size="mini"
-                controls-position="right"
-                :min="0.01"
-                :max="100"
-                :step="0.05"
-                @change="handleChange"
-              ></el-input-number>
+              <el-input-number v-model="scope.row.description" size="mini" controls-position="right" :min="0.01" :max="100" :step="0.05" />
             </template>
           </el-table-column>
           <el-table-column prop="price" label="状态">
@@ -273,17 +282,30 @@
           <el-table-column label="操作">
             <!--  eslint-disable-next-line vue/no-unused-vars -->
             <template slot-scope="scope">
-              <el-button size="mini" icon="el-icon-delete" type="text">删除</el-button>
+              <el-button size="mini" icon="el-icon-delete" type="text" @click="removeProcessList(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="button-list">
-          <el-button v-for="processes in List_of_processes" :key="processes._id" size="mini" type="text">+ {{ processes.name }}</el-button>
+          <el-button v-for="processes in List_of_processes" :key="processes._id" size="mini" type="text" @click="AddprocessesList(processes.name)">
+            + {{ processes.name }}
+          </el-button>
+          <el-button style="color: #b828c5" size="mini" type="text">----------------------</el-button>
+          <el-button
+            v-for="Surface in SurfaceResults"
+            :key="Surface._id"
+            style="color: #6f7494"
+            size="mini"
+            type="text"
+            @click="AddprocessesList(Surface.name)"
+          >
+            + {{ Surface.name }}
+          </el-button>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="processdialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="determineProcess">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -361,18 +383,20 @@ export default {
       page: 1,
       Remarks: '',
       select: '',
-      FormData: [],
+      FormData: [
+        {
+          tableData: []
+        }
+      ],
       SurfaceResults: [],
       materials: [],
       showTag: true,
       List_of_processes: [],
-      tableData: [
-        { id: 1, name: '商品1', description: '这是商品1的描述', price: '待入站' },
-        { id: 2, name: '商品2', description: '这是商品2的描述', price: '待入站' },
-        { id: 3, name: '商品3', description: '这是商品3的描述', price: '待入站' },
-        { id: 4, name: '商品4', description: '这是商品4的描述', price: '待入站' },
-        { id: 5, name: '商品5', description: '这是商品5的描述', price: '待入站' }
-      ]
+      tableData: [],
+      template: '',
+      processdialogVisible: false,
+      Process_template: '',
+      editindex: 0
     }
   },
   mounted() {
@@ -392,7 +416,9 @@ export default {
       this.Address = customer ? customer.Address : '' // 将客户的收货地址赋值给 Address 变量
     },
     addMaterial() {
-      this.FormData.push({})
+      this.FormData.push({
+        tableData: []
+      })
     },
     async searchParentComponentNo(query) {
       this.loading = true
@@ -437,8 +463,28 @@ export default {
         limit: 1000
       })
       this.List_of_processes = res.data
-      this.List_of_processes = this.List_of_processes.concat(this.SurfaceResults)
-      console.log(this.List_of_processes)
+    },
+    AddprocessesList(name) {
+      this.tableData.push({
+        name: name,
+        description: 0.1,
+        price: '待入站'
+      })
+    },
+    removeProcessList(index) {
+      this.tableData.splice(index, 1)
+    },
+    // 编辑加工工序
+    Editing_process(row, index) {
+      this.processdialogVisible = true
+      this.tableData = row.tableData
+      this.editindex = index
+    },
+    // 确定加工工序
+    determineProcess() {
+      this.processdialogVisible = false
+      this.FormData[this.editindex].tableData = this.tableData
+      console.log(this.FormData)
     }
   }
 }
@@ -470,7 +516,7 @@ export default {
   margin-top: 35px;
   //鼠标移动到按钮上 背景颜色改变
   .el-button:hover {
-    background-color: #f1f1f1;
+    background-color: #f5f7fa;
   }
 
   //左对齐
