@@ -112,11 +112,10 @@
             <el-input v-model="scope.row.cuttingQuantity" size="mini" />
           </template>
         </el-table-column>
-        <el-table-column min-width="260" label="加工工序">
+        <el-table-column width="300" label="加工工序">
           <template slot-scope="scope">
             <el-button v-if="scope.row.tableData.length" size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">
-              <!-- {{ scope.row }} -->
-              <span v-for="item in scope.row.tableData" :key="item.name" style="font-size: 0.5">{{ item.name }}({{ item.description }})→</span>
+              <span v-for="item in scope.row.tableData" :key="item.name" style="font-size: 1em">{{ item.name }}({{ item.description }})→</span>
             </el-button>
             <el-button v-else size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">编辑</el-button>
           </template>
@@ -383,22 +382,16 @@ export default {
       page: 1,
       Remarks: '',
       select: '',
-      FormData: [
-        {
-          tableData: []
-        }
-      ],
+      FormData: [],
       SurfaceResults: [],
       materials: [],
       showTag: true,
       List_of_processes: [],
-      tableData: [
-        { id: 1, name: '商品1', description: '这是商品1的描述', price: '待入站' },
-        { id: 2, name: '商品2', description: '这是商品2的描述', price: '待入站' },
-        { id: 3, name: '商品3', description: '这是商品3的描述', price: '待入站' },
-        { id: 4, name: '商品4', description: '这是商品4的描述', price: '待入站' },
-        { id: 5, name: '商品5', description: '这是商品5的描述', price: '待入站' }
-      ]
+      tableData: [],
+      template: '',
+      processdialogVisible: false,
+      Process_template: '',
+      editindex: 0
     }
   },
   mounted() {
@@ -465,8 +458,28 @@ export default {
         limit: 1000
       })
       this.List_of_processes = res.data
-      this.List_of_processes = this.List_of_processes.concat(this.SurfaceResults)
-      console.log(this.List_of_processes)
+    },
+    AddprocessesList(name) {
+      this.tableData.push({
+        name: name,
+        description: 0.1,
+        price: '待入站'
+      })
+    },
+    removeProcessList(index) {
+      this.tableData.splice(index, 1)
+    },
+    // 编辑加工工序
+    Editing_process(row, index) {
+      this.processdialogVisible = true
+      this.tableData = row.tableData
+      this.editindex = index
+    },
+    // 确定加工工序
+    determineProcess() {
+      this.processdialogVisible = false
+      this.FormData[this.editindex].tableData = this.tableData
+      console.log(this.FormData)
     }
   }
 }
