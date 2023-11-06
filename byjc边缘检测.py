@@ -7,6 +7,12 @@ def on_trackbar(val):
     edges = cv2.Canny(gray, thresh_value, thresh_value * 2)  # 使用 Canny 边缘检测算法检测边缘
     contours, hierarchy = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # 使用轮廓检测算法检测轮廓
     img_contours = img.copy()  # 复制原图像
+    # 二值化
+    ret, binary = cv2.threshold(gray, thresh_value, 255, cv2.THRESH_BINARY)
+    #显示
+    cv2.imshow("binary", binary)
+    # 轮廓检测
+
     for contour in contours:
         area = cv2.contourArea(contour)  # 计算轮廓面积
         if area < 100:  # 如果轮廓面积小于 50，则忽略该轮廓
@@ -22,7 +28,7 @@ def on_trackbar(val):
     cv2.imshow('edges', edges)  # 在窗口中显示绘制好轮廓的图像
 
 # 加载图像
-img = cv2.imread('image10.png')
+img = cv2.imread('image.png')
 
 # 将图像转换为灰度图像
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
