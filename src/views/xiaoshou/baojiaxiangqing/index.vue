@@ -221,7 +221,7 @@
         <el-table-column width="100" label="图片2D">
           <img width="40" src="../../../../public/shape_image.png" alt="未上传">
         </el-table-column>
-        <el-table-column label="操作" width="120" fixed="right">
+        <el-table-column label="操作" width="150" fixed="right">
           <template slot-scope="scope">
             <el-button :loading="scope.row.isloding" icon="el-icon-upload2" size="mini" @click="toDo(scope.row)" />
             <el-button icon="el-icon-delete" size="mini" @click="toDo(scope.row)" />
