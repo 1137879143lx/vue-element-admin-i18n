@@ -55,64 +55,31 @@
 </template>
 
 <script>
+import * as salesQuote from '@/api/salesQuote'
+
 export default {
   data() {
     return {
-      List: [
-        {
-          id: 20230001,
-          proposer: '南天门研发所',
-          section: '编程组',
-          status: '待报价',
-          Application_date: '2023-10-6',
-          items: '物料列表',
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '紧急物料,请及时安排加工'
-        },
-        {
-          id: 20230002,
-          proposer: '南天门研发所',
-          section: '编程组',
-          status: '已报价,待客户确认',
-          items: '物料列表',
-          Application_date: '2023-10-6',
-
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '遇到问题,及时联系'
-        },
-        {
-          id: 20230002,
-          proposer: '天安事务所',
-          section: '编程组',
-          status: '客户已确认',
-          items: '物料列表',
-          Application_date: '2023-10-6',
-
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '分批发货'
-        },
-        {
-          id: 20230002,
-          proposer: '南天门研发所',
-          section: '编程组',
-          status: '客户驳回,请重新报价',
-          items: '物料列表',
-          Application_date: '2023-10-6',
-
-          totalEstimatedPrice: 100,
-          approval: '刘旭',
-          deliveryDate: '2023-10-06',
-          remarks: '紧急物料,请及时安排加工'
-        }
-      ]
+      List: [],
+      page: 1,
+      limit: 10
     }
   },
-  methods: {}
+  // 初始函数 页面切换到这时
+  mounted() {
+    this.getSalesQuotes() // 获取客户列表
+  },
+  methods: {
+    getSalesQuotes() {
+      salesQuote
+        .getSalesQuotes({ page: this.page, limit: this.limit })
+        .then((response) => {
+          this.List = response.data
+        })
+        .catch((error) => {
+          console.error('Error getting sales quotes:', error)
+        })
+    }
+  }
 }
 </script>

@@ -6,10 +6,10 @@ const purchaseRequestSchema = new mongoose.Schema({
   orderNumber: {
     type: String,
     required: true
+    // 唯一的
   }, // 订单号
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true
   }, // 创建者
   department: {
@@ -40,8 +40,7 @@ const purchaseRequestSchema = new mongoose.Schema({
     required: true
   }, // 申请状态
   approver: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: String
   }, // 审批者
   materialList: [
     {

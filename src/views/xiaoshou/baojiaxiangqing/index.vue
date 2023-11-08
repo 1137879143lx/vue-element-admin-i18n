@@ -2,7 +2,7 @@
   <div>
     <el-card shadow="never" :body-style="{ padding: '5px' }">
       <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存并提交</el-button>
-      <el-button style="float: right; margin-left: 5px" size="mini" type="link">保存</el-button>
+      <el-button style="float: right; margin-left: 5px" size="mini" type="link" @click="save">保存</el-button>
       <el-descriptions title="报价详情">
         <el-descriptions-item label="订单号">{{ orderNumber }}</el-descriptions-item>
         <el-descriptions-item label="客户">
@@ -320,12 +320,12 @@ import * as Customer from '@/api/Customer'
 import * as materials from '@/api/materials'
 import * as surfaceTreatment from '@/api/surfaceTreatment'
 import * as processStep from '@/api/processStep'
+import * as salesQuote from '@/api/salesQuote'
 export default {
   data() {
     return {
       loading: false,
       parentComponentNoOptions: [],
-      Return_delivery_time: '',
       note: '',
       Customer: '',
       CustomerOptions: [],
@@ -381,8 +381,6 @@ export default {
           }
         ]
       },
-      value1: '',
-      value2: '',
       total: 100,
       pageSize: 10,
       page: 1,
@@ -486,6 +484,9 @@ export default {
       this.processdialogVisible = false
       this.FormData[this.editindex].tableData = this.tableData
       console.log(this.FormData)
+    },
+    save() {
+      salesQuote.addSalesQuote()
     }
   }
 }

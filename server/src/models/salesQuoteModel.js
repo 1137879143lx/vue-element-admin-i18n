@@ -1,3 +1,4 @@
+const { string } = require('clipboard')
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 
@@ -69,10 +70,6 @@ const salesQuoteSchema = new mongoose.Schema({
       material: {
         type: String
       },
-      // 加工方式
-      processing: {
-        type: String
-      },
       // 切割尺寸
       cuttingSize: {
         type: String
@@ -82,13 +79,25 @@ const salesQuoteSchema = new mongoose.Schema({
         type: Number
       },
       // 加工步骤
-      processingSteps: {
-        type: String
-      },
+      processingSteps: [
+        {
+          name: {
+            type: String // Process name
+          },
+          estimatedHours: {
+            type: Number
+          },
+          state: {
+            type: String
+          },
+          price: {
+            type: Number
+          }
+        }
+      ],
       Surface_treatment: {
-        type: String
+        type: String // 表面处理
       },
-
       // 编程费用
       programmingFee: {
         type: Number
@@ -128,7 +137,6 @@ const salesQuoteSchema = new mongoose.Schema({
       Estimated_unit_price: {
         type: Number
       },
-
       // 包装检验费用
       packagingInspectionFee: {
         type: Number
@@ -156,6 +164,16 @@ const salesQuoteSchema = new mongoose.Schema({
       // 回复交货日期
       replyDeliveryDate: {
         type: Date
+      },
+      // 文件路径
+      fullPath: {
+        type: String
+      },
+      image2D: {
+        type: String
+      },
+      image3D: {
+        type: String
       }
     }
   ]
