@@ -216,10 +216,16 @@
           </template>
         </el-table-column>
         <el-table-column width="100" label="图片3D">
-          <img width="40" src="../../../../public/shape_image.png" alt="未上传">
+          <template slot-scope="scope">
+            <!-- eslint-disable-next-line vue/html-self-closing -->
+            <img width="40" :src="scope.image3D" alt="未上传" />
+          </template>
         </el-table-column>
         <el-table-column width="100" label="图片2D">
-          <img width="40" src="../../../../public/shape_image.png" alt="未上传">
+          <template slot-scope="scope">
+            <!-- eslint-disable-next-line vue/html-self-closing -->
+            <img width="40" :src="scope.image2D" alt="未上传" />
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="150" fixed="right">
           <template slot-scope="scope">
@@ -260,15 +266,15 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="description" label="预计工时">
+          <el-table-column prop="estimatedHours" label="预计工时">
             <template slot-scope="scope">
               <!--  eslint-disable-next-line vue/html-self-closing -->
-              <el-input-number v-model="scope.row.description" size="mini" controls-position="right" :min="0.01" :max="100" :step="0.05" />
+              <el-input-number v-model="scope.row.estimatedHours" size="mini" controls-position="right" :min="0.01" :max="100" :step="0.05" />
             </template>
           </el-table-column>
-          <el-table-column prop="price" label="状态">
+          <el-table-column prop="state" label="状态">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.price" size="mini" placeholder="请选择">
+              <el-select v-model="scope.row.state" size="mini" placeholder="请选择">
                 <el-option label="待入站" value="待入站" />
                 <el-option label="已入站" value="已入站" />
                 <el-option label="加工中" value="加工中" />
