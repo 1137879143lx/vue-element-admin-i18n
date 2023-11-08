@@ -16,21 +16,31 @@
       <el-table stripe :data="List" size="mini">
         <el-table-column type="index" />
         <el-table-column type="selection" />
-        <el-table-column property="id" label="订单编号">
+        <el-table-column property="id" min-width="150px" label="订单编号">
           <template slot-scope="{ row }">
-            <el-button size="mini" type="text" @click="$router.push('../xiaoshou/baojiaxiangqing')">{{ row.id }}</el-button>
+            <el-button size="mini" type="text" @click="$router.push('../xiaoshou/baojiaxiangqing')">{{ row.orderNumber }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column property="proposer" label="客户" />
-        <el-table-column property="Application_date" label="订单日期" />
+        <el-table-column prop="customer" label="客户" />
+        <el-table-column prop="orderDate" label="订单日期">
+          <template slot-scope="scope">
+            {{ formatDate(scope.row.orderDate) }}
+          </template>
+        </el-table-column>
 
-        <el-table-column property="items" label="物料信息">
-          <template slot-scope="{}">
-            <el-button size="mini" type="text">详情</el-button>
+        <el-table-column min-width="500px" label="物料">
+          <template slot-scope="scope">
+            <el-table :data="scope.row.materialInfo" size="mini" height="80px">
+              <el-table-column type="index" />
+              <el-table-column prop="materialCode" min-width="120px" label="物料编码" />
+              <el-table-column prop="materialName" min-width="150px" label="物料名称" />
+              <el-table-column prop="version" label="版本" />
+              <el-table-column prop="quantity" label="数量" />
+            </el-table>
           </template>
         </el-table-column>
-        <el-table-column property="deliveryDate" label="期望交期" />
-        <el-table-column property="remarks" label="备注" />
+
+        <el-table-column prop="note" label="备注" />
         <el-table-column label="状态">
           <template slot-scope="{ row }">
             <el-tag v-if="row.status == '待报价'" type="info" size="mini" effect="plain">{{ row.status }}</el-tag>
@@ -56,7 +66,7 @@
 
 <script>
 import * as salesQuote from '@/api/salesQuote'
-
+import { format, parseISO } from 'date-fns'
 export default {
   data() {
     return {
@@ -79,6 +89,9 @@ export default {
         .catch((error) => {
           console.error('Error getting sales quotes:', error)
         })
+    },
+    formatDate(date) {
+      return format(parseISO(date), 'yyyy-MM-dd')
     }
   }
 }

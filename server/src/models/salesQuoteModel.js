@@ -1,6 +1,6 @@
-const { string } = require('clipboard')
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
+const db = require('../config/db')
 
 // 定义销售报价单模式
 const salesQuoteSchema = new mongoose.Schema({
@@ -16,11 +16,6 @@ const salesQuoteSchema = new mongoose.Schema({
   },
   // 下单日期
   orderDate: {
-    type: Date,
-    required: true
-  },
-  // 预计交货日期
-  expectedDeliveryDate: {
     type: Date,
     required: true
   },
@@ -183,7 +178,7 @@ const salesQuoteSchema = new mongoose.Schema({
 salesQuoteSchema.plugin(mongoosePaginate)
 
 // 创建销售报价单模型
-const SalesQuote = mongoose.model('SalesQuote', salesQuoteSchema)
+const SalesQuote = db.model('SalesQuote', salesQuoteSchema)
 
 // 导出销售报价单模型
 module.exports = SalesQuote

@@ -5,6 +5,8 @@ const SalesQuote = require('../models/salesQuoteModel')
 // Create
 router.post('/', async (req, res) => {
   const salesQuote = new SalesQuote(req.body)
+  console.log(req.body)
+  console.log(req.body.materialInfo[0].processingSteps)
   try {
     await salesQuote.save()
     res.json({ code: 200, data: salesQuote, message: 'Sales quote created successfully.' })
@@ -18,6 +20,7 @@ router.get('/', async (req, res) => {
   try {
     let { page = 1, limit } = req.query
     console.log(req.query)
+
     page = parseInt(page)
     limit = limit ? parseInt(limit) : undefined
     const skip = limit ? (page - 1) * limit : 0
@@ -26,7 +29,7 @@ router.get('/', async (req, res) => {
     res.json({
       code: 200,
       data: salesQuotes,
-      count: total,
+      total: total,
       currentPage: page,
       message: 'Sales quotes retrieved successfully.'
     })

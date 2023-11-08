@@ -13,7 +13,7 @@
             </el-option>
           </el-select>
         </el-descriptions-item>
-        <el-descriptions-item label="收货地址">{{ Address }}</el-descriptions-item>
+        <el-descriptions-item label="收货地址">{{ deliveryAddress }}</el-descriptions-item>
         <el-descriptions-item label="状态">
           <el-tag size="small">待报价</el-tag>
         </el-descriptions-item>
@@ -114,8 +114,10 @@
         </el-table-column>
         <el-table-column width="350" label="加工工序">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.tableData.length" size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">
-              <span v-for="item in scope.row.tableData" :key="item.name" style="font-size: 1em">{{ item.name }}({{ item.description }})→</span>
+            <el-button v-if="scope.row.processingSteps.length" size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">
+              <span v-for="item in scope.row.processingSteps" :key="item.name" style="font-size: 1em">
+                {{ item.name }}({{ item.estimatedHours }})→
+              </span>
             </el-button>
             <el-button v-else size="mini" type="text" @click="Editing_process(scope.row, scope.$index)">编辑</el-button>
           </template>
@@ -247,7 +249,7 @@
       </div>
       <!-- 上移 下移 保存为模板 模板中选择 -->
       <div class="container">
-        <el-table size="mini" :data="tableData" style="width: 60%" height="535px">
+        <el-table size="mini" :data="processingSteps" style="width: 60%" height="535px">
           <el-table-column type="index" label="#" />
           <el-table-column type="selection" />
           <el-table-column prop="name" label="工序">
@@ -324,16 +326,17 @@ import * as salesQuote from '@/api/salesQuote'
 export default {
   data() {
     return {
-      loading: false,
-      parentComponentNoOptions: [],
-      note: '',
-      Customer: '',
-      CustomerOptions: [],
-      Address: '',
-      orderNumber: '20231030001',
+      loading: false, // 加载状态
+      parentComponentNoOptions: [], // 父组件编号选项
+      note: '', // 备注
+      Customer: '', // 客户
+      CustomerOptions: [], // 客户选项
+      deliveryAddress: '', // 地址
+      orderNumber: '20231030001', // 订单号
       category: '零件', // 待搜索的零件类别
       Type_of_material: '原材料', // 待搜索的原材料类别
       options: [
+        // 选项
         {
           value: '1',
           label: '一般',
@@ -351,51 +354,57 @@ export default {
         }
       ],
       pickerOptions: {
+        // 日期选择器选项
         disabledDate(time) {
-          return time.getTime() < Date.now()
+          // 禁用的日期
+          return time.getTime() < Date.now() // 返回时间小于现在的时间
         },
         shortcuts: [
+          // 快捷方式
           {
-            text: '3天',
+            text: '3天', // 文本
             onClick(picker) {
-              const date = new Date()
-              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3)
-              picker.$emit('pick', date)
+              // 点击事件
+              const date = new Date() // 创建新的日期对象
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3) // 设置时间为3天后
+              picker.$emit('pick', date) // 发出选择事件
             }
           },
           {
-            text: '一周',
+            text: '一周', // 文本
             onClick(picker) {
-              const date = new Date()
-              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', date)
+              // 点击事件
+              const date = new Date() // 创建新的日期对象
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7) // 设置时间为一周后
+              picker.$emit('pick', date) // 发出选择事件
             }
           },
           {
-            text: '半个月',
+            text: '半个月', // 文本
             onClick(picker) {
-              const date = new Date()
-              date.setTime(date.getTime() + 3600 * 1000 * 24 * 15)
-              picker.$emit('pick', date)
+              // 点击事件
+              const date = new Date() // 创建新的日期对象
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 15) // 设置时间为半个月后
+              picker.$emit('pick', date) // 发出选择事件
             }
           }
         ]
       },
-      total: 100,
-      pageSize: 10,
-      page: 1,
-      Remarks: '',
-      select: '',
-      FormData: [],
-      SurfaceResults: [],
-      materials: [],
-      showTag: true,
-      List_of_processes: [],
-      tableData: [],
-      template: '',
-      processdialogVisible: false,
-      Process_template: '',
-      editindex: 0
+      total: 100, // 总数
+      pageSize: 10, // 页面大小
+      page: 1, // 当前页
+      Remarks: '', // 备注
+      select: '', // 选择
+      FormData: [], // 表单数据
+      SurfaceResults: [], // 表面结果
+      materials: [], // 材料
+      showTag: true, // 显示标签
+      List_of_processes: [], // 过程列表
+      processingSteps: [], // 表格数据
+      template: '', // 模板
+      processdialogVisible: false, // 过程对话框可见性
+      Process_template: '', // 过程模板
+      editindex: 0 // 编辑索引
     }
   },
   mounted() {
@@ -404,89 +413,160 @@ export default {
     this.loadProcess()
   },
   methods: {
-    changePage() {},
-    getCustomerList() {
-      Customer.getlist().then((res) => {
-        this.CustomerOptions = res.data
-      })
+    // 更改页面的方法
+    async changePage() {},
+    // 获取客户列表的方法
+    async getCustomerList() {
+      // 使用await等待获取客户列表的结果
+      this.CustomerOptions = await this.fetchCustomerList()
     },
+    // 更改的方法
     change() {
-      const customer = this.CustomerOptions.find((item) => item.CustomerId === this.Customer) // 根据客户 ID 获取客户的详细信息
-      this.Address = customer ? customer.Address : '' // 将客户的收货地址赋值给 Address 变量
+      // 找到匹配的客户
+      const customer = this.CustomerOptions.find((item) => item.CustomerId === this.Customer)
+      // 如果找到了匹配的客户，就设置地址，否则设置为空
+      this.deliveryAddress = customer ? customer.Address : ''
     },
+    // 添加材料的方法
     addMaterial() {
+      // 在FormData中添加一个新的对象，对象中包含一个空的tableData数组
       this.FormData.push({
-        tableData: []
+        processingSteps: []
       })
     },
+    // 搜索父组件编号的方法
     async searchParentComponentNo(query) {
+      // 设置加载状态为true
       this.loading = true
       try {
-        const { data } = await materials.getMaterialsSearch({ code: query, category: this.category, status: '启用' })
+        // 使用await等待获取材料搜索的结果
+        const data = await this.fetchMaterialsSearch(query)
+        // 将结果映射为一个新的数组，数组中的每个元素都是一个对象，包含value、label和names属性
         this.parentComponentNoOptions = data.map((item) => ({
           value: item.code,
           label: item.code,
           names: item.name
         }))
-        // console.log(this.parentComponentNoOptions)
       } catch (error) {
+        // 如果出现错误，就在控制台中打印错误
         console.error(error)
       } finally {
+        // 最后，无论是否出现错误，都将加载状态设置为false
         this.loading = false
       }
     },
+    // 更改父组件编号的方法
     changeParentComponentNo(row) {
+      // 找到匹配的项
       const selectedItem = this.parentComponentNoOptions.find((item) => item.value === row.materialCode)
+      // 如果找到了匹配的项，就设置材料名称
       if (selectedItem) {
         row.materialName = selectedItem.names
       }
     },
-    async querySearch(queryString, cb) {
+    // 查询搜索的方法
+    async querySearch(queryString) {
       try {
-        // eslint-disable-next-line object-curly-spacing
-        // const response = await this.$http.get('/api/materials/search', { params: { name: queryString } })
-        const { data } = await materials.getMaterialsSearch({ name: queryString, category: this.Type_of_material, status: '启用' })
-        this.materials = data
+        // 使用await等待获取材料搜索的结果
+        this.materials = await this.Type_of_materialSearch(queryString)
       } catch (err) {
+        // 如果出现错误，就在控制台中打印错误
         console.error(err)
       }
     },
-    loadSurface() {
-      surfaceTreatment.getlist().then((res) => {
-        this.SurfaceResults = res.data
+    // 加载表面的方法
+    async loadSurface() {
+      // 使用await等待获取表面列表的结果
+      this.SurfaceResults = await this.fetchSurfaceList()
+    },
+    // 加载过程的方法
+    async loadProcess() {
+      // 使用await等待获取过程步骤的结果
+      const res = await this.fetchProcessStep()
+      // 设置过程列表
+      this.List_of_processes = res
+    },
+    // 添加过程列表的方法
+    AddprocessesList(name) {
+      // 在processingSteps中添加一个新的对象，对象中包含name、description和price属性
+      this.processingSteps.push({
+        name: name,
+        estimatedHours: 0.1,
+        state: '待入站'
       })
     },
-    async loadProcess() {
+    // 删除过程列表的方法
+    removeProcessList(index) {
+      // 在processingSteps中删除指定索引的元素
+      this.processingSteps.splice(index, 1)
+    },
+    // 编辑过程的方法
+    Editing_process(row, index) {
+      // 显示过程对话框
+      this.processdialogVisible = true
+      // 设置processingSteps
+      this.processingSteps = row.processingSteps
+      // 设置编辑索引
+      this.editindex = index
+    },
+    // 确定过程的方法
+    determineProcess() {
+      // 隐藏过程对话框
+      this.processdialogVisible = false
+      // 更新FormData中的processingSteps
+      this.FormData[this.editindex].processingSteps = this.processingSteps
+    },
+    // 保存的方法
+    async save() {
+      // 使用await等待添加销售报价的结果
+      await this.addSalesQuote()
+    },
+    // 新的获取客户列表的方法
+    async fetchCustomerList() {
+      // 使用await等待获取客户列表的结果
+      const res = await Customer.getlist()
+      return res.data
+    },
+    // 新的零件搜索的方法
+    async fetchMaterialsSearch(query) {
+      // 使用await等待获取材料搜索的结果
+      const res = await materials.getMaterialsSearch({ code: query, category: this.category, status: '启用' })
+      return res.data
+    },
+    // 新的原材料搜索的方法
+    async Type_of_materialSearch(query) {
+      // 使用await等待获取材料搜索的结果
+      const res = await materials.getMaterialsSearch({ name: query, category: this.Type_of_material, status: '启用' })
+      return res.data
+    },
+    // 新的获取表面列表的方法
+    async fetchSurfaceList() {
+      // 使用await等待获取表面列表的结果
+      const res = await surfaceTreatment.getlist()
+      return res.data
+    },
+    // 新的获取过程步骤的方法
+    async fetchProcessStep() {
+      // 使用await等待获取过程步骤的结果
       const res = await processStep.get({
         page: 1,
         limit: 1000
       })
-      this.List_of_processes = res.data
+      return res.data
     },
-    AddprocessesList(name) {
-      this.tableData.push({
-        name: name,
-        description: 0.1,
-        price: '待入站'
-      })
-    },
-    removeProcessList(index) {
-      this.tableData.splice(index, 1)
-    },
-    // 编辑加工工序
-    Editing_process(row, index) {
-      this.processdialogVisible = true
-      this.tableData = row.tableData
-      this.editindex = index
-    },
-    // 确定加工工序
-    determineProcess() {
-      this.processdialogVisible = false
-      this.FormData[this.editindex].tableData = this.tableData
+    // 新的添加销售报价的方法
+    async addSalesQuote() {
+      // 使用await等待添加销售报价的结果
       console.log(this.FormData)
-    },
-    save() {
-      salesQuote.addSalesQuote()
+      await salesQuote.addSalesQuote({
+        orderNumber: new Date().getTime(),
+        customer: this.Customer,
+        orderDate: new Date(),
+        note: this.note,
+        status: '待报价',
+        deliveryAddress: this.deliveryAddress,
+        materialInfo: this.FormData
+      })
     }
   }
 }
